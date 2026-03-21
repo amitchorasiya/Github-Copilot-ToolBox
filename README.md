@@ -1,8 +1,8 @@
-# Github-Copilot-Cursor-MCP-Port
+# Github-Copilot-ToolBox
 
 Monorepo for developers moving from **Cursor** to **Visual Studio Code** with **GitHub Copilot**: MCP configuration, rules and instructions, and a **VS Code extension** that surfaces setup, **Intelligence** tooling, and `npx` bridges in one place.
 
-**License:** [MIT](LICENSE) · **Extension (Marketplace):** `amitchorasiya.github-copilot-toolbox` · **Repository:** [github.com/amitchorasiya/Github-Copilot-Cursor-MCP-Port](https://github.com/amitchorasiya/Github-Copilot-Cursor-MCP-Port)
+**License:** [MIT](LICENSE) · **Extension (Marketplace):** `amitchorasiya.github-copilot-toolbox` · **Repository:** [github.com/amitchorasiya/Github-Copilot-ToolBox](https://github.com/amitchorasiya/Github-Copilot-ToolBox)
 
 ---
 
@@ -47,8 +47,8 @@ The extension does **not** replace GitHub Copilot or Cursor; it helps you **alig
 ## Quick start (extension)
 
 ```bash
-git clone https://github.com/amitchorasiya/Github-Copilot-Cursor-MCP-Port.git
-cd Github-Copilot-Cursor-MCP-Port/packages/github-copilot-toolbox
+git clone https://github.com/amitchorasiya/Github-Copilot-ToolBox.git
+cd Github-Copilot-ToolBox/packages/github-copilot-toolbox
 npm install
 npm run compile
 ```
@@ -82,7 +82,7 @@ These work alongside the extension; the **Intelligence** hub links to their repo
 
 | npm package | Role | GitHub |
 |-------------|------|--------|
-| `cursor-mcp-to-github-copilot-port` | Port Cursor `mcp.json` → VS Code `mcp.json` | [Github-Copilot-Cursor-MCP-Port](https://github.com/amitchorasiya/Github-Copilot-Cursor-MCP-Port) |
+| `cursor-mcp-to-github-copilot-port` | Port Cursor `mcp.json` → VS Code `mcp.json` | [Github-Copilot-ToolBox](https://github.com/amitchorasiya/Github-Copilot-ToolBox) |
 | `github-copilot-memory-bank` | Scaffold `memory-bank/` + merge Copilot instructions | [Github-Copilot-Memory-Bank](https://github.com/amitchorasiya/Github-Copilot-Memory-Bank) |
 | `cursor-rules-to-github-copilot` | Generate Copilot instruction files from `.cursor/rules` | [Github-Copilot-Cursor-Rules-Converter](https://github.com/amitchorasiya/Github-Copilot-Cursor-Rules-Converter) |
 

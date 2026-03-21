@@ -324,7 +324,7 @@ export function getHubWebviewHtml(csp: string): string {
         { ic: "\\uD83D\\uDCE6", t: "Build context pack", d: "Structured bundle for Copilot Chat (copy)", c: "GitHubCopilotToolBox.buildContextPack" },
         { ic: "\\uD83D\\uDEE1", t: "Readiness summary", d: "Check workspace + instructions + MCP wiring", c: "GitHubCopilotToolBox.showIntelligenceReadiness" },
         { ic: "\\u2699", t: "Intelligence settings", d: "Git, diagnostics, notepad defaults", c: "GitHubCopilotToolBox.openIntelligenceSettings" },
-        { ic: "\\uD83D\\uDD17", t: "MCP port repo (GitHub)", d: "Github-Copilot-Cursor-MCP-Port", c: "GitHubCopilotToolBox.openIntelligenceRepoMcpPort" },
+        { ic: "\\uD83D\\uDD17", t: "MCP port repo (GitHub)", d: "Github-Copilot-ToolBox", c: "GitHubCopilotToolBox.openIntelligenceRepoMcpPort" },
         { ic: "\\uD83D\\uDD17", t: "Memory bank repo (GitHub)", d: "Github-Copilot-Memory-Bank", c: "GitHubCopilotToolBox.openIntelligenceRepoMemoryBank" },
         { ic: "\\uD83D\\uDD17", t: "Rules converter repo (GitHub)", d: "Github-Copilot-Cursor-Rules-Converter", c: "GitHubCopilotToolBox.openIntelligenceRepoRulesConverter" },
         { ic: "\\uD83D\\uDCE5", t: "Migrate skills .cursor → .agents", d: "SKILL.md folders to .agents/skills (copy or move)", c: "GitHubCopilotToolBox.migrateSkillsCursorToAgents" },
@@ -837,7 +837,7 @@ export function getHubWebviewHtml(csp: string): string {
       {
         ic: "\\uD83D\\uDD0C",
         t: "Port Cursor MCP",
-        p: "npx package cursor-mcp-to-github-copilot-port: Cursor ~/.cursor/mcp.json to VS Code mcp.json. Source: amitchorasiya/Github-Copilot-Cursor-MCP-Port on GitHub.",
+        p: "npx package cursor-mcp-to-github-copilot-port: Cursor ~/.cursor/mcp.json to VS Code mcp.json. Source: amitchorasiya/Github-Copilot-ToolBox on GitHub.",
         c: "GitHubCopilotToolBox.portCursorMcp",
         b: "Run npx port",
         r: "GitHubCopilotToolBox.openIntelligenceRepoMcpPort"

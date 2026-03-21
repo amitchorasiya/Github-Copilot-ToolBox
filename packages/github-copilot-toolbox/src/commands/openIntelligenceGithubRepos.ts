@@ -2,7 +2,7 @@ import * as vscode from "vscode";
 
 /** Companion repos for Cursor → VS Code / Copilot bridge CLIs. */
 export const INTELLIGENCE_BRIDGE_REPOS = {
-  mcpPort: "https://github.com/amitchorasiya/Github-Copilot-Cursor-MCP-Port",
+  mcpPort: "https://github.com/amitchorasiya/Github-Copilot-ToolBox",
   memoryBank: "https://github.com/amitchorasiya/Github-Copilot-Memory-Bank",
   rulesConverter: "https://github.com/amitchorasiya/Github-Copilot-Cursor-Rules-Converter",
 } as const;

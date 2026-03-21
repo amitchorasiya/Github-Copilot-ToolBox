@@ -4,7 +4,7 @@
 
 Install: `code --install-extension amitchorasiya.github-copilot-toolbox` (when published) or install from a built `.vsix`.
 
-**Monorepo home:** [Github-Copilot-Cursor-MCP-Port](https://github.com/amitchorasiya/Github-Copilot-Cursor-MCP-Port) — this folder is `packages/github-copilot-toolbox/`.
+**Monorepo home:** [Github-Copilot-ToolBox](https://github.com/amitchorasiya/Github-Copilot-ToolBox) — this folder is `packages/github-copilot-toolbox/`.
 
 ---
 
@@ -131,7 +131,7 @@ Search `GitHub Copilot Toolbox` or `GitHubCopilotToolBox` in Keyboard Shortcuts 
 
 | Package | Repo |
 |---------|------|
-| `cursor-mcp-to-github-copilot-port` | [Github-Copilot-Cursor-MCP-Port](https://github.com/amitchorasiya/Github-Copilot-Cursor-MCP-Port) |
+| `cursor-mcp-to-github-copilot-port` | [Github-Copilot-ToolBox](https://github.com/amitchorasiya/Github-Copilot-ToolBox) |
 | `cursor-rules-to-github-copilot` | [Github-Copilot-Cursor-Rules-Converter](https://github.com/amitchorasiya/Github-Copilot-Cursor-Rules-Converter) |
 | `github-copilot-memory-bank` | [Github-Copilot-Memory-Bank](https://github.com/amitchorasiya/Github-Copilot-Memory-Bank) |
 

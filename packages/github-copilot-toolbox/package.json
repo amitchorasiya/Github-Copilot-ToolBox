@@ -8,7 +8,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/amitchorasiya/Github-Copilot-Cursor-MCP-Port.git",
+    "url": "https://github.com/amitchorasiya/Github-Copilot-ToolBox.git",
     "directory": "packages/github-copilot-toolbox"
   },
   "engines": {
