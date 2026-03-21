@@ -1,0 +1,13 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "npm",
+      "script": "compile",
+      "path": "packages/github-copilot-toolbox",
+      "group": "build",
+      "label": "npm: compile - github-copilot-toolbox",
+      "problemMatcher": ["$tsc"]
+    }
+  ]
+}

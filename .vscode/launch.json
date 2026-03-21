@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run Extension: GitHub Copilot Toolbox",
+      "type": "extensionHost",
+      "request": "launch",
+      "args": ["--extensionDevelopmentPath=${workspaceFolder}/packages/github-copilot-toolbox"],
+      "outFiles": ["${workspaceFolder}/packages/github-copilot-toolbox/out/**/*.js"],
+      "preLaunchTask": "npm: compile - github-copilot-toolbox"
+    }
+  ]
+}

@@ -1,0 +1,278 @@
+{
+  "name": "github-copilot-toolbox",
+  "displayName": "GitHub Copilot Toolbox",
+  "description": "GitHub Copilot Toolbox: MCP hub, workspace helpers, Intelligence context packs & readiness, and npx bridges from Cursor→Copilot.",
+  "version": "0.4.5",
+  "publisher": "amitchorasiya",
+  "author": "amitchorasiya",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/amitchorasiya/Github-Copilot-Cursor-MCP-Port.git",
+    "directory": "packages/github-copilot-toolbox"
+  },
+  "engines": {
+    "vscode": "^1.99.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "configuration": {
+      "title": "GitHub Copilot Toolbox",
+      "properties": {
+        "GitHubCopilotToolBox.npxTag": {
+          "type": "string",
+          "default": "latest",
+          "description": "npm dist-tag or version appended after @ for npx packages (e.g. latest or 1.0.1)."
+        },
+        "GitHubCopilotToolBox.useInsidersPaths": {
+          "type": "boolean",
+          "default": false,
+          "description": "Resolve user mcp.json under VS Code Insiders instead of stable."
+        },
+        "GitHubCopilotToolBox.intelligence.includeGitByDefault": {
+          "type": "boolean",
+          "default": false,
+          "description": "Pre-select “Include git” in the Intelligence context pack quick pick (still confirm each run)."
+        },
+        "GitHubCopilotToolBox.intelligence.includeDiagnosticsByDefault": {
+          "type": "boolean",
+          "default": false,
+          "description": "Pre-select “Include diagnostics” in the Intelligence context pack quick pick."
+        },
+        "GitHubCopilotToolBox.intelligence.appendNotepadAfterPack": {
+          "type": "boolean",
+          "default": false,
+          "description": "Pre-select “Append to session notepad” after building a context pack."
+        },
+        "GitHubCopilotToolBox.intelligence.openChatAfterPack": {
+          "type": "boolean",
+          "default": false,
+          "description": "Pre-select “Open Copilot Chat” after building a context pack."
+        },
+        "GitHubCopilotToolBox.intelligence.autoScanMcpSkillsOnWorkspaceOpen": {
+          "type": "boolean",
+          "default": false,
+          "description": "When enabled, after a workspace folder opens (debounced): open the MCP & Skills awareness report, refresh hub data, and merge a replaceable MCP/skills section into .github/copilot-instructions.md. Also applies when you run the awareness scan while this is on."
+        },
+        "GitHubCopilotToolBox.translateWrapMultilineInFence": {
+          "type": "boolean",
+          "default": false,
+          "description": "When translating selection, wrap multiline result in a markdown code fence (language = active editor)."
+        }
+      }
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "GitHubCopilotToolBox",
+          "title": "Copilot Toolbox",
+          "icon": "resources/icon.svg"
+        }
+      ],
+      "secondarySidebar": [
+        {
+          "id": "GitHubCopilotToolBoxSecondary",
+          "title": "GitHub Copilot ToolBox",
+          "icon": "resources/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "GitHubCopilotToolBox": [
+        {
+          "type": "webview",
+          "id": "copilotKitMcp",
+          "name": "MCP & skills"
+        },
+        {
+          "id": "copilotKitWorkspace",
+          "name": "Workspace kit"
+        },
+        {
+          "id": "copilotKitGuide",
+          "name": "Guide & tools"
+        }
+      ],
+      "GitHubCopilotToolBoxSecondary": [
+        {
+          "type": "webview",
+          "id": "copilotKitMcpSecondary",
+          "name": "MCP & skills"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "GitHubCopilotToolBox.openInlineChatCursorStyle",
+        "key": "ctrl+alt+k",
+        "mac": "cmd+alt+k",
+        "when": "editorTextFocus"
+      }
+    ],
+    "commands": [
+      {
+        "command": "GitHubCopilotToolBox.openWorkspaceMcp",
+        "title": "GitHub Copilot Toolbox: Open workspace mcp.json"
+      },
+      {
+        "command": "GitHubCopilotToolBox.openUserMcp",
+        "title": "GitHub Copilot Toolbox: Open user mcp.json"
+      },
+      {
+        "command": "GitHubCopilotToolBox.mcpListServers",
+        "title": "GitHub Copilot Toolbox: MCP — List servers (native)"
+      },
+      {
+        "command": "GitHubCopilotToolBox.mcpBrowseRegistry",
+        "title": "GitHub Copilot Toolbox: MCP — Browse registry (@mcp)"
+      },
+      {
+        "command": "GitHubCopilotToolBox.mcpAddServer",
+        "title": "GitHub Copilot Toolbox: MCP — Add server (native)"
+      },
+      {
+        "command": "GitHubCopilotToolBox.portCursorMcp",
+        "title": "GitHub Copilot Toolbox: Port Cursor MCP → VS Code (npx)"
+      },
+      {
+        "command": "GitHubCopilotToolBox.syncCursorRules",
+        "title": "GitHub Copilot Toolbox: Sync Cursor rules → Copilot instructions (npx)"
+      },
+      {
+        "command": "GitHubCopilotToolBox.initMemoryBank",
+        "title": "GitHub Copilot Toolbox: Init GitHub Copilot memory bank (npx)"
+      },
+      {
+        "command": "GitHubCopilotToolBox.workspaceSetupWizard",
+        "title": "GitHub Copilot Toolbox: Cursor → Copilot workspace wizard"
+      },
+      {
+        "command": "GitHubCopilotToolBox.openCopilotChat",
+        "title": "GitHub Copilot Toolbox: Open Chat"
+      },
+      {
+        "command": "GitHubCopilotToolBox.toggleMcpDiscovery",
+        "title": "GitHub Copilot Toolbox: Toggle chat.mcp.discovery.enabled"
+      },
+      {
+        "command": "GitHubCopilotToolBox.refreshMcpView",
+        "title": "GitHub Copilot Toolbox: Refresh MCP view",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "GitHubCopilotToolBox.refreshWorkspaceView",
+        "title": "GitHub Copilot Toolbox: Refresh workspace kit view",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "GitHubCopilotToolBox.openInstructionsPicker",
+        "title": "GitHub Copilot Toolbox: Open instruction file…"
+      },
+      {
+        "command": "GitHubCopilotToolBox.appendCursorrules",
+        "title": "GitHub Copilot Toolbox: Append .cursorrules to Copilot instructions"
+      },
+      {
+        "command": "GitHubCopilotToolBox.createCursorrulesTemplate",
+        "title": "GitHub Copilot Toolbox: Create .cursorrules template"
+      },
+      {
+        "command": "GitHubCopilotToolBox.openCursorCopilotReference",
+        "title": "GitHub Copilot Toolbox: Open Cursor vs Copilot reference"
+      },
+      {
+        "command": "GitHubCopilotToolBox.openInlineChatCursorStyle",
+        "title": "GitHub Copilot Toolbox: Open inline chat (Cursor-style)"
+      },
+      {
+        "command": "GitHubCopilotToolBox.openComposerHub",
+        "title": "GitHub Copilot Toolbox: Open Chat hub (Composer tips)"
+      },
+      {
+        "command": "GitHubCopilotToolBox.openSessionNotepad",
+        "title": "GitHub Copilot Toolbox: Open session notepad"
+      },
+      {
+        "command": "GitHubCopilotToolBox.copySessionNotepad",
+        "title": "GitHub Copilot Toolbox: Copy session notepad to clipboard"
+      },
+      {
+        "command": "GitHubCopilotToolBox.openCopilotBillingDocs",
+        "title": "GitHub Copilot Toolbox: Open Copilot billing / usage docs"
+      },
+      {
+        "command": "GitHubCopilotToolBox.openEnvSyncChecklist",
+        "title": "GitHub Copilot Toolbox: Open environment sync checklist"
+      },
+      {
+        "command": "GitHubCopilotToolBox.translateContextSelection",
+        "title": "GitHub Copilot Toolbox: Translate @-mentions in selection"
+      },
+      {
+        "command": "GitHubCopilotToolBox.buildContextPack",
+        "title": "GitHub Copilot Toolbox: Intelligence — build context pack for Chat (copy)"
+      },
+      {
+        "command": "GitHubCopilotToolBox.showMcpSkillsAwareness",
+        "title": "GitHub Copilot Toolbox: Intelligence — scan MCP & Skills awareness (report)"
+      },
+      {
+        "command": "GitHubCopilotToolBox.showIntelligenceReadiness",
+        "title": "GitHub Copilot Toolbox: Intelligence — show readiness summary"
+      },
+      {
+        "command": "GitHubCopilotToolBox.openIntelligenceSettings",
+        "title": "GitHub Copilot Toolbox: Intelligence — open related settings"
+      },
+      {
+        "command": "GitHubCopilotToolBox.openIntelligenceRepoMcpPort",
+        "title": "GitHub Copilot Toolbox: Intelligence — MCP port repo (GitHub)"
+      },
+      {
+        "command": "GitHubCopilotToolBox.openIntelligenceRepoMemoryBank",
+        "title": "GitHub Copilot Toolbox: Intelligence — memory bank repo (GitHub)"
+      },
+      {
+        "command": "GitHubCopilotToolBox.openIntelligenceRepoRulesConverter",
+        "title": "GitHub Copilot Toolbox: Intelligence — Cursor rules converter repo (GitHub)"
+      },
+      {
+        "command": "GitHubCopilotToolBox.migrateSkillsCursorToAgents",
+        "title": "GitHub Copilot Toolbox: Intelligence — migrate skills .cursor → .agents"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "GitHubCopilotToolBox.refreshMcpView",
+          "when": "view == copilotKitMcp || view == copilotKitMcpSecondary",
+          "group": "navigation"
+        },
+        {
+          "command": "GitHubCopilotToolBox.refreshWorkspaceView",
+          "when": "view == copilotKitWorkspace",
+          "group": "navigation"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "package": "vsce package",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@types/vscode": "^1.99.0",
+    "typescript": "^5.3.0",
+    "vitest": "^2.1.9"
+  }
+}

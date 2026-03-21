@@ -1,0 +1,11 @@
+{
+  "name": "github-copilot-cursor-mcp-port",
+  "private": true,
+  "description": "Monorepo: GitHub Copilot Toolbox (VS Code) and Cursor→Copilot helpers.",
+  "license": "MIT",
+  "scripts": {
+    "compile": "npm run compile --prefix packages/github-copilot-toolbox",
+    "test": "npm test --prefix packages/github-copilot-toolbox",
+    "package:extension": "npm run package --prefix packages/github-copilot-toolbox"
+  }
+}
