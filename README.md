@@ -9,6 +9,7 @@ Monorepo for developers moving from **Cursor** to **Visual Studio Code** with **
 ## Table of contents
 
 - [What’s in this repo](#whats-in-this-repo)
+- [Extension screenshots](#extension-screenshots)
 - [Why it exists](#why-it-exists)
 - [Quick start (extension)](#quick-start-extension)
 - [Install the extension](#install-the-extension)
@@ -33,6 +34,36 @@ Monorepo for developers moving from **Cursor** to **Visual Studio Code** with **
 | **[packages/cursor-mcp-to-github-copilot-port/](packages/cursor-mcp-to-github-copilot-port/)** | Placeholder README for the MCP port CLI layout; the CLI is published separately on npm |
 
 The extension does **not** replace GitHub Copilot or Cursor; it helps you **align configs** and **see** what’s configured (MCP servers, local `SKILL.md` trees, instructions files).
+
+### Extension screenshots
+
+**Intelligence** (hub): Cursor → VS Code bridges, context pack, readiness, MCP & Skills scan.
+
+![Intelligence tab: Cursor to VS Code and Copilot bridges](screenshots/01-intelligence-cursor-to-vscode-copilot.png)
+
+![Intelligence: context pack and readiness actions](screenshots/02-intelligence-context-readiness.png)
+
+**MCP**: workspace and user servers, registry browse.
+
+![MCP: browse workspace servers](screenshots/03-mcp-browse-workspace-servers.png)
+
+![MCP: registry search](screenshots/04-mcp-registry-search.png)
+
+**Skills**: catalog (skills.sh) and local installed `SKILL.md` trees.
+
+![Skills: catalog (skills.sh)](screenshots/05-skills-catalog-skills-sh.png)
+
+![Skills: installed local skill folders](screenshots/06-skills-installed-local.png)
+
+**Workspace kit** and **Guide**: checklist and command tree.
+
+![Workspace kit checklist](screenshots/07-workspace-checklist.png)
+
+![Guide and toolbox commands](screenshots/08-workspace-toolbox-commands.png)
+
+**Reference diagram** (exported map of Cursor vs Copilot surfaces; not a live UI capture).
+
+![Cursor vs Copilot capability map (diagram)](screenshots/mermaid-copilot-map.png)
 
 ---
 
@@ -103,6 +134,7 @@ These work alongside the extension; the **Intelligence** hub links to their repo
 │   │   └── README.md
 │   └── cursor-mcp-to-github-copilot-port/   # Placeholder for optional vendored CLI
 ├── memory-bank/                     # Project docs for agents / Copilot
+├── screenshots/                     # README and docs: extension UI captures + reference diagram
 └── .github/workflows/               # extension-ci.yml → multi-OS build + tests
 ```
 
