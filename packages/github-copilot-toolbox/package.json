@@ -2,7 +2,7 @@
   "name": "github-copilot-toolbox",
   "displayName": "GitHub Copilot Toolbox",
   "description": "GitHub Copilot Toolbox: MCP hub, workspace helpers, Intelligence context packs & readiness, and npx bridges from Cursor→Copilot.",
-  "version": "0.4.7",
+  "version": "0.4.8",
   "publisher": "amitchorasiya",
   "author": "amitchorasiya",
   "license": "MIT",

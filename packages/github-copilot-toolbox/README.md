@@ -13,6 +13,7 @@ Install: `code --install-extension amitchorasiya.github-copilot-toolbox` (when p
 ## Table of contents
 
 - [Overview](#overview)
+- [Screenshots](#screenshots)
 - [Requirements](#requirements)
 - [Features](#features)
 - [Hub layout (MCP & skills)](#hub-layout-mcp--skills)
@@ -36,6 +37,38 @@ Install: `code --install-extension amitchorasiya.github-copilot-toolbox` (when p
 3. **Guide & tools** — Tree of common commands (Intelligence, reference doc, notepad, billing links, etc.).
 
 **Command / setting prefix:** `GitHubCopilotToolBox.*` (since extension v0.4.0). Older builds used `cursorCopilotKit` — see [migration](#migrating-from-cursorcopilotkit).
+
+VS Code resolves README images relative to this package folder. Screenshots live at the [monorepo `screenshots/`](https://github.com/amitchorasiya/Github-Copilot-ToolBox/tree/main/screenshots) root, so embeds below use **absolute** `raw.githubusercontent.com` URLs (same as the published `.vsix` / Marketplace README).
+
+## Screenshots
+
+**Intelligence** (hub): Cursor → VS Code bridges, context pack, readiness, MCP & Skills scan.
+
+![Intelligence tab: Cursor to VS Code and Copilot bridges](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/01-intelligence-cursor-to-vscode-copilot.png)
+
+![Intelligence: context pack and readiness actions](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/02-intelligence-context-readiness.png)
+
+**MCP**: workspace and user servers, registry browse.
+
+![MCP: browse workspace servers](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/03-mcp-browse-workspace-servers.png)
+
+![MCP: registry search](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/04-mcp-registry-search.png)
+
+**Skills**: catalog (skills.sh) and local installed `SKILL.md` trees.
+
+![Skills: catalog (skills.sh)](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/05-skills-catalog-skills-sh.png)
+
+![Skills: installed local skill folders](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/06-skills-installed-local.png)
+
+**Workspace kit** and **Guide**: checklist and command tree.
+
+![Workspace kit checklist](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/07-workspace-checklist.png)
+
+![Guide and toolbox commands](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/08-workspace-toolbox-commands.png)
+
+**Reference diagram** (Mermaid export; not a live UI capture).
+
+![Cursor vs Copilot capability map (diagram)](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/mermaid-copilot-map.png)
 
 ---
 
