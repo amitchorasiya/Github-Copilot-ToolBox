@@ -50,7 +50,9 @@ The extension does **not** replace GitHub Copilot or Cursor; it helps you **alig
 
 These are **actual hub captures**—what you see after install when you open **Copilot Toolbox** → **MCP & skills**. Images are **high-resolution** (~2.5k width) so text and controls stay legible in README and on the [project site](https://copilottoolbox.layai.co).
 
-**Intelligence** (hub): Cursor → VS Code bridges, context pack, readiness, MCP & Skills scan.
+**Intelligence** (hub): **Port Cursor → Copilot** (MCP, rules, memory bank), then broader bridges, context pack, readiness, MCP & Skills scan.
+
+![Intelligence: Port Cursor MCP, rules, and memory bank to VS Code & Copilot](screenshots/02-intelligence-cursor-port.png)
 
 ![Intelligence tab: Cursor to VS Code and Copilot bridges](screenshots/01-intelligence-cursor-to-vscode-copilot.png)
 
