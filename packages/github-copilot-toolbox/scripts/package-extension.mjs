@@ -17,9 +17,20 @@ const GITHUB_REPO = "https://github.com/amitchorasiya/Github-Copilot-ToolBox";
 const RAW_MAIN =
   "https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main";
 
-function transformRootReadmeForMarketplace(text) {
+function transformRootReadmeForMarketplace(text, screenshotCacheVersion) {
   let s = text;
   s = s.replaceAll("](screenshots/", `](${RAW_MAIN}/screenshots/`);
+  if (screenshotCacheVersion) {
+    const escapedRaw = RAW_MAIN.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const re = new RegExp(
+      `\\]\\(${escapedRaw}/screenshots/([^)]+\\.png)\\)`,
+      "g",
+    );
+    s = s.replace(
+      re,
+      `](${RAW_MAIN}/screenshots/$1?v=${encodeURIComponent(screenshotCacheVersion)})`,
+    );
+  }
   s = s.replaceAll("](LICENSE)", `](${GITHUB_REPO}/blob/main/LICENSE)`);
   s = s.replaceAll(
     "](.vscode/launch.json)",
@@ -60,8 +71,12 @@ if (!fs.existsSync(rootReadme)) {
 fs.copyFileSync(extensionReadme, STASH);
 let exitCode = 0;
 try {
+  const { version } = JSON.parse(
+    fs.readFileSync(path.join(EXT_ROOT, "package.json"), "utf8"),
+  );
   const body = transformRootReadmeForMarketplace(
     fs.readFileSync(rootReadme, "utf8"),
+    version,
   );
   fs.writeFileSync(extensionReadme, body, "utf8");
   // vsce only accepts PNG for `package.json` icon; keep it in sync with the SVG source of truth.

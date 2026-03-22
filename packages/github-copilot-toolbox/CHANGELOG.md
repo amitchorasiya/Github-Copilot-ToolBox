@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.6
+
+- **Docs:** Replaced hub screenshots in `screenshots/` with higher-resolution captures (~2.5k width) for readable UI in README, Marketplace, and the GitHub Pages site; bumped site asset cache keys.
+
 ## 0.5.5
 
 - **Docs:** README refresh (sales-focused intro, hub UI reference for every control); updated extension screenshots in `screenshots/`.

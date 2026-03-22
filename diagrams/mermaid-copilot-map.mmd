@@ -1,0 +1,44 @@
+%% Cursor vs Copilot capability map
+%% Source of truth for the diagram; export PNG to screenshots/mermaid-copilot-map.png when it changes.
+%% Render: https://mermaid.live — or: npx -y @mermaid-js/mermaid-cli -i diagrams/mermaid-copilot-map.mmd -o screenshots/mermaid-copilot-map.png
+
+flowchart LR
+  subgraph cursor_in["Cursor-era inputs"]
+    direction TB
+    crules[".cursor/rules"]
+    cmcp["~/.cursor/mcp.json"]
+    cskills[".cursor/skills (optional)"]
+  end
+
+  subgraph npm_cli["npm CLIs"]
+    direction TB
+    port["cursor-mcp-to-github-copilot-port"]
+    crulescli["cursor-rules-to-github-copilot"]
+    gmem["github-copilot-memory-bank"]
+  end
+
+  subgraph toolbox["GitHub Copilot Toolbox"]
+    hub["Hub: Intelligence / MCP / Skills / Workspace"]
+  end
+
+  subgraph vsc["VS Code + Copilot"]
+    direction TB
+    outmcp[".vscode/mcp.json / user mcp.json"]
+    outcop[".github/copilot-instructions.md"]
+    outmb["memory-bank/*.md"]
+  end
+
+  crules --> crulescli
+  cmcp --> port
+  port --> outmcp
+  crulescli --> outcop
+  gmem --> outcop
+  gmem --> outmb
+
+  hub --> port
+  hub --> crulescli
+  hub --> gmem
+
+  outmcp --> hub
+  outcop --> hub
+  outmb --> hub

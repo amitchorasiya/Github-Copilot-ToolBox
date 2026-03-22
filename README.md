@@ -48,7 +48,7 @@ The extension does **not** replace GitHub Copilot or Cursor; it helps you **alig
 
 ### See the real UI (screenshots)
 
-These are **actual hub captures**—what you see after install when you open **Copilot Toolbox** → **MCP & skills**.
+These are **actual hub captures**—what you see after install when you open **Copilot Toolbox** → **MCP & skills**. Images are **high-resolution** (~2.5k width) so text and controls stay legible in README and on the [project site](https://copilottoolbox.layai.co).
 
 **Intelligence** (hub): Cursor → VS Code bridges, context pack, readiness, MCP & Skills scan.
 
