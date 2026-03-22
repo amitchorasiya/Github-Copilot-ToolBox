@@ -14,7 +14,7 @@
       href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="css/site.css?v=11" />
+    <link rel="stylesheet" href="css/site.css?v=12" />
   </head>
   <body>
     <header class="site-header">
@@ -23,7 +23,8 @@
         <nav class="nav-cta" aria-label="Primary">
           <a
             class="btn btn-primary"
-            href="https://marketplace.visualstudio.com/items?itemName=amitchorasiya.github-copilot-toolbox"
+            href="vscode:extension/amitchorasiya.github-copilot-toolbox"
+            title="Opens Visual Studio Code to this extension if it is installed"
             >Install in VS Code</a
           >
           <a class="btn btn-ghost" href="https://github.com/amitchorasiya/Github-Copilot-ToolBox">Source on GitHub</a>
@@ -222,9 +223,15 @@
           <p>Install the extension, open <strong>Copilot Toolbox</strong> in the activity bar, then <strong>MCP &amp; skills</strong>.</p>
           <a
             class="btn btn-primary"
-            href="https://marketplace.visualstudio.com/items?itemName=amitchorasiya.github-copilot-toolbox"
+            href="vscode:extension/amitchorasiya.github-copilot-toolbox"
+            title="Opens Visual Studio Code to this extension if it is installed"
             >Install GitHub Copilot Toolbox</a
           >
+          <p class="cta-fallback">
+            VS Code did not open?
+            <a href="https://marketplace.visualstudio.com/items?itemName=amitchorasiya.github-copilot-toolbox">Open the Marketplace in your browser</a>
+            instead.
+          </p>
           <p class="mono-hint">code --install-extension amitchorasiya.github-copilot-toolbox</p>
         </div>
       </section>
