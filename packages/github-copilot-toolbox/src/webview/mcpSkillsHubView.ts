@@ -85,7 +85,7 @@ export async function gatherHubPayload(): Promise<HubPayload> {
 
 /** Activity bar (Copilot Toolbox) — first view */
 export const MCP_SKILLS_HUB_VIEW_ACTIVITY = "copilotKitMcp";
-/** Right secondary sidebar — tab next to Chat (same UI as copilot-mcp’s placement) */
+/** Secondary sidebar container — webview tab beside Chat (see `package.json` `secondarySidebar`) */
 export const MCP_SKILLS_HUB_VIEW_SECONDARY = "copilotKitMcpSecondary";
 
 export class McpSkillsHubViewProvider implements vscode.WebviewViewProvider {
