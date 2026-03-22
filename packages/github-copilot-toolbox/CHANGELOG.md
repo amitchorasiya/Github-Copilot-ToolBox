@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.8
+
+- **Legal / clarity:** Expanded **Disclaimer** in the monorepo README; added **Disclaimer** to the extension README, Marketplace `description` pointer, and GitHub Pages footer (with link to repo disclaimer). Not a substitute for legal counsel.
+
 ## 0.5.7
 
 - **Docs:** Lead README and GitHub Pages gallery with **`02-intelligence-cursor-port.png`** (Cursor → Copilot port hero); site hero image matches.

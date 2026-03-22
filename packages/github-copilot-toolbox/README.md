@@ -37,6 +37,7 @@ Install: `code --install-extension amitchorasiya.github-copilot-toolbox` (when p
 - [Develop & test](#develop--test)
 - [Troubleshooting](#troubleshooting)
 - [Migrating from `cursorCopilotKit`](#migrating-from-cursorcopilotkit)
+- [Disclaimer](#disclaimer)
 - [License](#license)
 
 ---
@@ -59,33 +60,33 @@ VS Code resolves README images relative to this package folder. Screenshots live
 
 **Intelligence** (hub): **Port Cursor → Copilot** (MCP, rules, memory bank), then broader bridges, context pack, readiness, MCP & Skills scan.
 
-![Intelligence: Port Cursor MCP, rules, and memory bank to VS Code & Copilot](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/02-intelligence-cursor-port.png?v=0.5.7)
+![Intelligence: Port Cursor MCP, rules, and memory bank to VS Code & Copilot](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/02-intelligence-cursor-port.png?v=0.5.8)
 
-![Intelligence tab: Cursor to VS Code and Copilot bridges](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/01-intelligence-cursor-to-vscode-copilot.png?v=0.5.7)
+![Intelligence tab: Cursor to VS Code and Copilot bridges](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/01-intelligence-cursor-to-vscode-copilot.png?v=0.5.8)
 
-![Intelligence: context pack and readiness actions](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/02-intelligence-context-readiness.png?v=0.5.7)
+![Intelligence: context pack and readiness actions](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/02-intelligence-context-readiness.png?v=0.5.8)
 
 **MCP**: installed workspace/user servers and registry browse.
 
-![MCP: installed workspace servers (Browse / Installed)](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/03-mcp-browse-workspace-servers.png?v=0.5.7)
+![MCP: installed workspace servers (Browse / Installed)](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/03-mcp-browse-workspace-servers.png?v=0.5.8)
 
-![MCP: registry browse & search](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/04-mcp-registry-search.png?v=0.5.7)
+![MCP: registry browse & search](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/04-mcp-registry-search.png?v=0.5.8)
 
 **Skills**: catalog (skills.sh) and local installed `SKILL.md` trees.
 
-![Skills: catalog (skills.sh)](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/05-skills-catalog-skills-sh.png?v=0.5.7)
+![Skills: catalog (skills.sh)](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/05-skills-catalog-skills-sh.png?v=0.5.8)
 
-![Skills: installed local skill folders](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/06-skills-installed-local.png?v=0.5.7)
+![Skills: installed local skill folders](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/06-skills-installed-local.png?v=0.5.8)
 
 **Workspace** checklist and **Intelligence** hub (context hygiene).
 
-![Workspace kit checklist](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/07-workspace-checklist.png?v=0.5.7)
+![Workspace kit checklist](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/07-workspace-checklist.png?v=0.5.8)
 
-![Intelligence: context hygiene, snapshot, and quick actions](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/08-workspace-toolbox-commands.png?v=0.5.7)
+![Intelligence: context hygiene, snapshot, and quick actions](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/08-workspace-toolbox-commands.png?v=0.5.8)
 
 **Reference diagram** (Mermaid export; not a live UI capture).
 
-![Cursor vs Copilot capability map (diagram)](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/mermaid-copilot-map.png?v=0.5.7)
+![Cursor vs Copilot capability map (diagram)](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/mermaid-copilot-map.png?v=0.5.8)
 
 ---
 
@@ -306,6 +307,22 @@ npm run package    # vsce package → .vsix
 ```
 
 The [LICENSE](LICENSE) file is shipped in the VSIX. See the [monorepo README](../../README.md#publishing-vsix--marketplace) for full publish notes.
+
+---
+
+## Disclaimer
+
+**Not legal advice.** This section is for clarity only and is **not** legal, regulatory, or compliance advice. Consult a qualified attorney if you need guidance for your organization or jurisdiction (including the US).
+
+**Independence and trademarks.** **GitHub Copilot Toolbox** is **independent** software. It is **not** affiliated with, endorsed by, sponsored by, or maintained by Microsoft, GitHub, Cursor, OpenAI, Anthropic, or other vendors of products referenced in this README. Product names may be **trademarks** of their respective owners. For Microsoft’s VS Code naming and branding expectations, see [Visual Studio Code brand guidelines](https://code.visualstudio.com/brand).
+
+**MIT “AS IS”.** This extension is licensed under the [MIT License](LICENSE): provided **without warranty**, with **limited liability**—see the full license in the package and repository.
+
+**Not professional services.** The extension and docs are **not** a security assessment, legal review, or substitute for your team’s own evaluation of MCP servers, skills, credentials, and AI usage.
+
+**Third parties and `npx`.** Features may invoke **`npx`** (and other tooling), browse remote registries or catalogs, or modify files such as `mcp.json` and `.github/copilot-instructions.md`. **npm packages**, **MCP servers**, **catalogs**, and **VS Code / Copilot** behavior are outside this project’s control. Review terms, security, and suitability before you run or connect anything.
+
+**Your responsibility.** You are responsible for backups, secrets hygiene, and complying with your policies and applicable law when using this extension.
 
 ---
 

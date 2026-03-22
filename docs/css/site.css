@@ -380,6 +380,14 @@ figcaption {
   text-shadow: 0 0 16px rgba(0, 232, 255, 0.25);
 }
 
+.site-footer .site-disclaimer {
+  margin: 0.85rem 0 0;
+  max-width: 52rem;
+  font-size: 0.8rem;
+  line-height: 1.55;
+  opacity: 0.92;
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   html {

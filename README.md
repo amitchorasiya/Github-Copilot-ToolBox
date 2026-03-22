@@ -375,4 +375,14 @@ This repository is released under the **MIT License**. See [LICENSE](LICENSE). T
 
 ## Disclaimer
 
-This project is an independent tooling monorepo. It is **not** affiliated with, endorsed by, or maintained by Microsoft, GitHub, Cursor, or Anthropic. **GitHub Copilot**, **VS Code**, and **Cursor** are trademarks of their respective owners.
+**Not legal advice.** Nothing here is legal, regulatory, or compliance advice for your company or jurisdiction (including the US). If you need binding guidance, consult a qualified attorney.
+
+**Independence and trademarks.** This monorepo is **independent** community tooling. It is **not** affiliated with, endorsed by, sponsored by, or maintained by Microsoft, GitHub, Cursor, OpenAI, Anthropic, or other vendors of products named in this documentation. **Visual Studio**, **Visual Studio Code**, **GitHub**, **GitHub Copilot**, **Cursor**, and other product names may be **trademarks** of their respective owners. For Microsoft’s naming and branding expectations around VS Code, see the official [Visual Studio Code brand guidelines](https://code.visualstudio.com/brand).
+
+**Software warranty.** Code is released under the [MIT License](LICENSE). The license applies **“AS IS”**, without warranties of any kind, and limits liability—read the full license text shipped with the software.
+
+**No professional services.** Documentation and the extension are **not** security audits, legal review, or architecture sign-off. Your team remains responsible for MCP servers, skills, credentials, `npx` packages, and what you send to AI features.
+
+**Third parties.** The extension can run **`npx`** bridges, open registry or catalog UIs, and edit local config files. **npm packages**, **MCP servers**, **catalogs**, and **editor or Copilot features** are third-party; this project does **not** control their behavior, availability, or terms. Evaluate them before you install, connect, or execute them.
+
+**Your data and configs.** You are responsible for backups, secrets hygiene, and compliance with your employer’s and vendors’ policies when using AI tooling and automation.
