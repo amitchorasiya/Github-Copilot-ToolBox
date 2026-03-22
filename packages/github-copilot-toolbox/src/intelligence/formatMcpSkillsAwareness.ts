@@ -6,6 +6,22 @@ export type AwarenessPaths = {
   workspaceName?: string;
 };
 
+function activeMcp(rows: HubPayload["workspaceServers"]): HubPayload["workspaceServers"] {
+  return rows.filter((s) => !s.disabled);
+}
+
+function disabledMcp(rows: HubPayload["workspaceServers"]): HubPayload["workspaceServers"] {
+  return rows.filter((s) => s.disabled);
+}
+
+function activeSkills(skills: HubPayload["skills"]): HubPayload["skills"] {
+  return skills.filter((s) => !s.disabled);
+}
+
+function hubOffSkills(skills: HubPayload["skills"]): HubPayload["skills"] {
+  return skills.filter((s) => s.disabled);
+}
+
 function mcpFileLine(status: HubPayload["workspaceMcp"] | HubPayload["userMcp"], filePath: string): string {
   const label =
     status === "missing"
@@ -38,11 +54,25 @@ export function formatMcpSkillsAwarenessMarkdown(payload: HubPayload, paths: Awa
   if (paths.workspaceMcpPath) {
     const wsLabel = payload.workspaceName ? ` _(folder: ${payload.workspaceName})_` : "";
     lines.push(`Workspace \`mcp.json\`${wsLabel}`, "", mcpFileLine(payload.workspaceMcp, paths.workspaceMcpPath), "");
-    if (payload.workspaceServers.length === 0) {
-      lines.push("_No workspace servers listed._", "");
+    const wsActive = activeMcp(payload.workspaceServers);
+    const wsOff = disabledMcp(payload.workspaceServers);
+    if (wsActive.length === 0) {
+      lines.push("_No active workspace servers in mcp.json._", "");
     } else {
       lines.push("| Server id | Kind | Detail |", "|-----------|------|--------|");
-      for (const s of payload.workspaceServers) {
+      for (const s of wsActive) {
+        const det = s.detail.replace(/\|/g, "\\|").replace(/\n/g, " ");
+        lines.push(`| ${s.id} | ${s.kind} | ${det} |`);
+      }
+      lines.push("");
+    }
+    if (wsOff.length > 0) {
+      lines.push(
+        "_Servers **off** (config in GitHub Copilot Toolbox until you Turn ON in the hub):_",
+        ""
+      );
+      lines.push("| Server id | Kind | Detail |", "|-----------|------|--------|");
+      for (const s of wsOff) {
         const det = s.detail.replace(/\|/g, "\\|").replace(/\n/g, " ");
         lines.push(`| ${s.id} | ${s.kind} | ${det} |`);
       }
@@ -54,11 +84,21 @@ export function formatMcpSkillsAwarenessMarkdown(payload: HubPayload, paths: Awa
 
   lines.push("## MCP — user profile", "", mcpFileLine(payload.userMcp, paths.userMcpPath), "");
 
-  if (payload.userServers.length === 0) {
-    lines.push("_No user-scoped servers listed._", "");
+  const usActive = activeMcp(payload.userServers);
+  const usOff = disabledMcp(payload.userServers);
+  if (usActive.length === 0) {
+    lines.push("_No active user-scoped servers in mcp.json._", "");
   } else {
     lines.push("| Server id | Kind | Detail |", "|-----------|------|--------|");
-    for (const s of payload.userServers) {
+    for (const s of usActive) {
+      const det = s.detail.replace(/\|/g, "\\|").replace(/\n/g, " ");
+      lines.push(`| ${s.id} | ${s.kind} | ${det} |`);
+    }
+    lines.push("");
+  }
+  if (usOff.length > 0) {
+    lines.push("_User servers **off** (Toolbox stash):_", "", "| Server id | Kind | Detail |", "|-----------|------|--------|");
+    for (const s of usOff) {
       const det = s.detail.replace(/\|/g, "\\|").replace(/\n/g, " ");
       lines.push(`| ${s.id} | ${s.kind} | ${det} |`);
     }
@@ -67,24 +107,56 @@ export function formatMcpSkillsAwarenessMarkdown(payload: HubPayload, paths: Awa
 
   lines.push("## Skills (local `SKILL.md` folders)", "");
 
-  const wsSkills = payload.skills.filter((s) => s.scope === "workspace");
-  const userSkills = payload.skills.filter((s) => s.scope === "user");
+  const wsAll = payload.skills.filter((s) => s.scope === "workspace");
+  const userAll = payload.skills.filter((s) => s.scope === "user");
+  const wsSkills = activeSkills(wsAll);
+  const wsHubOff = hubOffSkills(wsAll);
+  const userSkills = activeSkills(userAll);
+  const userHubOff = hubOffSkills(userAll);
 
-  if (wsSkills.length === 0) {
+  if (wsAll.length === 0) {
     lines.push("### Project-scoped", "", "_None found (or no workspace open)._", "");
   } else {
     lines.push("### Project-scoped", "");
-    for (const s of wsSkills) {
-      lines.push(`- **${s.name}** — \`${s.rootPath}\``, `  - ${s.description}`, "");
+    if (wsSkills.length === 0) {
+      lines.push("_No project skills shown as **on** in the hub (folders may still be on disk)._", "");
+    } else {
+      for (const s of wsSkills) {
+        lines.push(`- **${s.name}** — \`${s.rootPath}\``, `  - ${s.description}`, "");
+      }
+    }
+    if (wsHubOff.length > 0) {
+      lines.push(
+        "_Skills **off** in hub (still on disk; GitHub Copilot Toolbox hides them until Turn ON):_",
+        ""
+      );
+      for (const s of wsHubOff) {
+        lines.push(`- **${s.name}** — \`${s.rootPath}\``, `  - ${s.description}`, "");
+      }
+      lines.push("");
     }
   }
 
-  if (userSkills.length === 0) {
+  if (userAll.length === 0) {
     lines.push("### User-scoped", "", "_None found._", "");
   } else {
     lines.push("### User-scoped", "");
-    for (const s of userSkills) {
-      lines.push(`- **${s.name}** — \`${s.rootPath}\``, `  - ${s.description}`, "");
+    if (userSkills.length === 0) {
+      lines.push("_No user skills shown as **on** in the hub (folders may still be on disk)._", "");
+    } else {
+      for (const s of userSkills) {
+        lines.push(`- **${s.name}** — \`${s.rootPath}\``, `  - ${s.description}`, "");
+      }
+    }
+    if (userHubOff.length > 0) {
+      lines.push(
+        "_User skills **off** in hub (still on disk until Turn ON in hub):_",
+        ""
+      );
+      for (const s of userHubOff) {
+        lines.push(`- **${s.name}** — \`${s.rootPath}\``, `  - ${s.description}`, "");
+      }
+      lines.push("");
     }
   }
 
@@ -138,13 +210,22 @@ export function formatMcpSkillsCopilotInstructionsBlock(
       `- \`${paths.workspaceMcpPath}\`${wsNote} — _${mcpStatusLabel(payload.workspaceMcp)}_`,
       ""
     );
-    if (payload.workspaceServers.length === 0) {
-      lines.push("_No workspace servers listed._", "");
+    const wsA = activeMcp(payload.workspaceServers);
+    const wsD = disabledMcp(payload.workspaceServers);
+    if (wsA.length === 0) {
+      lines.push("_No active workspace servers in mcp.json._", "");
     } else {
       lines.push("| Server id | Kind | Detail |", "|-----------|------|--------|");
-      for (const s of payload.workspaceServers) {
+      for (const s of wsA) {
         const det = s.detail.replace(/\|/g, "\\|").replace(/\n/g, " ");
         lines.push(`| ${s.id} | ${s.kind} | ${det} |`);
+      }
+      lines.push("");
+    }
+    if (wsD.length > 0) {
+      lines.push("_Off (Toolbox stash):_ ", "");
+      for (const s of wsD) {
+        lines.push(`- **${s.id}** (${s.kind})`);
       }
       lines.push("");
     }
@@ -158,35 +239,70 @@ export function formatMcpSkillsCopilotInstructionsBlock(
     `- \`${paths.userMcpPath}\` — _${mcpStatusLabel(payload.userMcp)}_`,
     ""
   );
-  if (payload.userServers.length === 0) {
-    lines.push("_No user-scoped servers listed._", "");
+  const usA = activeMcp(payload.userServers);
+  const usD = disabledMcp(payload.userServers);
+  if (usA.length === 0) {
+    lines.push("_No active user-scoped servers in mcp.json._", "");
   } else {
     lines.push("| Server id | Kind | Detail |", "|-----------|------|--------|");
-    for (const s of payload.userServers) {
+    for (const s of usA) {
       const det = s.detail.replace(/\|/g, "\\|").replace(/\n/g, " ");
       lines.push(`| ${s.id} | ${s.kind} | ${det} |`);
     }
     lines.push("");
   }
+  if (usD.length > 0) {
+    lines.push("_Off (Toolbox stash):_ ", "");
+    for (const s of usD) {
+      lines.push(`- **${s.id}** (${s.kind})`);
+    }
+    lines.push("");
+  }
 
-  const wsSkills = payload.skills.filter((s) => s.scope === "workspace");
-  const userSkills = payload.skills.filter((s) => s.scope === "user");
+  const wsAll = payload.skills.filter((s) => s.scope === "workspace");
+  const userAll = payload.skills.filter((s) => s.scope === "user");
+  const wsSkills = activeSkills(wsAll);
+  const wsHubOff = hubOffSkills(wsAll);
+  const userSkills = activeSkills(userAll);
+  const userHubOff = hubOffSkills(userAll);
 
   lines.push("#### Project skills", "");
-  if (wsSkills.length === 0) {
+  if (wsAll.length === 0) {
     lines.push("_None found (or no workspace open)._", "");
   } else {
-    for (const s of wsSkills) {
-      lines.push(`- **${s.name}** — \`${s.rootPath}\` — ${s.description}`, "");
+    if (wsSkills.length === 0) {
+      lines.push("_All hidden in hub (Turn OFF) or none listed._", "");
+    } else {
+      for (const s of wsSkills) {
+        lines.push(`- **${s.name}** — \`${s.rootPath}\` — ${s.description}`, "");
+      }
+    }
+    if (wsHubOff.length > 0) {
+      lines.push("_Off in hub (on disk):_ ", "");
+      for (const s of wsHubOff) {
+        lines.push(`- **${s.name}** — \`${s.rootPath}\``, "");
+      }
+      lines.push("");
     }
   }
 
   lines.push("#### User skills", "");
-  if (userSkills.length === 0) {
+  if (userAll.length === 0) {
     lines.push("_None found._", "");
   } else {
-    for (const s of userSkills) {
-      lines.push(`- **${s.name}** — \`${s.rootPath}\` — ${s.description}`, "");
+    if (userSkills.length === 0) {
+      lines.push("_All hidden in hub (Turn OFF) or none listed._", "");
+    } else {
+      for (const s of userSkills) {
+        lines.push(`- **${s.name}** — \`${s.rootPath}\` — ${s.description}`, "");
+      }
+    }
+    if (userHubOff.length > 0) {
+      lines.push("_Off in hub (on disk):_ ", "");
+      for (const s of userHubOff) {
+        lines.push(`- **${s.name}** — \`${s.rootPath}\``, "");
+      }
+      lines.push("");
     }
   }
 

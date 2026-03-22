@@ -7,8 +7,20 @@ import { installMcpFromRegistryEntry } from "../registry/mcpRegistryInstall";
 import { searchMcpRegistry } from "../registry/mcpRegistryClient";
 import { searchSkillsSh } from "../registry/skillsShClient";
 import { collectLocalSkills, type SkillEntry } from "../skills/localSkills";
+import {
+  applyHubDisabledFlagsToSkills,
+  setSkillHubDisabled,
+  setSkillHubEnabled,
+} from "../skills/skillHubState";
+import {
+  buildMcpServerRowsForHub,
+  mcpHubDeleteServer,
+  mcpHubTurnOffServer,
+  mcpHubTurnOnServer,
+} from "../mcpHubMutations";
 import { gatherWorkspaceKitSnapshot, type KitSnapshotRow } from "../tree/workspaceKitProvider";
 import { getHubWebviewHtml } from "./hubWebviewDocument";
+import { deleteSkillFolderFromHub } from "../commands/deleteSkillFolder";
 
 export type { SkillEntry };
 
@@ -17,6 +29,16 @@ export type McpServerRow = {
   kind: string;
   detail: string;
   scope: "workspace" | "user";
+  /** When true, config is stored by the Toolbox (not in mcp.json) until Turn ON. */
+  disabled?: boolean;
+};
+
+export type HubHygiene = {
+  workspaceMcpServerCount: number;
+  userMcpServerCount: number;
+  /** `.github/copilot-instructions.md` — line count when present. */
+  copilotInstructionsLines: number | null;
+  copilotInstructionsMissing: boolean;
 };
 
 export type HubPayload = {
@@ -29,9 +51,11 @@ export type HubPayload = {
   kit: KitSnapshotRow[];
   /** Mirrors `GitHubCopilotToolBox.intelligence.autoScanMcpSkillsOnWorkspaceOpen`. */
   autoScanMcpSkillsOnWorkspaceOpen: boolean;
+  /** File/config snapshot for the Intelligence hub (not token usage). */
+  hygiene: HubHygiene;
 };
 
-export async function gatherHubPayload(): Promise<HubPayload> {
+export async function gatherHubPayload(context: vscode.ExtensionContext): Promise<HubPayload> {
   const cfg = vscode.workspace.getConfiguration();
   const insiders = cfg.get<boolean>("GitHubCopilotToolBox.useInsidersPaths") === true;
   const folder = mcpPaths.getPrimaryWorkspaceFolder();
@@ -47,8 +71,8 @@ export async function gatherHubPayload(): Promise<HubPayload> {
       workspaceMcp = "empty";
     } else {
       workspaceMcp = "ok";
-      workspaceServers = parsed.map((s) => ({ ...s, scope: "workspace" as const }));
     }
+    workspaceServers = await buildMcpServerRowsForHub(context, uri, "workspace");
   }
 
   const userUri = vscode.Uri.file(mcpPaths.userMcpJsonPath(insiders));
@@ -61,15 +85,37 @@ export async function gatherHubPayload(): Promise<HubPayload> {
     userMcp = "empty";
   } else {
     userMcp = "ok";
-    userServers = userParsed.map((s) => ({ ...s, scope: "user" as const }));
   }
+  userServers = await buildMcpServerRowsForHub(context, userUri, "user");
 
-  const skills = await collectLocalSkills(os.homedir(), folder?.uri.fsPath);
+  const rawSkills = await collectLocalSkills(os.homedir(), folder?.uri.fsPath);
+  const skills = await applyHubDisabledFlagsToSkills(context, rawSkills);
 
   const kit = await gatherWorkspaceKitSnapshot();
 
   const autoScanMcpSkillsOnWorkspaceOpen =
     cfg.get<boolean>("GitHubCopilotToolBox.intelligence.autoScanMcpSkillsOnWorkspaceOpen") === true;
+
+  let copilotInstructionsLines: number | null = null;
+  let copilotInstructionsMissing = true;
+  if (folder) {
+    const instr = vscode.Uri.joinPath(folder.uri, ".github", "copilot-instructions.md");
+    try {
+      const buf = await vscode.workspace.fs.readFile(instr);
+      copilotInstructionsMissing = false;
+      const text = new TextDecoder().decode(buf);
+      copilotInstructionsLines = text.split(/\r?\n/).length;
+    } catch {
+      copilotInstructionsMissing = true;
+    }
+  }
+
+  const hygiene: HubHygiene = {
+    workspaceMcpServerCount: workspaceServers.filter((s) => !s.disabled).length,
+    userMcpServerCount: userServers.filter((s) => !s.disabled).length,
+    copilotInstructionsLines,
+    copilotInstructionsMissing,
+  };
 
   return {
     workspaceName: folder?.name,
@@ -80,6 +126,7 @@ export async function gatherHubPayload(): Promise<HubPayload> {
     skills,
     kit,
     autoScanMcpSkillsOnWorkspaceOpen,
+    hygiene,
   };
 }
 
@@ -237,6 +284,71 @@ export class McpSkillsHubViewProvider implements vscode.WebviewViewProvider {
             );
           await this._postState();
           break;
+        case "mcpToggleServer": {
+          const scope = msg.scope === "user" ? "user" : "workspace";
+          const id = typeof msg.id === "string" ? msg.id : "";
+          const enable = msg.enable === true;
+          if (!id) {
+            break;
+          }
+          try {
+            if (enable) {
+              await mcpHubTurnOnServer(this._ctx, scope, id);
+            } else {
+              await mcpHubTurnOffServer(this._ctx, scope, id);
+            }
+          } catch (e) {
+            const m = e instanceof Error ? e.message : String(e);
+            vscode.window.showErrorMessage(`MCP toggle failed: ${m}`);
+          }
+          await this._postState();
+          break;
+        }
+        case "mcpDeleteServer": {
+          const scope = msg.scope === "user" ? "user" : "workspace";
+          const id = typeof msg.id === "string" ? msg.id : "";
+          if (!id) {
+            break;
+          }
+          try {
+            await mcpHubDeleteServer(this._ctx, scope, id);
+          } catch (e) {
+            const m = e instanceof Error ? e.message : String(e);
+            vscode.window.showErrorMessage(`MCP remove failed: ${m}`);
+          }
+          await this._postState();
+          break;
+        }
+        case "skillToggleHub": {
+          const scope = msg.scope === "user" ? "user" : "workspace";
+          const skillId = typeof msg.skillId === "string" ? msg.skillId : "";
+          const enable = msg.enable === true;
+          if (!skillId) {
+            break;
+          }
+          try {
+            if (enable) {
+              await setSkillHubEnabled(this._ctx, scope, skillId);
+            } else {
+              await setSkillHubDisabled(this._ctx, scope, skillId);
+            }
+          } catch (e) {
+            const m = e instanceof Error ? e.message : String(e);
+            vscode.window.showErrorMessage(`Skill hub toggle failed: ${m}`);
+          }
+          await this._postState();
+          break;
+        }
+        case "deleteSkillFolder": {
+          const fsPath = typeof msg.fsPath === "string" ? msg.fsPath : "";
+          const scope = msg.scope === "user" ? "user" : "workspace";
+          if (!fsPath) {
+            break;
+          }
+          await deleteSkillFolderFromHub(this._ctx, fsPath, scope);
+          await this._postState();
+          break;
+        }
         default:
           break;
       }
@@ -259,7 +371,7 @@ export class McpSkillsHubViewProvider implements vscode.WebviewViewProvider {
     if (!this._view) {
       return;
     }
-    const payload = await gatherHubPayload();
+    const payload = await gatherHubPayload(this._ctx);
     this._view.webview.postMessage({ type: "state", payload });
   }
 

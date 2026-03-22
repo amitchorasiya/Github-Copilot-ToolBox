@@ -113,7 +113,7 @@ export async function gatherWorkspaceKitSnapshot(): Promise<KitSnapshotRow[]> {
     openUri: p.uri?.toString(),
     isDirectory: p.isDirectory,
   }));
-  rows.push({
+  rows.unshift({
     id: "wizard",
     label: "Full setup wizard",
     present: true,
@@ -163,7 +163,7 @@ export class WorkspaceKitProvider implements vscode.TreeDataProvider<KitTreeItem
         )
     );
 
-    items.push(
+    items.unshift(
       new KitTreeItem("wizard", "Run full setup wizard…", {
         key: "wizard",
         present: true,

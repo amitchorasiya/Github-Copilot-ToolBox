@@ -1,44 +1,15 @@
 import * as vscode from "vscode";
+import {
+  buildMcpSkillsAwarenessInstructionsBlock,
+  replaceOrAppendAwarenessBlock,
+} from "./mergeMcpSkillsIntoCopilotInstructionsCore";
 
-export const MCP_SKILLS_AWARENESS_BANNER_START =
-  "<!-- github-copilot-toolbox:mcp-skills-awareness-begin -->";
-export const MCP_SKILLS_AWARENESS_BANNER_END =
-  "<!-- github-copilot-toolbox:mcp-skills-awareness-end -->";
-
-export function buildMcpSkillsAwarenessInstructionsBlock(innerMarkdown: string): string {
-  return [
-    "",
-    MCP_SKILLS_AWARENESS_BANNER_START,
-    "",
-    innerMarkdown.trim(),
-    "",
-    MCP_SKILLS_AWARENESS_BANNER_END,
-    "",
-  ].join("\n");
-}
-
-/** Replace the marked block if present; otherwise append. `existing` may be empty. */
-export function replaceOrAppendAwarenessBlock(existing: string, block: string): string {
-  const trimmed = existing.trim();
-  if (!trimmed) {
-    return `# GitHub Copilot instructions\n${block}`;
-  }
-  if (
-    trimmed.includes(MCP_SKILLS_AWARENESS_BANNER_START) &&
-    trimmed.includes(MCP_SKILLS_AWARENESS_BANNER_END)
-  ) {
-    const re = new RegExp(
-      `${escapeRe(MCP_SKILLS_AWARENESS_BANNER_START)}[\\s\\S]*?${escapeRe(MCP_SKILLS_AWARENESS_BANNER_END)}\\n*`,
-      "m"
-    );
-    return trimmed.replace(re, block);
-  }
-  return trimmed + block;
-}
-
-function escapeRe(s: string): string {
-  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-}
+export {
+  MCP_SKILLS_AWARENESS_BANNER_END,
+  MCP_SKILLS_AWARENESS_BANNER_START,
+  buildMcpSkillsAwarenessInstructionsBlock,
+  replaceOrAppendAwarenessBlock,
+} from "./mergeMcpSkillsIntoCopilotInstructionsCore";
 
 /**
  * Writes or updates `.github/copilot-instructions.md` with a replaceable MCP & skills block.

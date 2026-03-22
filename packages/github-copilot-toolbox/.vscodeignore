@@ -1,4 +1,3 @@
-resources/icon-marketplace.svg
 scripts/**
 .vscode/**
 .vscode-test/**

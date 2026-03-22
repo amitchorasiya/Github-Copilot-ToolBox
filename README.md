@@ -2,12 +2,22 @@
 
 Monorepo for developers moving from **Cursor** to **Visual Studio Code** with **GitHub Copilot**: MCP configuration, rules and instructions, and a **VS Code extension** that surfaces setup, **Intelligence** tooling, and `npx` bridges in one place.
 
+### At a glance
+
+**GitHub Copilot Toolbox** helps you:
+
+- **Port** Cursor rules, the memory bank, and Agent Skills.
+- **Search for and add** MCP servers and Agent Skills from the hub.
+- **Run** simple steps to align a Cursor-style setup with what VS Code and GitHub Copilot expect, using standard command-line helpers when that helps.
+- **Prepare** stronger context for Copilot Chat so the model can "see" your repo setup instead of guessing.
+
 **License:** [MIT](LICENSE) · **Extension (Marketplace):** `amitchorasiya.github-copilot-toolbox` · **Repository:** [github.com/amitchorasiya/Github-Copilot-ToolBox](https://github.com/amitchorasiya/Github-Copilot-ToolBox)
 
 ---
 
 ## Table of contents
 
+- [At a glance](#at-a-glance)
 - [What’s in this repo](#whats-in-this-repo)
 - [Extension screenshots](#extension-screenshots)
 - [Why it exists](#why-it-exists)

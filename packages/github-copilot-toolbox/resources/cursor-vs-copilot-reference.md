@@ -49,7 +49,7 @@ There is no stable public API in the extension host for live PRU counters; check
 - **Cursor Notepads** — session-friendly pinned notes.  
 - **Copilot** — mainly **repo** instructions + chat context.
 
-**GitHub Copilot Toolbox session notepad:** `.vscode/copilot-kit-notepad.md` — **Copy notepad to clipboard** before sending a chat, or keep it open split with Chat.
+**GitHub Copilot Toolbox session notepad:** `.vscode/copilot-toolbox-notepad.md` — **Copy notepad to clipboard** before sending a chat, or keep it open split with Chat.
 
 ## Settings sync (Cursor → VS Code)
 

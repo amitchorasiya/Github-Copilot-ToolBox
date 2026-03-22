@@ -1,19 +1,24 @@
 {
   "name": "github-copilot-toolbox",
   "displayName": "GitHub Copilot Toolbox",
-  "description": "GitHub Copilot Toolbox: MCP hub, workspace helpers, Intelligence context packs & readiness, and npx bridges from Cursor→Copilot.",
-  "version": "0.4.8",
+  "description": "GitHub Copilot Toolbox: MCP hub, workspace helpers, Intelligence context packs & readiness, and npx bridges from Cursor→Copilot. Workflow ideas credited in NOTICE (everything-claude-code, MIT).",
+  "version": "0.5.4",
   "publisher": "amitchorasiya",
   "author": "amitchorasiya",
   "license": "MIT",
-  "icon": "resources/icon.png",
+  "icon": "resources/marketplace-icon.png",
   "repository": {
     "type": "git",
     "url": "https://github.com/amitchorasiya/Github-Copilot-ToolBox.git",
     "directory": "packages/github-copilot-toolbox"
   },
+  "bugs": {
+    "url": "https://github.com/amitchorasiya/Github-Copilot-ToolBox/issues"
+  },
+  "homepage": "https://github.com/amitchorasiya/Github-Copilot-ToolBox/tree/main/packages/github-copilot-toolbox",
   "engines": {
-    "vscode": "^1.99.0"
+    "vscode": "^1.99.0",
+    "node": ">=20.0.0"
   },
   "categories": [
     "Other"
@@ -246,6 +251,30 @@
       {
         "command": "GitHubCopilotToolBox.migrateSkillsCursorToAgents",
         "title": "GitHub Copilot Toolbox: Intelligence — migrate skills .cursor → .agents"
+      },
+      {
+        "command": "GitHubCopilotToolBox.copilotToolboxConfigScan",
+        "title": "GitHub Copilot Toolbox: Intelligence — scan Copilot/MCP config files (Output)"
+      },
+      {
+        "command": "GitHubCopilotToolBox.appendNotepadToMemoryBank",
+        "title": "GitHub Copilot Toolbox: Intelligence — append session notepad to memory-bank file"
+      },
+      {
+        "command": "GitHubCopilotToolBox.createSkillStub",
+        "title": "GitHub Copilot Toolbox: Intelligence — create SKILL.md stub under .github/skills"
+      },
+      {
+        "command": "GitHubCopilotToolBox.verificationChecklist",
+        "title": "GitHub Copilot Toolbox: Intelligence — verification checklist"
+      },
+      {
+        "command": "GitHubCopilotToolBox.applyBundledMcpRecipe",
+        "title": "GitHub Copilot Toolbox: Intelligence — apply bundled MCP recipe to workspace"
+      },
+      {
+        "command": "GitHubCopilotToolBox.runFirstWorkspaceTestTask",
+        "title": "GitHub Copilot Toolbox: Intelligence — run first test-like workspace task"
       }
     ],
     "menus": {
@@ -272,10 +301,10 @@
     "test": "vitest run"
   },
   "devDependencies": {
-    "@types/node": "^20.10.0",
-    "@types/vscode": "^1.99.0",
-    "@vscode/vsce": "^3.2.2",
-    "typescript": "^5.3.0",
+    "@types/node": "^20.19.0",
+    "@types/vscode": "~1.99.1",
+    "@vscode/vsce": "^3.7.0",
+    "typescript": "^5.9.0",
     "vitest": "^2.1.9"
   }
 }

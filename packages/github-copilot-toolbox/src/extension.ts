@@ -11,6 +11,12 @@ import { openCopilotChat } from "./commands/openCopilot";
 import { openInstructionsPicker } from "./commands/openInstructionsPicker";
 import { portCursorMcp } from "./commands/portFromCursor";
 import { syncCursorRules } from "./commands/rulesToCopilot";
+import { runCopilotToolboxConfigScan } from "./commands/copilotConfigScan";
+import { appendNotepadToMemoryBank } from "./commands/memoryBankFromNotepad";
+import { applyBundledMcpRecipe } from "./commands/mcpRecipeCommand";
+import { createSkillStubCommand } from "./commands/skillStubCommand";
+import { runVerificationChecklist } from "./commands/verificationCommand";
+import { runFirstWorkspaceTestTask } from "./commands/runFirstTestTask";
 import { copySessionNotepadToClipboard, openSessionNotepad } from "./commands/sessionNotepad";
 import { toggleMcpDiscovery } from "./commands/toggleDiscovery";
 import { translateCursorContextInSelection } from "./commands/translateContext";
@@ -147,7 +153,9 @@ export function activate(context: vscode.ExtensionContext): void {
   );
   sub(vscode.commands.registerCommand("GitHubCopilotToolBox.buildContextPack", runBuildContextPackFlow));
   sub(
-    vscode.commands.registerCommand("GitHubCopilotToolBox.showMcpSkillsAwareness", showMcpSkillsAwareness)
+    vscode.commands.registerCommand("GitHubCopilotToolBox.showMcpSkillsAwareness", () =>
+      showMcpSkillsAwareness(context)
+    )
   );
   sub(
     vscode.commands.registerCommand("GitHubCopilotToolBox.showIntelligenceReadiness", showIntelligenceReadiness)
@@ -175,6 +183,23 @@ export function activate(context: vscode.ExtensionContext): void {
       "GitHubCopilotToolBox.migrateSkillsCursorToAgents",
       migrateSkillsCursorToAgents
     )
+  );
+
+  sub(
+    vscode.commands.registerCommand("GitHubCopilotToolBox.copilotToolboxConfigScan", runCopilotToolboxConfigScan)
+  );
+  sub(
+    vscode.commands.registerCommand("GitHubCopilotToolBox.appendNotepadToMemoryBank", appendNotepadToMemoryBank)
+  );
+  sub(vscode.commands.registerCommand("GitHubCopilotToolBox.createSkillStub", createSkillStubCommand));
+  sub(vscode.commands.registerCommand("GitHubCopilotToolBox.verificationChecklist", runVerificationChecklist));
+  sub(
+    vscode.commands.registerCommand("GitHubCopilotToolBox.applyBundledMcpRecipe", () =>
+      applyBundledMcpRecipe(context)
+    )
+  );
+  sub(
+    vscode.commands.registerCommand("GitHubCopilotToolBox.runFirstWorkspaceTestTask", runFirstWorkspaceTestTask)
   );
 
   sub(
@@ -246,7 +271,7 @@ export function activate(context: vscode.ExtensionContext): void {
   );
 
   registerMcpSkillsAutoScanOnWorkspaceOpen(context, async () => {
-    await showMcpSkillsAwareness({ silentNotification: true });
+    await showMcpSkillsAwareness(context, { silentNotification: true });
     refreshMcpHubs();
   });
 }

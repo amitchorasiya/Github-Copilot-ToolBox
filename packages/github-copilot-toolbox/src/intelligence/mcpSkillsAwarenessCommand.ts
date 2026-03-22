@@ -11,12 +11,15 @@ const AUTO_SCAN_MERGE_INSTRUCTIONS =
   "GitHubCopilotToolBox.intelligence.autoScanMcpSkillsOnWorkspaceOpen";
 
 /** Opens a markdown snapshot of configured MCP servers and discovered SKILL.md skill folders (editor-side scan). */
-export async function showMcpSkillsAwareness(options?: { silentNotification?: boolean }): Promise<void> {
+export async function showMcpSkillsAwareness(
+  context: vscode.ExtensionContext,
+  options?: { silentNotification?: boolean }
+): Promise<void> {
   const cfg = vscode.workspace.getConfiguration();
   const insiders = cfg.get<boolean>("GitHubCopilotToolBox.useInsidersPaths") === true;
   const folder = mcpPaths.getPrimaryWorkspaceFolder();
 
-  const payload = await gatherHubPayload();
+  const payload = await gatherHubPayload(context);
   const userMcpPath = mcpPaths.userMcpJsonPath(insiders);
   const workspaceMcpPath = folder ? mcpPaths.workspaceMcpUri(folder).fsPath : undefined;
 
@@ -34,9 +37,16 @@ export async function showMcpSkillsAwareness(options?: { silentNotification?: bo
   });
   await vscode.window.showTextDocument(doc, { preview: true, viewColumn: vscode.ViewColumn.Active });
   if (!options?.silentNotification) {
-    await vscode.window.showInformationMessage(
-      "MCP & Skills awareness: report opened. Use Copilot Chat → Agent + MCP tools for live server access; skills are reference-only unless you attach them."
+    const next = await vscode.window.showInformationMessage(
+      "MCP & Skills awareness: report opened. Agent + MCP tools use live servers; local SKILL.md paths are reference-only unless attached.",
+      "Open workspace mcp.json",
+      "Readiness summary"
     );
+    if (next === "Open workspace mcp.json") {
+      await vscode.commands.executeCommand("GitHubCopilotToolBox.openWorkspaceMcp");
+    } else if (next === "Readiness summary") {
+      await vscode.commands.executeCommand("GitHubCopilotToolBox.showIntelligenceReadiness");
+    }
   }
 
   const mergeIntoInstructions = cfg.get<boolean>(AUTO_SCAN_MERGE_INSTRUCTIONS) === true;

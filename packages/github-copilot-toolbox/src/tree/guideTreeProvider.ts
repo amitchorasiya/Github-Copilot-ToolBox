@@ -58,6 +58,42 @@ export class GuideTreeProvider implements vscode.TreeDataProvider<GuideTreeItem>
         icon: "folder-library",
       },
       {
+        id: "hygiene-scan",
+        label: "Context hygiene: Copilot/MCP file scan (Output)",
+        cmd: "GitHubCopilotToolBox.copilotToolboxConfigScan",
+        icon: "shield",
+      },
+      {
+        id: "hygiene-notepad-mb",
+        label: "Context hygiene: append session notepad → memory-bank",
+        cmd: "GitHubCopilotToolBox.appendNotepadToMemoryBank",
+        icon: "notebook",
+      },
+      {
+        id: "hygiene-skill-stub",
+        label: "Context hygiene: create SKILL.md stub (.github/skills)",
+        cmd: "GitHubCopilotToolBox.createSkillStub",
+        icon: "new-file",
+      },
+      {
+        id: "hygiene-verify",
+        label: "Context hygiene: verification checklist",
+        cmd: "GitHubCopilotToolBox.verificationChecklist",
+        icon: "checklist",
+      },
+      {
+        id: "hygiene-recipe",
+        label: "Context hygiene: apply bundled MCP recipe",
+        cmd: "GitHubCopilotToolBox.applyBundledMcpRecipe",
+        icon: "package",
+      },
+      {
+        id: "hygiene-test-task",
+        label: "Context hygiene: run first test-like task",
+        cmd: "GitHubCopilotToolBox.runFirstWorkspaceTestTask",
+        icon: "run",
+      },
+      {
         id: "ref",
         label: "Cursor vs Copilot reference",
         cmd: "GitHubCopilotToolBox.openCursorCopilotReference",

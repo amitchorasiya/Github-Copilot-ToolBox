@@ -1,5 +1,34 @@
 # Changelog
 
+## 0.5.4
+
+- **Branding:** Marketplace icon file is now `resources/marketplace-icon.png` (still rendered from `icon-marketplace.svg` when packaging) so the Extensions detail view picks up updates instead of a stale cached `icon.png`.
+
+## 0.5.3
+
+- **Branding:** Marketplace icon is generated from `resources/icon-marketplace.svg` into `resources/icon.png` during `npm run package` (vsce does not allow SVG for `icon`).
+
+## 0.5.2
+
+- **Skills hub:** **Turn OFF** / **Turn ON** — hides a skill in the hub (extension workspace/global state); folders stay on disk. **Delete…** still moves the folder to trash and clears any hub-off flag for that skill.
+- **Awareness report & copilot-instructions block:** project/user skills that are **off** in the hub are listed separately from skills shown as on.
+
+## 0.5.1
+
+- **MCP hub:** **Turn OFF** / **Turn ON** — removes a server from `mcp.json` and stores its JSON in extension workspace/global state until restored; **Remove** deletes the entry from `mcp.json` and clears stash (with confirmation).
+- **Skills hub:** **Delete…** — moves a skill folder to the OS trash when it lives under a known project or user skill root (same conventions as discovery).
+- **Awareness report & copilot-instructions block:** active vs Toolbox-stashed (off) MCP servers shown separately.
+
+## 0.5.0
+
+- **Intelligence hub — Context hygiene:** snapshot (workspace/user MCP counts, `copilot-instructions.md` lines) plus actions: Copilot/MCP file scan (Output), append session notepad → `memory-bank`, SKILL.md stub, verification checklist, bundled MCP recipe merge, run first test-like task.
+- **Commands:** `copilotToolboxConfigScan`, `appendNotepadToMemoryBank`, `createSkillStub`, `verificationChecklist`, `applyBundledMcpRecipe`, `runFirstWorkspaceTestTask` (see Command Palette).
+- **Session notepad** path renamed to `.vscode/copilot-toolbox-notepad.md` (one-time migration from `copilot-kit-notepad.md`).
+- **Legal / attribution:** `NOTICE` and description note for MIT-licensed inspiration ([everything-claude-code](https://github.com/affaan-m/everything-claude-code)); sample MCP recipe under `resources/mcp-recipes/`.
+- **Readiness / MCP awareness:** optional follow-up actions after opening reports (e.g. open workspace `mcp.json`).
+- **Tests:** split MCP/skills merge helpers into `mergeMcpSkillsIntoCopilotInstructionsCore.ts`; Vitest `vscode` alias stub so `npm test` works in Node.
+- **Monorepo root:** `package.json` `engines` and `npm run package` for packaging from repo root (avoid `npx vsce` at root).
+
 ## 0.4.8
 
 - Extension `README.md`: **Screenshots** section uses `raw.githubusercontent.com` URLs so the VS Code **Extensions** details view shows images (relative `screenshots/` only works from the monorepo root on GitHub).

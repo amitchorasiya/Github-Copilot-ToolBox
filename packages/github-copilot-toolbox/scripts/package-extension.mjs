@@ -64,6 +64,12 @@ try {
     fs.readFileSync(rootReadme, "utf8"),
   );
   fs.writeFileSync(extensionReadme, body, "utf8");
+  // vsce only accepts PNG for `package.json` icon; keep it in sync with the SVG source of truth.
+  // Use a stable distinct filename so VS Code’s extension UI does not keep showing a stale cached bitmap after updates.
+  execSync(
+    "npx --yes @resvg/resvg-js-cli resources/icon-marketplace.svg resources/marketplace-icon.png --fit-width 128 --fit-height 128",
+    { cwd: EXT_ROOT, stdio: "inherit" },
+  );
   execSync("npx vsce package", { cwd: EXT_ROOT, stdio: "inherit" });
 } catch (e) {
   console.error(e);

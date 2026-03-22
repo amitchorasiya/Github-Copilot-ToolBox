@@ -2,7 +2,7 @@ import * as vscode from "vscode";
 
 export type ServerSummary = { id: string; kind: string; detail: string };
 
-function summarizeServer(id: string, cfg: unknown): ServerSummary {
+export function summarizeServer(id: string, cfg: unknown): ServerSummary {
   if (!cfg || typeof cfg !== "object" || Array.isArray(cfg)) {
     return { id, kind: "?", detail: "invalid entry" };
   }

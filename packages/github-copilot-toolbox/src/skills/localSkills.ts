@@ -32,6 +32,8 @@ export type SkillEntry = {
   /** Absolute path to SKILL.md (OS-correct separators) */
   skillMdPath: string;
   scope: "user" | "workspace";
+  /** Hub-only: marked off in extension state (folder still on disk). */
+  disabled?: boolean;
 };
 
 async function readSkillDescription(skillRoot: string): Promise<string> {

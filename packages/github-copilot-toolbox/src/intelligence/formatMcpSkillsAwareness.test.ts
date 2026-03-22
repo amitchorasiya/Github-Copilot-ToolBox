@@ -25,6 +25,12 @@ describe("formatMcpSkillsAwarenessMarkdown", () => {
       ],
       kit: [],
       autoScanMcpSkillsOnWorkspaceOpen: false,
+      hygiene: {
+        workspaceMcpServerCount: 1,
+        userMcpServerCount: 0,
+        copilotInstructionsLines: 10,
+        copilotInstructionsMissing: false,
+      },
     };
     const md = formatMcpSkillsAwarenessMarkdown(payload, {
       userMcpPath: "/home/u/mcp.json",
@@ -36,6 +42,51 @@ describe("formatMcpSkillsAwarenessMarkdown", () => {
     expect(md).toContain("my-skill");
     expect(md).toContain("Agent");
     expect(md).toContain("does not automatically load");
+  });
+
+  it("separates hub-off skills in the report", () => {
+    const payload: HubPayload = {
+      workspaceName: "demo",
+      workspaceServers: [],
+      userServers: [],
+      workspaceMcp: "empty",
+      userMcp: "empty",
+      skills: [
+        {
+          id: "workspace:/ws/.agents/skills/on",
+          name: "on-skill",
+          description: "Active",
+          rootPath: "/ws/.agents/skills/on",
+          skillMdPath: "/ws/.agents/skills/on/SKILL.md",
+          scope: "workspace",
+        },
+        {
+          id: "workspace:/ws/.agents/skills/off",
+          name: "off-skill",
+          description: "Hidden in hub",
+          rootPath: "/ws/.agents/skills/off",
+          skillMdPath: "/ws/.agents/skills/off/SKILL.md",
+          scope: "workspace",
+          disabled: true,
+        },
+      ],
+      kit: [],
+      autoScanMcpSkillsOnWorkspaceOpen: false,
+      hygiene: {
+        workspaceMcpServerCount: 0,
+        userMcpServerCount: 0,
+        copilotInstructionsLines: null,
+        copilotInstructionsMissing: true,
+      },
+    };
+    const md = formatMcpSkillsAwarenessMarkdown(payload, {
+      userMcpPath: "/home/u/mcp.json",
+      workspaceMcpPath: "/ws/.vscode/mcp.json",
+      workspaceName: "demo",
+    });
+    expect(md).toContain("on-skill");
+    expect(md).toContain("off-skill");
+    expect(md).toMatch(/off.*hub/i);
   });
 });
 
@@ -59,6 +110,12 @@ describe("formatMcpSkillsCopilotInstructionsBlock", () => {
       ],
       kit: [],
       autoScanMcpSkillsOnWorkspaceOpen: false,
+      hygiene: {
+        workspaceMcpServerCount: 1,
+        userMcpServerCount: 0,
+        copilotInstructionsLines: 10,
+        copilotInstructionsMissing: false,
+      },
     };
     const md = formatMcpSkillsCopilotInstructionsBlock(payload, {
       userMcpPath: "/home/u/mcp.json",

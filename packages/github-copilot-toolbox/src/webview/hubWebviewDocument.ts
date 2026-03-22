@@ -136,7 +136,8 @@ export function getHubWebviewHtml(csp: string): string {
       border-color: color-mix(in srgb, var(--vscode-focusBorder) 65%, var(--border));
       background: var(--card-hover);
     }
-    .mcp-card { border-left: 3px solid var(--vscode-focusBorder); }
+    .mcp-card, .skill-card { border-left: 3px solid var(--vscode-focusBorder); }
+    .mcp-card--disabled, .skill-card--disabled { opacity: 0.9; border-left-color: var(--vscode-descriptionForeground); }
     .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
     .card-top h3 { margin: 0; font-size: 13px; font-weight: 600; line-height: 1.25; }
     .badge {
@@ -266,6 +267,30 @@ export function getHubWebviewHtml(csp: string): string {
       color: var(--vscode-foreground);
     }
     .intel-auto-label input { margin-top: 2px; flex-shrink: 0; }
+    .hygiene-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    button.hygiene-tile {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      text-align: left;
+      padding: 8px 10px;
+      border-radius: var(--r-sm);
+      border: 1px solid var(--border);
+      background: var(--card);
+      cursor: pointer;
+      font: inherit;
+      color: inherit;
+    }
+    button.hygiene-tile:hover { border-color: var(--vscode-focusBorder); background: var(--card-hover); }
+    .hic { font-size: 16px; line-height: 1.2; flex-shrink: 0; }
+    .htext { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+    .htt { font-weight: 600; font-size: 11px; }
+    .htp { font-size: 9px; color: var(--muted); line-height: 1.3; }
   </style>
 </head>
 <body>
@@ -303,7 +328,7 @@ export function getHubWebviewHtml(csp: string): string {
   </div>
   <div id="scroll"><div id="root"></div></div>
   <footer class="hub-foot">
-    Skills list is for opening files in the editor only — GitHub Copilot does not auto-load these. Project: <code>.github/skills</code>, <code>.claude/skills</code>, <code>.agents/skills</code>, <code>.cursor/skills</code> · User: <code>~/.copilot/skills</code>, <code>~/.claude/skills</code>, <code>~/.agents/skills</code>, <code>~/.cursor/skills</code> (each folder contains subfolders with <code>SKILL.md</code>). MCP: <code>mcp.json</code>
+    Skills: Copilot does not auto-load — use Open / Reveal; <strong>Turn OFF</strong> hides the skill in this hub (folder stays on disk) until <strong>Turn ON</strong>; <strong>Delete…</strong> moves the skill folder to trash (known roots only). MCP: <strong>Turn OFF</strong> removes the server from <code>mcp.json</code> and stashes its config in this extension until <strong>Turn ON</strong>; <strong>Remove</strong> deletes stash and/or mcp.json entry. Project skills: <code>.github/skills</code>, <code>.claude/skills</code>, <code>.agents/skills</code>, <code>.cursor/skills</code> · User: <code>~/.copilot/skills</code>, <code>~/.claude/skills</code>, <code>~/.agents/skills</code>, <code>~/.cursor/skills</code>.
   </footer>
   <script>
 (function () {
@@ -328,7 +353,13 @@ export function getHubWebviewHtml(csp: string): string {
         { ic: "\\uD83D\\uDD17", t: "Memory bank repo (GitHub)", d: "Github-Copilot-Memory-Bank", c: "GitHubCopilotToolBox.openIntelligenceRepoMemoryBank" },
         { ic: "\\uD83D\\uDD17", t: "Rules converter repo (GitHub)", d: "Github-Copilot-Cursor-Rules-Converter", c: "GitHubCopilotToolBox.openIntelligenceRepoRulesConverter" },
         { ic: "\\uD83D\\uDCE5", t: "Migrate skills .cursor → .agents", d: "SKILL.md folders to .agents/skills (copy or move)", c: "GitHubCopilotToolBox.migrateSkillsCursorToAgents" },
-        { ic: "\\uD83D\\uDD0D", t: "Scan MCP & Skills awareness", d: "Open report: configured MCP + local SKILL.md (how Copilot can use them)", c: "GitHubCopilotToolBox.showMcpSkillsAwareness" }
+        { ic: "\\uD83D\\uDD0D", t: "Scan MCP & Skills awareness", d: "Open report: configured MCP + local SKILL.md (how Copilot can use them)", c: "GitHubCopilotToolBox.showMcpSkillsAwareness" },
+        { ic: "\\uD83D\\uDD0D", t: "Copilot/MCP config scan", d: "Heuristic scan → Output (mcp.json, instructions)", c: "GitHubCopilotToolBox.copilotToolboxConfigScan" },
+        { ic: "\\uD83D\\uDCD3", t: "Append notepad → memory-bank", d: "Preview then write to memory-bank/**/*.md", c: "GitHubCopilotToolBox.appendNotepadToMemoryBank" },
+        { ic: "\\u2728", t: "Create SKILL.md stub", d: ".github/skills/<name>/SKILL.md", c: "GitHubCopilotToolBox.createSkillStub" },
+        { ic: "\\u2705", t: "Verification checklist", d: "Quick multi-pick before ship", c: "GitHubCopilotToolBox.verificationChecklist" },
+        { ic: "\\uD83E\\uDDE9", t: "Apply bundled MCP recipe", d: "Merge sample server into .vscode/mcp.json", c: "GitHubCopilotToolBox.applyBundledMcpRecipe" },
+        { ic: "\\u25B6", t: "Run first test task", d: "tasks.json (test-like name or first task)", c: "GitHubCopilotToolBox.runFirstWorkspaceTestTask" }
       ]
     },
     {
@@ -777,34 +808,63 @@ export function getHubWebviewHtml(csp: string): string {
   }
 
   function mcpCard(s) {
-    var card = el("div", "mcp-card");
+    var card = el("div", s.disabled ? "mcp-card mcp-card--disabled" : "mcp-card");
     var top = el("div", "card-top");
     top.appendChild(el("h3", null, s.id));
-    top.appendChild(el("span", "badge", s.kind));
+    top.appendChild(el("span", "badge", s.disabled ? "Off" : s.kind));
     card.appendChild(top);
-    card.appendChild(el("div", "meta", (s.scope === "workspace" ? "Workspace" : "User")));
+    card.appendChild(el("div", "meta", (s.scope === "workspace" ? "Workspace" : "User") + (s.disabled ? " — not in mcp.json (Toolbox stash)" : "")));
     card.appendChild(el("div", "desc", s.detail));
     var row = el("div", "row");
-    var ed = el("button", "btn primary", "Edit mcp.json");
+    var toggle = el("button", "btn primary", s.disabled ? "Turn ON" : "Turn OFF");
+    toggle.addEventListener("click", function () {
+      vscode.postMessage({ type: "mcpToggleServer", scope: s.scope, id: s.id, enable: !!s.disabled });
+    });
+    var del = el("button", "btn", "Remove");
+    del.addEventListener("click", function () {
+      vscode.postMessage({ type: "mcpDeleteServer", scope: s.scope, id: s.id });
+    });
+    var ed = el("button", "btn", "Edit mcp.json");
     ed.addEventListener("click", function () {
       var cmd = s.scope === "workspace" ? "workbench.mcp.openWorkspaceFolderMcpJson" : "workbench.mcp.openUserMcpJson";
       vscode.postMessage({ type: "runCommand", command: cmd });
     });
+    row.appendChild(toggle);
+    row.appendChild(del);
     row.appendChild(ed);
     card.appendChild(row);
     return card;
   }
 
   function skillCard(s) {
-    var card = el("div", "skill-card");
+    var card = el("div", s.disabled ? "skill-card skill-card--disabled" : "skill-card");
     var top = el("div", "card-top");
     top.appendChild(el("h3", null, s.name));
-    top.appendChild(el("span", "badge", s.scope === "workspace" ? "Workspace" : "User"));
+    top.appendChild(el("span", "badge", s.disabled ? "Off" : s.scope === "workspace" ? "Workspace" : "User"));
     card.appendChild(top);
-    card.appendChild(el("div", "meta", s.rootPath));
+    card.appendChild(
+      el(
+        "div",
+        "meta",
+        s.rootPath + (s.disabled ? " — hidden in hub (Toolbox); still on disk" : "")
+      )
+    );
     card.appendChild(el("div", "desc", s.description));
     var row = el("div", "row");
-    var o = el("button", "btn primary", "Open SKILL.md");
+    var toggle = el("button", "btn primary", s.disabled ? "Turn ON" : "Turn OFF");
+    toggle.addEventListener("click", function () {
+      vscode.postMessage({
+        type: "skillToggleHub",
+        skillId: s.id,
+        scope: s.scope,
+        enable: !!s.disabled
+      });
+    });
+    var delSk = el("button", "btn", "Delete…");
+    delSk.addEventListener("click", function () {
+      vscode.postMessage({ type: "deleteSkillFolder", fsPath: s.rootPath, scope: s.scope });
+    });
+    var o = el("button", "btn", "Open SKILL.md");
     o.addEventListener("click", function () {
       vscode.postMessage({ type: "openFile", fsPath: s.skillMdPath });
     });
@@ -812,6 +872,8 @@ export function getHubWebviewHtml(csp: string): string {
     r.addEventListener("click", function () {
       vscode.postMessage({ type: "revealPath", fsPath: s.rootPath });
     });
+    row.appendChild(toggle);
+    row.appendChild(delSk);
     row.appendChild(o);
     row.appendChild(r);
     card.appendChild(row);
@@ -830,7 +892,84 @@ export function getHubWebviewHtml(csp: string): string {
     return c;
   }
 
+  function renderContextHygiene() {
+    var hy = state && state.hygiene;
+    if (!hy) {
+      return;
+    }
+    $("#root").appendChild(el("div", "section-title", "Context hygiene"));
+    var snap = el("div", "callout");
+    snap.appendChild(el("h4", null, "Snapshot"));
+    var line1 =
+      "Workspace MCP servers: " +
+      hy.workspaceMcpServerCount +
+      ". User MCP servers: " +
+      hy.userMcpServerCount +
+      ". .github/copilot-instructions.md: " +
+      (hy.copilotInstructionsMissing ? "missing." : hy.copilotInstructionsLines + " line(s).");
+    snap.appendChild(el("p", null, line1));
+    snap.appendChild(
+      el(
+        "p",
+        null,
+        "These counts come from local config files only — not chat token usage or live MCP runtime state."
+      )
+    );
+    $("#root").appendChild(snap);
+
+    var grid = el("div", "hygiene-actions");
+    var actions = [
+      {
+        ic: "\\uD83D\\uDD0D",
+        t: "Scan Copilot/MCP files",
+        p: "Heuristic secret-shaped patterns in mcp.json + instructions",
+        c: "GitHubCopilotToolBox.copilotToolboxConfigScan"
+      },
+      {
+        ic: "\\uD83D\\uDCD3",
+        t: "Notepad \\u2192 memory-bank",
+        p: "Append session notepad to a memory-bank .md file",
+        c: "GitHubCopilotToolBox.appendNotepadToMemoryBank"
+      },
+      { ic: "\\u2728", t: "New SKILL.md stub", p: ".github/skills/<name>/", c: "GitHubCopilotToolBox.createSkillStub" },
+      {
+        ic: "\\u2705",
+        t: "Verification checklist",
+        p: "Multi-pick acknowledgement before you ship",
+        c: "GitHubCopilotToolBox.verificationChecklist"
+      },
+      {
+        ic: "\\uD83E\\uDDE9",
+        t: "Bundled MCP recipe",
+        p: "Merge a sample server into .vscode/mcp.json",
+        c: "GitHubCopilotToolBox.applyBundledMcpRecipe"
+      },
+      {
+        ic: "\\u25B6",
+        t: "Run first test task",
+        p: "From tasks.json (name heuristics)",
+        c: "GitHubCopilotToolBox.runFirstWorkspaceTestTask"
+      }
+    ];
+    actions.forEach(function (a) {
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "hygiene-tile";
+      btn.appendChild(el("span", "hic", a.ic));
+      var body = el("span", "htext");
+      body.appendChild(el("span", "htt", a.t));
+      body.appendChild(el("span", "htp", a.p));
+      btn.appendChild(body);
+      btn.addEventListener("click", function () {
+        vscode.postMessage({ type: "runCommand", command: a.c });
+      });
+      grid.appendChild(btn);
+    });
+    $("#root").appendChild(grid);
+  }
+
   function renderIntel() {
+    renderContextHygiene();
     $("#root").appendChild(el("div", "section-title", "Cursor \\u2192 VS Code & Copilot"));
 
     var bridges = [
@@ -976,7 +1115,7 @@ export function getHubWebviewHtml(csp: string): string {
         appendSkillRemoteCatalog($("#root"));
       }
       var skills = filterText(state.skills || [], function (s) {
-        return s.name + " " + s.description + " " + s.rootPath;
+        return s.name + " " + s.description + " " + s.rootPath + (s.disabled ? " off hidden" : "");
       });
       $("#root").appendChild(el("div", "section-title", sub === "browse" ? "Local skills (this machine)" : "Installed skills"));
       $("#root").appendChild(el("div", "empty", "Browsing only — Copilot does not automatically load SKILL.md from these paths."));
@@ -1004,20 +1143,35 @@ export function getHubWebviewHtml(csp: string): string {
       } else if (state.workspaceMcp === "missing") {
         rootEl.appendChild(callout("Workspace mcp.json missing", "Create .vscode/mcp.json to register MCP servers for this project.", "workbench.mcp.openWorkspaceFolderMcpJson", "Create workspace mcp.json"));
       } else if (state.workspaceMcp === "empty") {
-        rootEl.appendChild(callout("No servers yet", "Your mcp.json exists but defines no servers.", "workbench.mcp.openWorkspaceFolderMcpJson", "Edit workspace mcp.json"));
+        if ((ws || []).length === 0) {
+          rootEl.appendChild(callout("No servers yet", "Your mcp.json exists but defines no servers.", "workbench.mcp.openWorkspaceFolderMcpJson", "Edit workspace mcp.json"));
+        }
+        filterText(ws, function (x) { return x.id + x.kind + x.detail + (x.disabled ? " off disabled" : ""); }).forEach(function (s) {
+          rootEl.appendChild(mcpCard(s));
+        });
       } else {
-        filterText(ws, function (x) { return x.id + x.kind + x.detail; }).forEach(function (s) {
+        filterText(ws, function (x) { return x.id + x.kind + x.detail + (x.disabled ? " off disabled" : ""); }).forEach(function (s) {
           rootEl.appendChild(mcpCard(s));
         });
       }
 
       rootEl.appendChild(el("div", "section-title", "User MCP"));
       if (state.userMcp === "missing") {
-        rootEl.appendChild(callout("User mcp.json missing", "Opens your global MCP config (VS Code will create the file if needed).", "workbench.mcp.openUserMcpJson", "Open user mcp.json"));
+        if ((us || []).length === 0) {
+          rootEl.appendChild(callout("User mcp.json missing", "Opens your global MCP config (VS Code will create the file if needed).", "workbench.mcp.openUserMcpJson", "Open user mcp.json"));
+        }
+        filterText(us, function (x) { return x.id + x.kind + x.detail + (x.disabled ? " off disabled" : ""); }).forEach(function (s) {
+          rootEl.appendChild(mcpCard(s));
+        });
       } else if (state.userMcp === "empty") {
-        rootEl.appendChild(callout("No user servers", "Add servers to your user mcp.json for every workspace.", "workbench.mcp.openUserMcpJson", "Edit user mcp.json"));
+        if ((us || []).length === 0) {
+          rootEl.appendChild(callout("No user servers", "Add servers to your user mcp.json for every workspace.", "workbench.mcp.openUserMcpJson", "Edit user mcp.json"));
+        }
+        filterText(us, function (x) { return x.id + x.kind + x.detail + (x.disabled ? " off disabled" : ""); }).forEach(function (s) {
+          rootEl.appendChild(mcpCard(s));
+        });
       } else {
-        filterText(us, function (x) { return x.id + x.kind + x.detail; }).forEach(function (s) {
+        filterText(us, function (x) { return x.id + x.kind + x.detail + (x.disabled ? " off disabled" : ""); }).forEach(function (s) {
           rootEl.appendChild(mcpCard(s));
         });
       }
@@ -1025,21 +1179,25 @@ export function getHubWebviewHtml(csp: string): string {
       rootEl.appendChild(el("div", "section-title", "Workspace servers"));
       if (!state.workspaceName) {
         rootEl.appendChild(el("div", "empty", "No workspace folder."));
-      } else if (state.workspaceMcp !== "ok") {
-        rootEl.appendChild(el("div", "empty", state.workspaceMcp === "missing" ? "Missing mcp.json" : "No servers defined"));
-      } else {
-        filterText(ws, function (x) { return x.id + x.kind + x.detail; }).forEach(function (s) {
+      } else if ((ws || []).length > 0) {
+        filterText(ws, function (x) { return x.id + x.kind + x.detail + (x.disabled ? " off disabled" : ""); }).forEach(function (s) {
           rootEl.appendChild(mcpCard(s));
         });
+      } else if (state.workspaceMcp === "missing") {
+        rootEl.appendChild(el("div", "empty", "Missing mcp.json"));
+      } else {
+        rootEl.appendChild(el("div", "empty", "No servers defined"));
       }
 
       rootEl.appendChild(el("div", "section-title", "User servers"));
-      if (state.userMcp !== "ok") {
-        rootEl.appendChild(el("div", "empty", state.userMcp === "missing" ? "Missing user mcp.json" : "No servers"));
-      } else {
-        filterText(us, function (x) { return x.id + x.kind + x.detail; }).forEach(function (s) {
+      if ((us || []).length > 0) {
+        filterText(us, function (x) { return x.id + x.kind + x.detail + (x.disabled ? " off disabled" : ""); }).forEach(function (s) {
           rootEl.appendChild(mcpCard(s));
         });
+      } else if (state.userMcp === "missing") {
+        rootEl.appendChild(el("div", "empty", "Missing user mcp.json"));
+      } else {
+        rootEl.appendChild(el("div", "empty", "No servers"));
       }
     }
   }

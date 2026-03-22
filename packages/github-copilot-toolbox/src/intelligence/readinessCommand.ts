@@ -17,7 +17,14 @@ export async function showIntelligenceReadiness(): Promise<void> {
     language: "markdown",
   });
   await vscode.window.showTextDocument(doc, { preview: true, viewColumn: vscode.ViewColumn.Active });
-  vscode.window.showInformationMessage(
-    "GitHub Copilot Toolbox: readiness summary opened — use Command Palette to run suggested commands."
+  const next = await vscode.window.showInformationMessage(
+    "GitHub Copilot Toolbox: readiness summary opened.",
+    "MCP & Skills scan",
+    "Open workspace mcp.json"
   );
+  if (next === "MCP & Skills scan") {
+    await vscode.commands.executeCommand("GitHubCopilotToolBox.showMcpSkillsAwareness");
+  } else if (next === "Open workspace mcp.json") {
+    await vscode.commands.executeCommand("GitHubCopilotToolBox.openWorkspaceMcp");
+  }
 }

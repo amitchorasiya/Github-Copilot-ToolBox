@@ -15,7 +15,7 @@ export async function showEnvSyncChecklist(): Promise<void> {
     "- [ ] **MCP:** Port `~/.cursor/mcp.json` → `.vscode/mcp.json` (GitHub Copilot Toolbox)",
     "- [ ] **Rules:** `npx cursor-rules-to-github-copilot` or append `.cursorrules`",
     "- [ ] **Memory:** `npx github-copilot-memory-bank init` (optional)",
-    "- [ ] **Session notepad:** `.vscode/copilot-kit-notepad.md`",
+    "- [ ] **Session notepad:** `.vscode/copilot-toolbox-notepad.md`",
     "",
     "### Extensions",
     "- [ ] Reinstall Marketplace equivalents for Cursor-only extensions",

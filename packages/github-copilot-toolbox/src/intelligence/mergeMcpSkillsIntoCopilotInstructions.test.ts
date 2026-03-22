@@ -4,7 +4,7 @@ import {
   MCP_SKILLS_AWARENESS_BANNER_END,
   MCP_SKILLS_AWARENESS_BANNER_START,
   replaceOrAppendAwarenessBlock,
-} from "./mergeMcpSkillsIntoCopilotInstructions";
+} from "./mergeMcpSkillsIntoCopilotInstructionsCore";
 
 describe("replaceOrAppendAwarenessBlock", () => {
   it("creates a minimal file when existing is empty", () => {
