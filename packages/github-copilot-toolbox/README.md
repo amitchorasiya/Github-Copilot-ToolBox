@@ -36,7 +36,7 @@ Install: `code --install-extension amitchorasiya.github-copilot-toolbox` (when p
 - [Companion npm packages](#companion-npm-packages)
 - [Develop & test](#develop--test)
 - [Troubleshooting](#troubleshooting)
-- [Migrating from `cursorCopilotKit`](#migrating-from-cursorcopilotkit)
+- [Legacy settings migration](#legacy-settings-migration)
 - [Disclaimer](#disclaimer)
 - [License](#license)
 
@@ -50,7 +50,7 @@ Install: `code --install-extension amitchorasiya.github-copilot-toolbox` (when p
 2. **Workspace kit** — Tree checklist for rules, memory bank, `copilot-instructions.md`, `mcp.json`, wizard.
 3. **Guide & tools** — Tree of shortcuts to the same flows.
 
-**Command / setting prefix:** `GitHubCopilotToolBox.*` (since extension v0.4.0). Older builds used `cursorCopilotKit` — see [migration](#migrating-from-cursorcopilotkit).
+**Command / setting prefix:** `GitHubCopilotToolBox.*` (since extension v0.4.0). Upgrading from a build **before v0.4.0**? See [Legacy settings migration](#legacy-settings-migration).
 
 VS Code resolves README images relative to this package folder. Screenshots live at the [monorepo `screenshots/`](https://github.com/amitchorasiya/Github-Copilot-ToolBox/tree/main/screenshots) root, so embeds below use **absolute** `raw.githubusercontent.com` URLs (same as the published `.vsix` / Marketplace README).
 
@@ -287,12 +287,12 @@ npm test
 
 ---
 
-## Migrating from `cursorCopilotKit`
+## Legacy settings migration
 
-If you used an older build:
+Use this only if your configs still use the **old settings prefix** from early previews (before v0.4.0):
 
-1. In **settings.json**, rename keys `cursorCopilotKit.*` → `GitHubCopilotToolBox.*`.
-2. In **keybindings.json**, update `command` strings the same way.
+1. In **settings.json**, rename keys **`cursorCopilotKit.*`** → **`GitHubCopilotToolBox.*`** (exact prefix strings).
+2. In **keybindings.json**, update `command` values the same way (`cursorCopilotKit.*` → `GitHubCopilotToolBox.*`).
 3. Reload the window.
 
 ---
