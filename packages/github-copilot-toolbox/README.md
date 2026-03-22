@@ -36,7 +36,6 @@ Install: `code --install-extension amitchorasiya.github-copilot-toolbox` (when p
 - [Companion npm packages](#companion-npm-packages)
 - [Develop & test](#develop--test)
 - [Troubleshooting](#troubleshooting)
-- [Legacy settings migration](#legacy-settings-migration)
 - [Disclaimer](#disclaimer)
 - [License](#license)
 
@@ -50,7 +49,7 @@ Install: `code --install-extension amitchorasiya.github-copilot-toolbox` (when p
 2. **Workspace kit** — Tree checklist for rules, memory bank, `copilot-instructions.md`, `mcp.json`, wizard.
 3. **Guide & tools** — Tree of shortcuts to the same flows.
 
-**Command / setting prefix:** `GitHubCopilotToolBox.*` (since extension v0.4.0). Upgrading from a build **before v0.4.0**? See [Legacy settings migration](#legacy-settings-migration).
+**Command / setting prefix:** `GitHubCopilotToolBox.*`.
 
 VS Code resolves README images relative to this package folder. Screenshots live at the [monorepo `screenshots/`](https://github.com/amitchorasiya/Github-Copilot-ToolBox/tree/main/screenshots) root, so embeds below use **absolute** `raw.githubusercontent.com` URLs (same as the published `.vsix` / Marketplace README).
 
@@ -284,16 +283,6 @@ npm test
 | Copilot “ignores” skills | Expected — use awareness report + attach files or maintain `.github/copilot-instructions.md`. |
 | Insiders vs stable user MCP | Toggle `GitHubCopilotToolBox.useInsidersPaths` and reopen hub. |
 | Auto-scan every startup | Disable `autoScanMcpSkillsOnWorkspaceOpen` in settings or uncheck the Intelligence hub checkbox. |
-
----
-
-## Legacy settings migration
-
-Use this only if your configs still use the **old settings prefix** from early previews (before v0.4.0):
-
-1. In **settings.json**, rename keys **`cursorCopilotKit.*`** → **`GitHubCopilotToolBox.*`** (exact prefix strings).
-2. In **keybindings.json**, update `command` values the same way (`cursorCopilotKit.*` → `GitHubCopilotToolBox.*`).
-3. Reload the window.
 
 ---
 

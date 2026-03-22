@@ -338,7 +338,7 @@ The **`LICENSE`** file in `packages/github-copilot-toolbox/` is included in the 
 
 ## Configuration & commands
 
-Extension settings and command IDs use the prefix **`GitHubCopilotToolBox.*`**. If you upgraded from a build **before v0.4.0**, follow [Legacy settings migration](packages/github-copilot-toolbox/README.md#legacy-settings-migration) in the extension README (rename keys in `settings.json` and keybindings, then reload).
+Extension settings and command IDs use the prefix **`GitHubCopilotToolBox.*`**.
 
 Notable settings (see extension README for the full list):
 
