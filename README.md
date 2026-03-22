@@ -287,6 +287,7 @@ These work alongside the extension; the **Intelligence** hub links to their repo
 │   │   └── README.md
 │   └── cursor-mcp-to-github-copilot-port/   # Placeholder for optional vendored CLI
 ├── memory-bank/                     # Project docs for agents / Copilot
+├── docs/                            # Static sales site for GitHub Pages (`npm run serve:site`)
 ├── screenshots/                     # README and docs: extension UI captures + reference diagram
 └── .github/workflows/               # extension-ci.yml → multi-OS build + tests
 ```

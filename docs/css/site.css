@@ -1,0 +1,338 @@
+/* GitHub Copilot Toolbox — static sales site (GitHub Pages) */
+:root {
+  --bg: #0c0d10;
+  --bg-elevated: #14161c;
+  --border: rgba(255, 255, 255, 0.08);
+  --text: #e8eaef;
+  --muted: #8b929e;
+  --accent: #3fb8af;
+  --accent-dim: rgba(63, 184, 175, 0.15);
+  --warm: #e8a54b;
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "DM Sans", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --r: 12px;
+  --max: 1100px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--bg);
+  background-image:
+    radial-gradient(ellipse 120% 80% at 10% -20%, rgba(63, 184, 175, 0.12), transparent 50%),
+    radial-gradient(ellipse 80% 50% at 90% 100%, rgba(232, 165, 75, 0.06), transparent 45%);
+  min-height: 100vh;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+.wrap {
+  width: min(100% - 2rem, var(--max));
+  margin-inline: auto;
+}
+
+/* Header */
+.site-header {
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(12, 13, 16, 0.85);
+  backdrop-filter: blur(12px);
+}
+
+.site-header .wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.logo {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.15rem;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+.logo span {
+  color: var(--accent);
+}
+
+.nav-cta {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.55rem 1.1rem;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border: 1px solid var(--border);
+  color: var(--text);
+  transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+.btn:hover {
+  text-decoration: none;
+  border-color: rgba(255, 255, 255, 0.18);
+  transform: translateY(-1px);
+}
+.btn-primary {
+  background: var(--accent-dim);
+  border-color: rgba(63, 184, 175, 0.45);
+  color: #b8f0ea;
+}
+.btn-primary:hover {
+  background: rgba(63, 184, 175, 0.28);
+  border-color: var(--accent);
+}
+.btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Hero */
+.hero {
+  padding: clamp(3rem, 8vw, 5.5rem) 0 3rem;
+}
+
+.hero-grid {
+  display: grid;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+@media (min-width: 900px) {
+  .hero-grid {
+    grid-template-columns: 1fr 1.05fr;
+    gap: 3rem;
+  }
+}
+
+.hero h1 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(2rem, 4.5vw, 2.85rem);
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  margin: 0 0 1rem;
+}
+
+.lead {
+  font-size: 1.15rem;
+  color: var(--muted);
+  margin: 0 0 1.5rem;
+  max-width: 38ch;
+}
+
+.plain {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 1.35rem 1.5rem;
+  border-left: 3px solid var(--accent);
+}
+.plain strong {
+  color: #fff;
+}
+
+.hero-shot {
+  border-radius: var(--r);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
+  opacity: 0;
+  animation: rise 0.9s ease 0.15s forwards;
+}
+.hero-shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  vertical-align: middle;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Pillars */
+.pillars {
+  padding: 2rem 0 4rem;
+}
+
+.pillars h2 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin: 0 0 1.5rem;
+  letter-spacing: -0.02em;
+}
+
+.pillar-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (min-width: 720px) {
+  .pillar-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.pillar {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 1.35rem 1.4rem;
+  transition: border-color 0.2s ease;
+}
+.pillar:hover {
+  border-color: rgba(63, 184, 175, 0.25);
+}
+.pillar h3 {
+  font-size: 1rem;
+  margin: 0 0 0.5rem;
+  color: #fff;
+  font-weight: 600;
+}
+.pillar p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+/* Gallery */
+.gallery {
+  padding: 2rem 0 4rem;
+}
+
+.gallery h2 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin: 0 0 0.35rem;
+}
+.gallery .sub {
+  color: var(--muted);
+  margin: 0 0 1.75rem;
+  font-size: 0.95rem;
+}
+
+.shots {
+  display: grid;
+  gap: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .shots {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+figure {
+  margin: 0;
+  border-radius: var(--r);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+}
+figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+figcaption {
+  padding: 0.65rem 0.85rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+}
+
+/* CTA band */
+.cta-band {
+  padding: 3rem 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: rgba(63, 184, 175, 0.06);
+}
+
+.cta-band .wrap {
+  text-align: center;
+}
+
+.cta-band h2 {
+  font-family: var(--font-display);
+  font-size: 1.65rem;
+  margin: 0 0 0.5rem;
+}
+.cta-band p {
+  color: var(--muted);
+  margin: 0 0 1.25rem;
+  max-width: 42ch;
+  margin-inline: auto;
+}
+
+.mono-hint {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--warm);
+  margin-top: 1rem;
+}
+
+/* Footer */
+.site-footer {
+  padding: 2rem 0 3rem;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+.site-footer a {
+  color: var(--muted);
+  text-decoration: underline;
+}
+.site-footer a:hover {
+  color: var(--text);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .hero-shot {
+    animation: none;
+    opacity: 1;
+  }
+}

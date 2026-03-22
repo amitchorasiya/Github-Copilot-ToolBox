@@ -10,6 +10,7 @@
     "compile": "npm run compile --prefix packages/github-copilot-toolbox",
     "test": "npm test --prefix packages/github-copilot-toolbox",
     "package": "npm run package --prefix packages/github-copilot-toolbox",
-    "package:extension": "npm run package"
+    "package:extension": "npm run package",
+    "serve:site": "npx --yes serve docs -l 5173"
   }
 }
