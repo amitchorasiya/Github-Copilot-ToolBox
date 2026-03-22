@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.5
+
+- **Docs:** README refresh (sales-focused intro, hub UI reference for every control); updated extension screenshots in `screenshots/`.
+
 ## 0.5.4
 
 - **Branding:** Marketplace icon file is now `resources/marketplace-icon.png` (still rendered from `icon-marketplace.svg` when packaging) so the Extensions detail view picks up updates instead of a stale cached `icon.png`.
