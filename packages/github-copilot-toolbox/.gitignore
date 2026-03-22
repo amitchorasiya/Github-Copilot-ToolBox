@@ -5,3 +5,4 @@ out/
 .vitest-output.txt
 .vitest-exit.txt
 .compile-test.log
+scripts/.README.extension.md.stash

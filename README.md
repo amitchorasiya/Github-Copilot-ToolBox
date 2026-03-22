@@ -168,9 +168,11 @@ Always use **`packages/github-copilot-toolbox/`** as the extension root (matches
 cd packages/github-copilot-toolbox
 npm install
 npm run compile
-npm run package          # produces .vsix (requires @vscode/vsce)
-# npx @vscode/vsce publish   # when you are logged in to the publisher
+npm run package          # stages monorepo README (+ screenshot URLs) for Marketplace, then vsce package
+# npx vsce publish       # when you are logged in to the publisher (from this directory)
 ```
+
+The `.vsix` **README** is the **monorepo root** [`README.md`](README.md) (same content as on GitHub), with image paths rewritten to `raw.githubusercontent.com` so the Marketplace page shows screenshots. The extension’s detailed command reference stays in [`packages/github-copilot-toolbox/README.md`](packages/github-copilot-toolbox/README.md) on disk and is restored after each package run.
 
 From monorepo root: `npm run package:extension` (after `npm install` in the package directory).
 
