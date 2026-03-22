@@ -59,33 +59,33 @@ VS Code resolves README images relative to this package folder. Screenshots live
 
 **Intelligence** (hub): **Port Cursor → Copilot** (MCP, rules, memory bank), then broader bridges, context pack, readiness, MCP & Skills scan.
 
-![Intelligence: Port Cursor MCP, rules, and memory bank to VS Code & Copilot](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/02-intelligence-cursor-port.png?v=0.5.8)
+![Intelligence: Port Cursor MCP, rules, and memory bank to VS Code & Copilot](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/02-intelligence-cursor-port.png?v=0.5.9)
 
-![Intelligence tab: Cursor to VS Code and Copilot bridges](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/01-intelligence-cursor-to-vscode-copilot.png?v=0.5.8)
+![Intelligence tab: Cursor to VS Code and Copilot bridges](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/01-intelligence-cursor-to-vscode-copilot.png?v=0.5.9)
 
-![Intelligence: context pack and readiness actions](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/02-intelligence-context-readiness.png?v=0.5.8)
+![Intelligence: context pack and readiness actions](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/02-intelligence-context-readiness.png?v=0.5.9)
 
 **MCP**: installed workspace/user servers and registry browse.
 
-![MCP: installed workspace servers (Browse / Installed)](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/03-mcp-browse-workspace-servers.png?v=0.5.8)
+![MCP: installed workspace servers (Browse / Installed)](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/03-mcp-browse-workspace-servers.png?v=0.5.9)
 
-![MCP: registry browse & search](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/04-mcp-registry-search.png?v=0.5.8)
+![MCP: registry browse & search](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/04-mcp-registry-search.png?v=0.5.9)
 
 **Skills**: catalog (skills.sh) and local installed `SKILL.md` trees.
 
-![Skills: catalog (skills.sh)](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/05-skills-catalog-skills-sh.png?v=0.5.8)
+![Skills: catalog (skills.sh)](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/05-skills-catalog-skills-sh.png?v=0.5.9)
 
-![Skills: installed local skill folders](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/06-skills-installed-local.png?v=0.5.8)
+![Skills: installed local skill folders](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/06-skills-installed-local.png?v=0.5.9)
 
 **Workspace** checklist and **Intelligence** hub (context hygiene).
 
-![Workspace kit checklist](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/07-workspace-checklist.png?v=0.5.8)
+![Workspace kit checklist](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/07-workspace-checklist.png?v=0.5.9)
 
-![Intelligence: context hygiene, snapshot, and quick actions](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/08-workspace-toolbox-commands.png?v=0.5.8)
+![Intelligence: context hygiene, snapshot, and quick actions](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/08-workspace-toolbox-commands.png?v=0.5.9)
 
 **Reference diagram** (Mermaid export; not a live UI capture).
 
-![Cursor vs Copilot capability map (diagram)](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/mermaid-copilot-map.png?v=0.5.8)
+![Cursor vs Copilot capability map (diagram)](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/mermaid-copilot-map.png?v=0.5.9)
 
 ---
 

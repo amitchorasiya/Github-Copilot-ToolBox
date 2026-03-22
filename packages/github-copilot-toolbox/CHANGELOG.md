@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.9
+
+- **Docs:** README cleanup (removed legacy settings-prefix migration copy); **GitHub Pages** install buttons use `vscode:extension/…` with Marketplace fallback; screenshot cache query `?v=0.5.9`.
+
 ## 0.5.8
 
 - **Legal / clarity:** Expanded **Disclaimer** in the monorepo README; added **Disclaimer** to the extension README, Marketplace `description` pointer, and GitHub Pages footer (with link to repo disclaimer). Not a substitute for legal counsel.
