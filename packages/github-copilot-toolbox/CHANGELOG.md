@@ -2,7 +2,7 @@
 
 ## 0.5.9
 
-- **Docs:** README cleanup (removed legacy settings-prefix migration copy); **GitHub Pages** install buttons use `vscode:extension/…` with Marketplace fallback; screenshot cache query `?v=0.5.9`.
+- **Docs:** README polish; **GitHub Pages** install buttons use `vscode:extension/…` with Marketplace fallback; screenshot cache query `?v=0.5.9`.
 
 ## 0.5.8
 
