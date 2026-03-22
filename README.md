@@ -375,8 +375,6 @@ This repository is released under the **MIT License**. See [LICENSE](LICENSE). T
 
 ## Disclaimer
 
-**Not legal advice.** Nothing here is legal, regulatory, or compliance advice for your company or jurisdiction (including the US). If you need binding guidance, consult a qualified attorney.
-
 **Independence and trademarks.** This monorepo is **independent** community tooling. It is **not** affiliated with, endorsed by, sponsored by, or maintained by Microsoft, GitHub, Cursor, OpenAI, Anthropic, or other vendors of products named in this documentation. **Visual Studio**, **Visual Studio Code**, **GitHub**, **GitHub Copilot**, **Cursor**, and other product names may be **trademarks** of their respective owners. For Microsoft’s naming and branding expectations around VS Code, see the official [Visual Studio Code brand guidelines](https://code.visualstudio.com/brand).
 
 **Software warranty.** Code is released under the [MIT License](LICENSE). The license applies **“AS IS”**, without warranties of any kind, and limits liability—read the full license text shipped with the software.

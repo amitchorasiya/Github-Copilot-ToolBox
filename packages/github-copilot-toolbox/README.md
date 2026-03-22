@@ -312,8 +312,6 @@ The [LICENSE](LICENSE) file is shipped in the VSIX. See the [monorepo README](..
 
 ## Disclaimer
 
-**Not legal advice.** This section is for clarity only and is **not** legal, regulatory, or compliance advice. Consult a qualified attorney if you need guidance for your organization or jurisdiction (including the US).
-
 **Independence and trademarks.** **GitHub Copilot Toolbox** is **independent** software. It is **not** affiliated with, endorsed by, sponsored by, or maintained by Microsoft, GitHub, Cursor, OpenAI, Anthropic, or other vendors of products referenced in this README. Product names may be **trademarks** of their respective owners. For Microsoft’s VS Code naming and branding expectations, see [Visual Studio Code brand guidelines](https://code.visualstudio.com/brand).
 
 **MIT “AS IS”.** This extension is licensed under the [MIT License](LICENSE): provided **without warranty**, with **limited liability**—see the full license in the package and repository.
