@@ -38,7 +38,11 @@ Screenshots load from `raw.githubusercontent.com` (needs network). After you pus
 
 1. Repo **Settings** → **Pages**.
 2. **Build and deployment** → Source: **Deploy from a branch**.
-3. Branch: **main** → folder **`/docs`** → Save.
+3. Branch: **`main`** → folder **`/docs`** (not **`/` (root)**) → Save.
+
+**Important:** If the folder is **`/` (root)**`, GitHub turns your **repo `README.md`** into the site home — you get plain, unstyled text. The **designed** site lives in **`docs/index.html`**, so the source **must** be **`/docs`**.
+
+This folder includes **`.nojekyll`** so GitHub does not run Jekyll on your static files (avoids `README.md` fighting `index.html`).
 
 The site will be available at:
 
