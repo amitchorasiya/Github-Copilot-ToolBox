@@ -99,7 +99,7 @@ Full extension documentation: **[packages/github-copilot-toolbox/README.md](pack
 
 ## Install the extension
 
-- **Marketplace (when published):** search for **GitHub Copilot Toolbox** or install by id:  
+- **Marketplace:** search for **GitHub Copilot Toolbox** or install by id:  
   `code --install-extension amitchorasiya.github-copilot-toolbox`
 - **From VSIX:** build with `npm run package` inside `packages/github-copilot-toolbox/`, then **Install from VSIX…** in VS Code.
 
