@@ -10,7 +10,7 @@
 
 **Missing the icon?** **Command Palette** (**Ctrl+Shift+P** / **⌘⇧P**) → type **GitHub Copilot Toolbox** → run a command, or **Developer: Reload Window**, then repeat steps 2–3.
 
-![Activity Bar → Copilot Toolbox, Side Bar → MCP & skills](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/00-Copilot%20Toolbox%20Access.png?v=0.5.11)
+![Activity Bar → Copilot Toolbox, Side Bar → MCP & skills](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/00-copilot-toolbox-access.png?v=0.5.11)
 
 ## One place for Copilot-related setup
 

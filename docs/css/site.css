@@ -218,6 +218,13 @@ a:hover {
   margin-top: 1rem;
 }
 
+.hero-media {
+  display: flex;
+  flex-direction: column;
+  gap: 1.35rem;
+  min-width: 0;
+}
+
 .hero-shot {
   border-radius: var(--r);
   overflow: hidden;
@@ -226,6 +233,11 @@ a:hover {
   opacity: 0;
   animation: rise 0.9s ease 0.15s forwards;
 }
+
+.hero-shot.hero-shot-delay {
+  animation-delay: 0.32s;
+}
+
 .hero-shot img {
   display: block;
   width: 100%;

@@ -13,7 +13,7 @@
 
 **Don’t see the icon?** Press **Ctrl+Shift+P** (Windows/Linux) or **⌘⇧P** (macOS), type **GitHub Copilot Toolbox**, run any listed command (that wakes the extension UI), or run **Developer: Reload Window**, then repeat steps 2–4.
 
-![Activity Bar → Copilot Toolbox, then Side Bar → MCP & skills (where the hub opens)](screenshots/00-Copilot Toolbox Access.png)
+![Activity Bar → Copilot Toolbox, then Side Bar → MCP & skills (where the hub opens)](screenshots/00-copilot-toolbox-access.png)
 
 ## One place for Copilot-related setup
 
