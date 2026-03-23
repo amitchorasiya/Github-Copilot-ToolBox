@@ -2,7 +2,7 @@
   "name": "github-copilot-toolbox",
   "displayName": "GitHub Copilot Toolbox",
   "description": "GitHub Copilot Toolbox: MCP hub, workspace helpers, Intelligence context packs & readiness, and npx bridges from Cursor→Copilot. Not affiliated with Microsoft or GitHub. See README Disclaimer. Workflow ideas credited in NOTICE (everything-claude-code, MIT).",
-  "version": "0.5.9",
+  "version": "0.5.10",
   "publisher": "amitchorasiya",
   "author": "amitchorasiya",
   "license": "MIT",

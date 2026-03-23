@@ -48,7 +48,20 @@ The extension does **not** replace GitHub Copilot or Cursor; it helps you **alig
 
 ### See the real UI (screenshots)
 
-These are **actual hub captures**—what you see after install when you open **Copilot Toolbox** → **MCP & skills**. Images are **high-resolution** (~2.5k width) so text and controls stay legible in README and on the [project site](https://copilottoolbox.layai.co).
+These are **actual VS Code UI captures** from the extension—what users see on screen. Most hub shots are **high-resolution** (~2.5k width) so labels stay readable in README and on the [project site](https://copilottoolbox.layai.co).
+
+#### After install: how do I open Copilot Toolbox?
+
+**There is no separate application**—the extension lives **inside Visual Studio Code** only.
+
+1. **Install** *GitHub Copilot Toolbox* from the Marketplace (or a `.vsix`). If VS Code prompts you, **reload the window** (**Developer: Reload Window**).
+2. Find the **Activity Bar**: the **narrow column of icons on the far left** of the VS Code window (Explorer, Search, Source Control, …).
+3. Click the **Copilot Toolbox** icon added by this extension. The **Side Bar** opens next to it.
+4. In the Side Bar, click **MCP & skills**. That opens the **hub** (webview) with tabs **Intelligence**, **MCP**, **Skills**, and **Workspace**—that is the main surface for MCP, skills, and setup flows.
+
+**Don’t see the icon?** Press **Ctrl+Shift+P** (Windows/Linux) or **⌘⇧P** (macOS), type **GitHub Copilot Toolbox**, run any listed command (that wakes the extension UI), or run **Developer: Reload Window**, then repeat steps 2–4.
+
+![Activity Bar → Copilot Toolbox, then Side Bar → MCP & skills (where the hub opens)](screenshots/00-Copilot Toolbox Access.png)
 
 **Intelligence** (hub): **Port Cursor → Copilot** (MCP, rules, memory bank), then broader bridges, context pack, readiness, MCP & Skills scan.
 
@@ -84,7 +97,7 @@ These are **actual hub captures**—what you see after install when you open **C
 
 ## MCP & skills hub: every tab, toggle, and button
 
-Open the **MCP & skills** webview from the **Copilot Toolbox** activity bar. The hub is organized into **tabs**, a **Browse / Installed** switch (where applicable), a **search** field, optional **MCP chips**, and a **footer** legend.
+Open the **MCP & skills** hub from the **Side Bar** after you click **Copilot Toolbox** in the **Activity Bar** (see [After install](#after-install-how-do-i-open-copilot-toolbox) above). The hub is organized into **tabs**, a **Browse / Installed** switch (where applicable), a **search** field, optional **MCP chips**, and a **footer** legend.
 
 ### Main tabs (top)
 
@@ -290,7 +303,7 @@ These work alongside the extension; the **Intelligence** hub links to their repo
 │   └── cursor-mcp-to-github-copilot-port/   # Placeholder for optional vendored CLI
 ├── memory-bank/                     # Project docs for agents / Copilot
 ├── docs/                            # Static sales site for GitHub Pages (`npm run serve:site`)
-├── screenshots/                     # README and docs: extension UI captures + reference diagram
+├── screenshots/                     # README and docs: UI captures (incl. 00 access walkthrough) + reference diagram
 └── .github/workflows/               # extension-ci.yml → multi-OS build + tests
 ```
 

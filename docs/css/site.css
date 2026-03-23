@@ -214,6 +214,10 @@ a:hover {
   color: #fff;
 }
 
+.hero .plain + .plain {
+  margin-top: 1rem;
+}
+
 .hero-shot {
   border-radius: var(--r);
   overflow: hidden;
