@@ -2,6 +2,19 @@
 
 **VS Code extension + monorepo:** [`Github-Copilot-ToolBox`](https://github.com/amitchorasiya/Github-Copilot-ToolBox) on GitHub · **License:** [MIT](LICENSE) · **Marketplace:** `amitchorasiya.github-copilot-toolbox`
 
+## After install: open Copilot Toolbox
+
+**There is no separate application**—the extension runs **inside Visual Studio Code** only.
+
+1. **Install** *GitHub Copilot Toolbox* from the Marketplace (or a `.vsix`). If VS Code prompts you, **reload the window** (**Developer: Reload Window**).
+2. Find the **Activity Bar**: the **narrow column of icons on the far left** of the VS Code window (Explorer, Search, Source Control, …).
+3. Click the **Copilot Toolbox** icon added by this extension. The **Side Bar** opens next to it.
+4. In the Side Bar, click **MCP & skills**. That opens the **hub** (webview) with tabs **Intelligence**, **MCP**, **Skills**, and **Workspace**—that is the main surface for MCP, skills, and setup flows.
+
+**Don’t see the icon?** Press **Ctrl+Shift+P** (Windows/Linux) or **⌘⇧P** (macOS), type **GitHub Copilot Toolbox**, run any listed command (that wakes the extension UI), or run **Developer: Reload Window**, then repeat steps 2–4.
+
+![Activity Bar → Copilot Toolbox, then Side Bar → MCP & skills (where the hub opens)](screenshots/00-Copilot Toolbox Access.png)
+
 ## One place for Copilot-related setup
 
 **In plain terms:** Copilot only works as well as the setup around it—but that setup is usually scattered across files, machines, and habits. **GitHub Copilot Toolbox** is **one dedicated Copilot Toolbox in VS Code**: you can **see** what’s configured, **standardize** how teams move to Copilot (including from Cursor), and **give Chat better context** while each developer still **chooses** what to share.
@@ -17,6 +30,7 @@
 
 ## Table of contents
 
+- [After install: open Copilot Toolbox](#after-install-open-copilot-toolbox)
 - [One place for Copilot-related setup](#one-place-for-copilot-related-setup)
 - [What’s in this repo](#whats-in-this-repo)
 - [See the real UI (screenshots)](#see-the-real-ui-screenshots)
@@ -48,20 +62,7 @@ The extension does **not** replace GitHub Copilot or Cursor; it helps you **alig
 
 ### See the real UI (screenshots)
 
-These are **actual VS Code UI captures** from the extension—what users see on screen. Most hub shots are **high-resolution** (~2.5k width) so labels stay readable in README and on the [project site](https://copilottoolbox.layai.co).
-
-#### After install: how do I open Copilot Toolbox?
-
-**There is no separate application**—the extension lives **inside Visual Studio Code** only.
-
-1. **Install** *GitHub Copilot Toolbox* from the Marketplace (or a `.vsix`). If VS Code prompts you, **reload the window** (**Developer: Reload Window**).
-2. Find the **Activity Bar**: the **narrow column of icons on the far left** of the VS Code window (Explorer, Search, Source Control, …).
-3. Click the **Copilot Toolbox** icon added by this extension. The **Side Bar** opens next to it.
-4. In the Side Bar, click **MCP & skills**. That opens the **hub** (webview) with tabs **Intelligence**, **MCP**, **Skills**, and **Workspace**—that is the main surface for MCP, skills, and setup flows.
-
-**Don’t see the icon?** Press **Ctrl+Shift+P** (Windows/Linux) or **⌘⇧P** (macOS), type **GitHub Copilot Toolbox**, run any listed command (that wakes the extension UI), or run **Developer: Reload Window**, then repeat steps 2–4.
-
-![Activity Bar → Copilot Toolbox, then Side Bar → MCP & skills (where the hub opens)](screenshots/00-Copilot Toolbox Access.png)
+These are **actual VS Code UI captures** from the extension—what users see on screen. **How to open the hub** (Activity Bar → Copilot Toolbox → **MCP & skills**) is at the top: [After install: open Copilot Toolbox](#after-install-open-copilot-toolbox). Most hub shots below are **high-resolution** (~2.5k width) so labels stay readable in README and on the [project site](https://copilottoolbox.layai.co).
 
 **Intelligence** (hub): **Port Cursor → Copilot** (MCP, rules, memory bank), then broader bridges, context pack, readiness, MCP & Skills scan.
 
@@ -97,7 +98,7 @@ These are **actual VS Code UI captures** from the extension—what users see on 
 
 ## MCP & skills hub: every tab, toggle, and button
 
-Open the **MCP & skills** hub from the **Side Bar** after you click **Copilot Toolbox** in the **Activity Bar** (see [After install](#after-install-how-do-i-open-copilot-toolbox) above). The hub is organized into **tabs**, a **Browse / Installed** switch (where applicable), a **search** field, optional **MCP chips**, and a **footer** legend.
+Open the **MCP & skills** hub from the **Side Bar** after you click **Copilot Toolbox** in the **Activity Bar** (see [After install: open Copilot Toolbox](#after-install-open-copilot-toolbox) at the top of this README). The hub is organized into **tabs**, a **Browse / Installed** switch (where applicable), a **search** field, optional **MCP chips**, and a **footer** legend.
 
 ### Main tabs (top)
 

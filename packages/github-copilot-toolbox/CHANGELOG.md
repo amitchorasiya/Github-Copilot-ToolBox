@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.11
+
+- **Docs:** Move **After install: open Copilot Toolbox** (with `00-Copilot Toolbox Access.png`) **above** “One place for Copilot-related setup” in root + extension README; dedupe from Screenshots section; TOC + cross-links updated.
+
 ## 0.5.10
 
 - **Docs:** Add **`00-Copilot Toolbox Access.png`** as the first README / site screenshot with step-by-step **Activity Bar → Copilot Toolbox → Side Bar → MCP & skills**; hero and gallery updated; cache `?v=0.5.10`.
