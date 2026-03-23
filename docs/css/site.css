@@ -39,13 +39,13 @@ body {
   line-height: 1.65;
   color: var(--text);
   background-color: var(--bg);
-  /* Photo/texture under gradients; wash keeps UI readable */
+  /* Photo/texture under gradients. Wash must stay translucent or the image is invisible. */
   background-image:
     radial-gradient(ellipse 100% 70% at 50% -30%, rgba(0, 100, 120, 0.35), transparent 55%),
     radial-gradient(ellipse 80% 50% at 100% 50%, rgba(0, 232, 255, 0.06), transparent 50%),
     radial-gradient(ellipse 60% 40% at 0% 80%, rgba(0, 56, 68, 0.45), transparent 50%),
-    linear-gradient(180deg, rgba(4, 5, 6, 0.88) 0%, rgba(5, 8, 12, 0.9) 45%, rgba(2, 3, 5, 0.92) 100%),
-    url("../images/background.png");
+    linear-gradient(180deg, rgba(4, 5, 6, 0.62) 0%, rgba(5, 8, 12, 0.68) 45%, rgba(2, 3, 5, 0.74) 100%),
+    url("../images/background.png?v=16");
   background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat;
   background-size:
     auto,
@@ -58,7 +58,7 @@ body {
     0 0,
     0 0,
     0 0,
-    center top;
+    center center;
   min-height: 100vh;
 }
 
