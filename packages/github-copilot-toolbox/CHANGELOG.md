@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.40
+
+- Patch version bump.
+
 ## 0.5.39
 
 - **One Click Setup:** MCP port, memory bank init, and Cursor rules → Copilot now use the **bundled CLIs** (`node …/cli.mjs` in the Toolbox terminal), not **npx**. Missing `node_modules` bridges surface as completion notes instead of extra error modals. Hub copy and the confirmation dialog mention bundled / no npx.
