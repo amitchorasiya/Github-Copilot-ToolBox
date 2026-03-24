@@ -28,7 +28,7 @@ export class McpTreeProvider implements vscode.TreeDataProvider<McpTreeItem> {
 
   async getChildren(element?: McpTreeItem): Promise<McpTreeItem[]> {
     const cfg = vscode.workspace.getConfiguration();
-    const insiders = cfg.get<boolean>("GitHubCopilotToolBox.useInsidersPaths") === true;
+    const insiders = cfg.get<boolean>("copilot-toolbox.useInsidersPaths") === true;
     const folder = mcpPaths.getPrimaryWorkspaceFolder();
 
     if (!element) {

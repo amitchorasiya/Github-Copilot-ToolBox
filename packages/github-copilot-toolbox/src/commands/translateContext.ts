@@ -24,7 +24,7 @@ export async function translateCursorContextInSelection(): Promise<void> {
 
   const wrap = vscode.workspace
     .getConfiguration()
-    .get<boolean>("GitHubCopilotToolBox.translateWrapMultilineInFence", false);
+    .get<boolean>("copilot-toolbox.translateWrapMultilineInFence", false);
   if (wrap && next.includes("\n")) {
     const lang = ed.document.languageId || "text";
     next = `\`\`\`${lang}\n${next}\n\`\`\``;

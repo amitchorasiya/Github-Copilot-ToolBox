@@ -32,7 +32,7 @@ export async function runCopilotToolboxConfigScan(): Promise<void> {
   lines.push("");
 
   const cfg = vscode.workspace.getConfiguration();
-  const insiders = cfg.get<boolean>("GitHubCopilotToolBox.useInsidersPaths") === true;
+  const insiders = cfg.get<boolean>("copilot-toolbox.useInsidersPaths") === true;
 
   const paths: Array<{ label: string; uri: vscode.Uri }> = [
     { label: "Workspace mcp.json", uri: mcpPaths.workspaceMcpUri(folder) },

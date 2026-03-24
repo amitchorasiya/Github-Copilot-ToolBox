@@ -18,7 +18,7 @@ const GIT_TIMEOUT_MS = 12_000;
 
 function cfgBool(
   config: vscode.WorkspaceConfiguration,
-  key: "GitHubCopilotToolBox.intelligence.includeGitByDefault" | "GitHubCopilotToolBox.intelligence.includeDiagnosticsByDefault" | "GitHubCopilotToolBox.intelligence.appendNotepadAfterPack" | "GitHubCopilotToolBox.intelligence.openChatAfterPack",
+  key: "copilot-toolbox.intelligence.includeGitByDefault" | "copilot-toolbox.intelligence.includeDiagnosticsByDefault" | "copilot-toolbox.intelligence.appendNotepadAfterPack" | "copilot-toolbox.intelligence.openChatAfterPack",
   fallback: boolean
 ): boolean {
   const v = config.get<boolean>(key);
@@ -123,6 +123,99 @@ function diagnosticTargetUris(folder: vscode.WorkspaceFolder): vscode.Uri[] {
   return out;
 }
 
+export type ContextPackDeliveryOptions = {
+  includeGit: boolean;
+  includeDiagnostics: boolean;
+  appendNotepad: boolean;
+  openChat: boolean;
+  /** When false, skip the completion information message (Thinking Machine priming uses its own toast). */
+  showCompletionMessage?: boolean;
+};
+
+/**
+ * Builds markdown parts for the current editor/tabs and optional git/diagnostics sections.
+ */
+export async function buildContextPackPartsForFolder(
+  folder: vscode.WorkspaceFolder,
+  includeGit: boolean,
+  includeDiagnostics: boolean
+): Promise<ContextPackParts> {
+  const ed = vscode.window.activeTextEditor;
+  let activeFile: ContextPackParts["activeFile"];
+  if (ed && ed.document.uri.scheme === "file") {
+    const rel = vscode.workspace.asRelativePath(ed.document.uri, false);
+    if (!rel.startsWith("..")) {
+      const sel = ed.selection.isEmpty ? undefined : ed.document.getText(ed.selection);
+      activeFile = {
+        relativePath: rel,
+        languageId: ed.document.languageId,
+        selection: sel,
+      };
+    }
+  }
+
+  const openEditors = collectRelativeOpenFiles(folder);
+
+  let diagnosticsSection: string | undefined;
+  if (includeDiagnostics) {
+    diagnosticsSection = formatDiagnosticsForUris(diagnosticTargetUris(folder));
+  }
+
+  let gitSection: string | undefined;
+  if (includeGit) {
+    gitSection = await buildGitSection(folder.uri.fsPath, GIT_MAX_BYTES, GIT_TIMEOUT_MS);
+  }
+
+  return {
+    notice: DEFAULT_PACK_NOTICE,
+    workspaceFolderName: folder.name,
+    workspaceRootPath: folder.uri.fsPath,
+    activeFile,
+    openEditorRelativePaths: openEditors,
+    diagnosticsSection,
+    gitSection,
+    limits: {
+      maxOpenEditors: MAX_OPEN_EDITORS,
+      maxSelectionChars: MAX_SELECTION_CHARS,
+    },
+  };
+}
+
+/**
+ * Copies context pack to clipboard; optionally appends notepad, opens Chat, shows toast.
+ */
+export async function runContextPackDelivery(
+  folder: vscode.WorkspaceFolder,
+  opts: ContextPackDeliveryOptions
+): Promise<void> {
+  const parts = await buildContextPackPartsForFolder(
+    folder,
+    opts.includeGit,
+    opts.includeDiagnostics
+  );
+  const md = buildContextPackMarkdown(parts);
+  await vscode.env.clipboard.writeText(md);
+
+  if (opts.appendNotepad) {
+    try {
+      await appendToSessionNotepad(md);
+    } catch {
+      vscode.window.showWarningMessage(
+        "GitHub Copilot Toolbox: could not append to session notepad."
+      );
+    }
+  }
+  if (opts.openChat) {
+    await openCopilotChat();
+  }
+
+  if (opts.showCompletionMessage !== false) {
+    vscode.window.showInformationMessage(
+      `GitHub Copilot Toolbox: context pack copied.${opts.appendNotepad ? " Appended to session notepad." : ""}${opts.openChat ? " Opened Chat." : ""} Review before pasting to Copilot.`
+    );
+  }
+}
+
 export async function runBuildContextPackFlow(): Promise<void> {
   const folder = mcpPaths.getPrimaryWorkspaceFolder();
   if (!folder) {
@@ -131,10 +224,10 @@ export async function runBuildContextPackFlow(): Promise<void> {
   }
 
   const config = vscode.workspace.getConfiguration();
-  const defGit = cfgBool(config, "GitHubCopilotToolBox.intelligence.includeGitByDefault", false);
-  const defDiag = cfgBool(config, "GitHubCopilotToolBox.intelligence.includeDiagnosticsByDefault", false);
-  const defPad = cfgBool(config, "GitHubCopilotToolBox.intelligence.appendNotepadAfterPack", false);
-  const defChat = cfgBool(config, "GitHubCopilotToolBox.intelligence.openChatAfterPack", false);
+  const defGit = cfgBool(config, "copilot-toolbox.intelligence.includeGitByDefault", false);
+  const defDiag = cfgBool(config, "copilot-toolbox.intelligence.includeDiagnosticsByDefault", false);
+  const defPad = cfgBool(config, "copilot-toolbox.intelligence.appendNotepadAfterPack", false);
+  const defChat = cfgBool(config, "copilot-toolbox.intelligence.openChatAfterPack", false);
 
   const picked = await vscode.window.showQuickPick(
     [
@@ -184,63 +277,11 @@ export async function runBuildContextPackFlow(): Promise<void> {
   const appendPad = follow.some((p) => p.label.includes("notepad"));
   const openChat = follow.some((p) => p.label.includes("Chat"));
 
-  const ed = vscode.window.activeTextEditor;
-  let activeFile: ContextPackParts["activeFile"];
-  if (ed && ed.document.uri.scheme === "file") {
-    const rel = vscode.workspace.asRelativePath(ed.document.uri, false);
-    if (!rel.startsWith("..")) {
-      const sel = ed.selection.isEmpty ? undefined : ed.document.getText(ed.selection);
-      activeFile = {
-        relativePath: rel,
-        languageId: ed.document.languageId,
-        selection: sel,
-      };
-    }
-  }
-
-  const openEditors = collectRelativeOpenFiles(folder);
-
-  let diagnosticsSection: string | undefined;
-  if (includeDiag) {
-    diagnosticsSection = formatDiagnosticsForUris(diagnosticTargetUris(folder));
-  }
-
-  let gitSection: string | undefined;
-  if (includeGit) {
-    gitSection = await buildGitSection(folder.uri.fsPath, GIT_MAX_BYTES, GIT_TIMEOUT_MS);
-  }
-
-  const parts: ContextPackParts = {
-    notice: DEFAULT_PACK_NOTICE,
-    workspaceFolderName: folder.name,
-    workspaceRootPath: folder.uri.fsPath,
-    activeFile,
-    openEditorRelativePaths: openEditors,
-    diagnosticsSection,
-    gitSection,
-    limits: {
-      maxOpenEditors: MAX_OPEN_EDITORS,
-      maxSelectionChars: MAX_SELECTION_CHARS,
-    },
-  };
-
-  const md = buildContextPackMarkdown(parts);
-  await vscode.env.clipboard.writeText(md);
-
-  if (appendPad) {
-    try {
-      await appendToSessionNotepad(md);
-    } catch {
-      vscode.window.showWarningMessage(
-        "GitHub Copilot Toolbox: could not append to session notepad."
-      );
-    }
-  }
-  if (openChat) {
-    await openCopilotChat();
-  }
-
-  vscode.window.showInformationMessage(
-    `GitHub Copilot Toolbox: context pack copied.${appendPad ? " Appended to session notepad." : ""}${openChat ? " Opened Chat." : ""} Review before pasting to Copilot.`
-  );
+  await runContextPackDelivery(folder, {
+    includeGit,
+    includeDiagnostics: includeDiag,
+    appendNotepad: appendPad,
+    openChat,
+    showCompletionMessage: true,
+  });
 }

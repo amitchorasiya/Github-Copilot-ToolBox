@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 
-const SETTING = "GitHubCopilotToolBox.intelligence.autoScanMcpSkillsOnWorkspaceOpen";
+const SETTING = "copilot-toolbox.intelligence.autoScanMcpSkillsOnWorkspaceOpen";
 const DEBOUNCE_MS = 1200;
 
 /**

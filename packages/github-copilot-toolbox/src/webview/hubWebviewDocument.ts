@@ -30,8 +30,11 @@ export function getHubWebviewHtml(csp: string): string {
       background: var(--vscode-sideBar-background);
       padding: var(--pad);
       padding-bottom: 0;
+      /* Sidebar webviews sometimes give the iframe no explicit height; 100% collapses and flex:1 scroll area goes to 0px. */
+      min-height: 100vh;
+      box-sizing: border-box;
     }
-    .hub-header { flex-shrink: 0; margin-bottom: 8px; }
+    .hub-header { flex-shrink: 0; margin-bottom: 4px; }
     .pages {
       display: flex;
       gap: 2px;
@@ -39,7 +42,7 @@ export function getHubWebviewHtml(csp: string): string {
       border-radius: var(--r-lg);
       background: color-mix(in srgb, var(--vscode-input-background) 85%, transparent);
       border: 1px solid var(--border);
-      margin-bottom: 8px;
+      margin-bottom: 4px;
     }
     .page-btn {
       flex: 1;
@@ -101,7 +104,7 @@ export function getHubWebviewHtml(csp: string): string {
     .chip:hover { border-color: var(--vscode-focusBorder); background: var(--card-hover); }
     #scroll {
       flex: 1;
-      min-height: 0;
+      min-height: 120px;
       overflow-y: auto;
       padding-bottom: 12px;
     }
@@ -230,24 +233,22 @@ export function getHubWebviewHtml(csp: string): string {
     .kit-body .t { font-weight: 600; font-size: 12px; }
     .kit-body .p { font-size: 10px; color: var(--muted); margin-top: 3px; word-break: break-all; }
     .empty { font-size: 11px; color: var(--muted); padding: 10px 0; line-height: 1.4; }
-    .hub-foot {
+    .intel-foot-scan {
       flex-shrink: 0;
-      font-size: 10px;
-      color: var(--muted);
-      line-height: 1.35;
-      padding: 8px 0 4px;
-      border-top: 1px solid var(--border);
       margin-top: 4px;
+      margin-bottom: 0;
+      border-radius: var(--r-sm) var(--r-sm) 0 0;
+      padding: 10px 12px;
     }
-    .hub-foot code { font-size: 9px; }
     .catalog-card { border-left-color: color-mix(in srgb, var(--vscode-charts-purple, var(--vscode-symbolIcon-classForeground)) 55%, var(--vscode-focusBorder)); }
     .intel-auto-scan {
       display: none;
-      margin-bottom: 8px;
-      padding: 8px 10px;
+      margin-bottom: 6px;
+      margin-top: 0;
+      padding: 4px 6px 8px;
       border-radius: var(--r-sm);
-      border: 1px solid var(--border);
-      background: color-mix(in srgb, var(--vscode-editor-background) 88%, var(--vscode-sideBar-background));
+      border: none;
+      background: transparent;
     }
     .intel-auto-scan .auto-row {
       display: flex;
@@ -267,6 +268,239 @@ export function getHubWebviewHtml(csp: string): string {
       color: var(--vscode-foreground);
     }
     .intel-auto-label input { margin-top: 2px; flex-shrink: 0; }
+    .one-click-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      gap: 10px;
+      margin-top: 0;
+      padding: 12px 14px 12px 12px;
+      border-radius: var(--r-lg);
+      border: 1px solid color-mix(in srgb, var(--vscode-textLink-foreground) 40%, var(--border));
+      border-left: 4px solid var(--vscode-textLink-foreground);
+      background: linear-gradient(
+        165deg,
+        color-mix(in srgb, var(--vscode-textLink-foreground) 14%, var(--vscode-sideBar-background)) 0%,
+        color-mix(in srgb, var(--vscode-editor-background) 88%, var(--vscode-sideBar-background)) 50%,
+        color-mix(in srgb, var(--vscode-charts-blue, var(--vscode-textLink-foreground)) 10%, var(--vscode-sideBar-background)) 100%
+      );
+      box-shadow:
+        0 1px 0 color-mix(in srgb, var(--vscode-widget-shadow) 22%, transparent),
+        0 0 26px color-mix(in srgb, var(--vscode-textLink-foreground) 10%, transparent);
+    }
+    .ocs-cb-slot {
+      flex-shrink: 0;
+      width: 25px;
+      min-height: 1px;
+      align-self: flex-start;
+    }
+    .ocs-glyph {
+      position: relative;
+      flex-shrink: 0;
+      width: 46px;
+      height: 46px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: -2px 0 0 -2px;
+    }
+    .ocs-glyph-main {
+      font-size: 34px;
+      line-height: 1;
+      user-select: none;
+      filter: drop-shadow(0 0 14px color-mix(in srgb, var(--vscode-textLink-foreground) 70%, transparent));
+      animation: ocs-glyph-pulse 2.4s ease-in-out infinite;
+    }
+    .ocs-glyph-spark {
+      position: absolute;
+      right: -4px;
+      top: -2px;
+      font-size: 15px;
+      line-height: 1;
+      user-select: none;
+      filter: drop-shadow(0 0 6px color-mix(in srgb, var(--vscode-charts-yellow, #cca700) 80%, transparent));
+      animation: ocs-glyph-spark 1.5s ease-in-out infinite;
+    }
+    @keyframes ocs-glyph-pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+    }
+    @keyframes ocs-glyph-spark {
+      0%, 100% { transform: rotate(-10deg) scale(1); opacity: 1; }
+      50% { transform: rotate(8deg) scale(1.12); opacity: 0.9; }
+    }
+    .ocs-content {
+      flex: 1;
+      min-width: 160px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    button.btn.primary.ocs-pill-btn {
+      align-self: flex-start;
+      margin-top: 3px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-family: inherit;
+      border: 1px solid color-mix(in srgb, var(--vscode-textLink-foreground) 55%, var(--vscode-button-foreground));
+      box-shadow:
+        0 0 0 1px color-mix(in srgb, var(--vscode-textLink-foreground) 22%, transparent),
+        0 0 18px color-mix(in srgb, var(--vscode-textLink-foreground) 18%, transparent);
+    }
+    .ocs-desc {
+      margin: 0;
+      font-size: 11px;
+      line-height: 1.45;
+      color: var(--muted);
+    }
+    .ocs-desc strong { color: color-mix(in srgb, var(--vscode-foreground) 85%, var(--muted)); }
+    button.btn.icon-gear.ocs-gear {
+      align-self: flex-start;
+      margin-top: 2px;
+      border-color: color-mix(in srgb, var(--vscode-textLink-foreground) 45%, var(--border));
+      background: color-mix(in srgb, var(--vscode-textLink-foreground) 12%, var(--card));
+    }
+    button.btn.icon-gear.ocs-gear:hover {
+      border-color: var(--vscode-textLink-foreground);
+      background: color-mix(in srgb, var(--vscode-textLink-foreground) 22%, var(--card-hover));
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .ocs-glyph-main,
+      .ocs-glyph-spark {
+        animation: none;
+      }
+    }
+    .thinking-machine-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      gap: 10px;
+      margin-top: 10px;
+      padding: 12px 14px 12px 12px;
+      border-radius: var(--r-lg);
+      border: 1px solid color-mix(in srgb, var(--vscode-button-background) 38%, var(--border));
+      border-left: 4px solid var(--vscode-button-background);
+      background: linear-gradient(
+        165deg,
+        color-mix(in srgb, var(--vscode-button-background) 16%, var(--vscode-sideBar-background)) 0%,
+        color-mix(in srgb, var(--vscode-editor-background) 88%, var(--vscode-sideBar-background)) 48%,
+        color-mix(in srgb, var(--vscode-focusBorder) 8%, var(--vscode-sideBar-background)) 100%
+      );
+      box-shadow:
+        0 1px 0 color-mix(in srgb, var(--vscode-widget-shadow) 22%, transparent),
+        0 0 28px color-mix(in srgb, var(--vscode-button-background) 12%, transparent);
+    }
+    .tmm-label {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      flex: 1;
+      min-width: 160px;
+      cursor: pointer;
+      color: var(--vscode-foreground);
+    }
+    .tmm-cb {
+      margin-top: 6px;
+      flex-shrink: 0;
+      width: 15px;
+      height: 15px;
+      accent-color: var(--vscode-button-background);
+    }
+    .tmm-body {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      min-width: 0;
+    }
+    .tmm-title-pill {
+      display: inline-block;
+      align-self: flex-start;
+      margin-top: 3px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: var(--vscode-button-background);
+      color: var(--vscode-button-foreground);
+      border: 1px solid color-mix(in srgb, var(--vscode-button-foreground) 22%, transparent);
+      box-shadow: 0 0 0 1px color-mix(in srgb, var(--vscode-button-background) 35%, transparent);
+    }
+    .tmm-desc {
+      font-size: 11px;
+      line-height: 1.45;
+      color: var(--muted);
+    }
+    .tmm-desc strong { color: color-mix(in srgb, var(--vscode-foreground) 88%, var(--muted)); }
+    button.btn.icon-gear.tmm-gear {
+      align-self: flex-start;
+      margin-top: 2px;
+      border-color: color-mix(in srgb, var(--vscode-button-background) 45%, var(--border));
+      background: color-mix(in srgb, var(--vscode-button-background) 12%, var(--card));
+    }
+    button.btn.icon-gear.tmm-gear:hover {
+      border-color: var(--vscode-button-background);
+      background: color-mix(in srgb, var(--vscode-button-background) 22%, var(--card-hover));
+    }
+    .tmm-glyph {
+      position: relative;
+      flex-shrink: 0;
+      width: 46px;
+      height: 46px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: -2px 0 0 -2px;
+    }
+    .tmm-glyph-main {
+      font-size: 38px;
+      line-height: 1;
+      user-select: none;
+      filter: drop-shadow(0 0 16px color-mix(in srgb, var(--vscode-button-background) 75%, transparent))
+        drop-shadow(0 2px 8px color-mix(in srgb, var(--vscode-focusBorder) 40%, transparent));
+      animation: tmm-glyph-pulse 2.6s ease-in-out infinite;
+    }
+    .tmm-glyph-bolt {
+      position: absolute;
+      right: -6px;
+      top: -4px;
+      font-size: 17px;
+      line-height: 1;
+      user-select: none;
+      filter: drop-shadow(0 0 8px color-mix(in srgb, var(--vscode-editorWarning-foreground, #cca700) 85%, transparent));
+      animation: tmm-glyph-zap 1.4s ease-in-out infinite;
+    }
+    @keyframes tmm-glyph-pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.09); }
+    }
+    @keyframes tmm-glyph-zap {
+      0%, 100% { transform: rotate(-12deg) scale(1); opacity: 1; }
+      50% { transform: rotate(10deg) scale(1.15); opacity: 0.92; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .tmm-glyph-main,
+      .tmm-glyph-bolt {
+        animation: none;
+      }
+    }
+    button.btn.icon-gear {
+      padding: 8px 14px;
+      font-size: 20px;
+      line-height: 1;
+      min-width: 44px;
+      border-radius: var(--r-sm);
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: inherit;
+      cursor: pointer;
+    }
+    button.btn.icon-gear:hover { border-color: var(--vscode-focusBorder); background: var(--card-hover); }
     .hygiene-actions {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -305,13 +539,32 @@ export function getHubWebviewHtml(csp: string): string {
       <button type="button" class="sub-btn active" data-sub="browse">Browse</button>
       <button type="button" class="sub-btn" data-sub="installed">Installed</button>
     </nav>
-    <div id="intel-auto-scan" class="intel-auto-scan" aria-label="Auto MCP and skills scan">
-      <div class="auto-row">
-        <label class="intel-auto-label" for="intel-auto-scan-cb">
-          <input type="checkbox" id="intel-auto-scan-cb" />
-          <span>When a workspace folder opens: auto-open MCP &amp; Skills awareness, refresh hub data, and update <code>.github/copilot-instructions.md</code> with a replaceable MCP/skills block (also when you run the scan with this on).</span>
+    <div id="intel-auto-scan" class="intel-auto-scan" aria-label="Intelligence quick actions">
+      <div class="one-click-row" aria-label="One Click Setup">
+        <div class="ocs-glyph" title="One Click Setup" aria-hidden="true">
+          <span class="ocs-glyph-main">⚡</span>
+          <span class="ocs-glyph-spark">✨</span>
+        </div>
+        <div class="ocs-cb-slot" aria-hidden="true"></div>
+        <div class="ocs-content">
+          <button type="button" class="btn primary ocs-pill-btn" id="one-click-setup-run">One Click Setup</button>
+          <p class="ocs-desc">Runs your configured steps using <strong>bundled Node CLIs</strong> (no npx) — MCP port, memory bank, Cursor rules, merges, scans, and optional Claude cloud-agent flag (see <strong>Settings → One Click Setup</strong>). You confirm responsibility before anything runs.</p>
+        </div>
+        <button type="button" class="btn icon-gear ocs-gear" id="one-click-setup-settings" title="One Click Setup defaults" aria-label="One Click Setup settings">⚙</button>
+      </div>
+      <div class="thinking-machine-row" aria-label="Thinking Machine Mode">
+        <div class="tmm-glyph" title="Thinking Machine Mode" aria-hidden="true">
+          <span class="tmm-glyph-main">🧠</span>
+          <span class="tmm-glyph-bolt">⚡</span>
+        </div>
+        <label class="tmm-label" for="thinking-machine-mode-cb">
+          <input type="checkbox" id="thinking-machine-mode-cb" class="tmm-cb" />
+          <span class="tmm-body">
+            <span class="tmm-title-pill">Thinking Machine Mode</span>
+            <span class="tmm-desc">Session priming from this hub and the Command Palette — MCP &amp; Skills awareness plus context pack. First time you enable it, confirm <strong>Engage</strong> in the dialog; <strong>Cancel</strong> turns the mode off.</span>
+          </span>
         </label>
-        <button type="button" class="btn primary" id="intel-scan-now">Scan now</button>
+        <button type="button" class="btn icon-gear tmm-gear" id="thinking-machine-settings" title="Thinking Machine Mode settings" aria-label="Thinking Machine Mode settings">⚙</button>
       </div>
     </div>
     <div class="search-wrap" id="search-wrap">
@@ -322,14 +575,19 @@ export function getHubWebviewHtml(csp: string): string {
       <button type="button" class="chip" data-cmd="workbench.mcp.addConfiguration">Add server</button>
       <button type="button" class="chip" data-cmd="workbench.mcp.listServer">List (native)</button>
       <button type="button" class="chip" data-cmd="GitHubCopilotToolBox.portCursorMcp">Port Cursor → VS Code</button>
-      <button type="button" class="chip" data-cmd="GitHubCopilotToolBox.mcpBrowseRegistry">@mcp registry</button>
       <button type="button" class="chip" data-cmd="dummy-refresh">Refresh</button>
     </div>
   </div>
   <div id="scroll"><div id="root"></div></div>
-  <footer class="hub-foot">
-    Skills: Copilot does not auto-load — use Open / Reveal; <strong>Turn OFF</strong> hides the skill in this hub (folder stays on disk) until <strong>Turn ON</strong>; <strong>Delete…</strong> moves the skill folder to trash (known roots only). MCP: <strong>Turn OFF</strong> removes the server from <code>mcp.json</code> and stashes its config in this extension until <strong>Turn ON</strong>; <strong>Remove</strong> deletes stash and/or mcp.json entry. Project skills: <code>.github/skills</code>, <code>.claude/skills</code>, <code>.agents/skills</code>, <code>.cursor/skills</code> · User: <code>~/.copilot/skills</code>, <code>~/.claude/skills</code>, <code>~/.agents/skills</code>, <code>~/.cursor/skills</code>.
-  </footer>
+  <div id="intel-foot-scan" class="intel-auto-scan intel-foot-scan" aria-label="Auto MCP and skills scan">
+    <div class="auto-row">
+      <label class="intel-auto-label" for="intel-auto-scan-cb">
+        <input type="checkbox" id="intel-auto-scan-cb" />
+        <span>When checked: after a workspace opens (debounced), save MCP &amp; Skills awareness to <code>.github/copilot-toolbox-mcp-skills-awareness.md</code> (overwritten), refresh hub, and update the MCP/skills block in <code>.github/copilot-instructions.md</code> — no editor tab. Re-runs on reopen so new MCP/skills are reflected. <strong>Scan now</strong> does the same immediately and always refreshes <code>copilot-instructions.md</code>. Use Copilot Chat in <strong>Agent</strong> mode with MCP trusted/started for live tools (e.g. Confluence → Confluence MCP).</span>
+      </label>
+      <button type="button" class="btn primary" id="intel-scan-now">Scan now</button>
+    </div>
+  </div>
   <script>
 (function () {
   var vscode = acquireVsCodeApi();
@@ -344,16 +602,22 @@ export function getHubWebviewHtml(csp: string): string {
 
   var TOOL_GROUPS = [
     {
-      title: "Intelligence",
+      title: "Thinking Machine Mode",
       items: [
+        { ic: "\\u26A1", t: "One Click Setup", d: "Configured bridges + scans (confirm in modal)", c: "GitHubCopilotToolBox.runOneClickSetup" },
+        { ic: "\\uD83D\\uDE80", t: "Prime session", d: "Awareness scan + context pack (enable Thinking Machine Mode first)", c: "GitHubCopilotToolBox.runThinkingMachinePriming" },
         { ic: "\\uD83D\\uDCE6", t: "Build context pack", d: "Structured bundle for Copilot Chat (copy)", c: "GitHubCopilotToolBox.buildContextPack" },
         { ic: "\\uD83D\\uDEE1", t: "Readiness summary", d: "Check workspace + instructions + MCP wiring", c: "GitHubCopilotToolBox.showIntelligenceReadiness" },
-        { ic: "\\u2699", t: "Intelligence settings", d: "Git, diagnostics, notepad defaults", c: "GitHubCopilotToolBox.openIntelligenceSettings" },
-        { ic: "\\uD83D\\uDD17", t: "MCP port repo (GitHub)", d: "Github-Copilot-ToolBox", c: "GitHubCopilotToolBox.openIntelligenceRepoMcpPort" },
-        { ic: "\\uD83D\\uDD17", t: "Memory bank repo (GitHub)", d: "Github-Copilot-Memory-Bank", c: "GitHubCopilotToolBox.openIntelligenceRepoMemoryBank" },
-        { ic: "\\uD83D\\uDD17", t: "Rules converter repo (GitHub)", d: "Github-Copilot-Cursor-Rules-Converter", c: "GitHubCopilotToolBox.openIntelligenceRepoRulesConverter" },
+        { ic: "\\uD83D\\uDCDD", t: "Context pack defaults", d: "Git, diagnostics, notepad, open Chat after pack", c: "GitHubCopilotToolBox.openIntelligenceSettings" },
+        { ic: "\\uD83E\\uDD16", t: "Enable Claude agent (Chat)", d: "Sets github.copilot.chat.claudeAgent.enabled (User)", c: "GitHubCopilotToolBox.enableClaudeCopilotChatAgent" },
+        { ic: "\\u2139\\uFE0F", t: "Claude agent prerequisites", d: "Plan, org Partner Agents, GitHub, VS Code", c: "GitHubCopilotToolBox.showClaudeCopilotAgentPrerequisites" },
+        { ic: "\\uD83D\\uDD17", t: "Toolbox CLI repos (GitHub)", d: "MCP port, memory bank, rules converter — pick in quick pick", c: "GitHubCopilotToolBox.openIntelligenceToolboxRepos" },
+        { ic: "\\uD83D\\uDCC1", t: "Port MCP (bundled CLI)", d: "Same as npx port; runs Node CLI from the extension", c: "GitHubCopilotToolBox.manualPortCursorMcpWithoutNpx" },
+        { ic: "\\uD83D\\uDCD6", t: "Memory bank (bundled CLI)", d: "Same as npx init; runs Node CLI from the extension", c: "GitHubCopilotToolBox.memoryBankWithoutNpx" },
+        { ic: "\\uD83D\\uDCC4", t: "Cursor rules (bundled CLI)", d: "Same as npx converter; runs Node CLI from the extension", c: "GitHubCopilotToolBox.cursorRulesToCopilotWithoutNpx" },
+        { ic: "\\uD83D\\uDCC2", t: "Reveal skill folders", d: ".cursor/skills and .agents/skills", c: "GitHubCopilotToolBox.revealSkillFoldersWithoutNpx" },
         { ic: "\\uD83D\\uDCE5", t: "Migrate skills .cursor → .agents", d: "SKILL.md folders to .agents/skills (copy or move)", c: "GitHubCopilotToolBox.migrateSkillsCursorToAgents" },
-        { ic: "\\uD83D\\uDD0D", t: "Scan MCP & Skills awareness", d: "Open report: configured MCP + local SKILL.md (how Copilot can use them)", c: "GitHubCopilotToolBox.showMcpSkillsAwareness" },
+        { ic: "\\uD83D\\uDD0D", t: "Scan MCP & Skills awareness", d: "Save to .github + update copilot-instructions (optional open from toast)", c: "GitHubCopilotToolBox.showMcpSkillsAwareness" },
         { ic: "\\uD83D\\uDD0D", t: "Copilot/MCP config scan", d: "Heuristic scan → Output (mcp.json, instructions)", c: "GitHubCopilotToolBox.copilotToolboxConfigScan" },
         { ic: "\\uD83D\\uDCD3", t: "Append notepad → memory-bank", d: "Preview then write to memory-bank/**/*.md", c: "GitHubCopilotToolBox.appendNotepadToMemoryBank" },
         { ic: "\\u2728", t: "Create SKILL.md stub", d: ".github/skills/<name>/SKILL.md", c: "GitHubCopilotToolBox.createSkillStub" },
@@ -395,7 +659,7 @@ export function getHubWebviewHtml(csp: string): string {
     {
       title: "Workspace setup",
       items: [
-        { ic: "\\uD83E\\uDDE9", t: "Workspace wizard", d: "Cursor → Copilot checklist", c: "GitHubCopilotToolBox.workspaceSetupWizard" },
+        { ic: "\\u2699", t: "One Click settings", d: "Which steps run, MCP port mode, memory bank modes", c: "GitHubCopilotToolBox.openOneClickSetupSettings" },
         { ic: "\\uD83E\\uDDE0", t: "Init memory bank", d: "npx Copilot memory bank", c: "GitHubCopilotToolBox.initMemoryBank" }
       ]
     },
@@ -410,6 +674,13 @@ export function getHubWebviewHtml(csp: string): string {
 
   function $(sel) { return document.querySelector(sel); }
   function norm(s) { return (s || "").toLowerCase(); }
+  function qTrim() {
+    var inp = $("#q");
+    if (!inp || typeof inp.value !== "string") {
+      return "";
+    }
+    return inp.value.trim();
+  }
 
   function setSearchPlaceholder() {
     var inp = $("#q");
@@ -426,12 +697,24 @@ export function getHubWebviewHtml(csp: string): string {
   }
 
   function updateChrome() {
+    var subEl = $("#subpages");
+    var searchEl = $("#search-wrap");
+    var chipsEl = $("#mcp-chips");
+    if (!subEl || !searchEl || !chipsEl) {
+      return;
+    }
     var showSub = page === "mcp" || page === "skills";
-    $("#subpages").style.display = showSub ? "flex" : "none";
-    $("#search-wrap").style.display = page === "intel" ? "none" : "block";
-    $("#mcp-chips").style.display = page === "mcp" && sub === "browse" ? "flex" : "none";
+    subEl.style.display = showSub ? "flex" : "none";
+    searchEl.style.display = page === "intel" ? "none" : "block";
+    chipsEl.style.display = page === "mcp" && sub === "browse" ? "flex" : "none";
     var intelAuto = $("#intel-auto-scan");
-    if (intelAuto) intelAuto.style.display = page === "intel" ? "block" : "none";
+    if (intelAuto) {
+      intelAuto.style.display = page === "intel" ? "block" : "none";
+    }
+    var intelFootScan = $("#intel-foot-scan");
+    if (intelFootScan) {
+      intelFootScan.style.display = page === "intel" ? "block" : "none";
+    }
     setSearchPlaceholder();
   }
 
@@ -439,6 +722,12 @@ export function getHubWebviewHtml(csp: string): string {
     var cb = $("#intel-auto-scan-cb");
     if (!cb || !state) return;
     cb.checked = state.autoScanMcpSkillsOnWorkspaceOpen === true;
+  }
+
+  function syncThinkingMachineModeCheckbox() {
+    var tcb = $("#thinking-machine-mode-cb");
+    if (!tcb || !state) return;
+    tcb.checked = state.thinkingMachineModeEnabled === true;
   }
 
   function scheduleRegistry(append) {
@@ -451,7 +740,7 @@ export function getHubWebviewHtml(csp: string): string {
 
   function runRegistrySearch(append) {
     if (page !== "mcp" || sub !== "browse") return;
-    var q = $("#q").value.trim();
+    var q = qTrim();
     if (!append) {
       reg.generation++;
     }
@@ -494,7 +783,7 @@ export function getHubWebviewHtml(csp: string): string {
     if (page !== "skills" || sub !== "browse") return;
     skillRm.generation++;
     var gen = skillRm.generation;
-    var q = $("#q").value.trim();
+    var q = qTrim();
     if (!q) {
       skillRm.items = [];
       skillRm.loading = false;
@@ -518,7 +807,7 @@ export function getHubWebviewHtml(csp: string): string {
 
   function appendRegistryCatalog(rootEl) {
     rootEl.appendChild(el("div", "section-title", "Official MCP registry"));
-    var qv = $("#q").value.trim();
+    var qv = qTrim();
     if (!qv && !reg.loading && reg.servers.length === 0) {
       rootEl.appendChild(el("div", "empty", "Use the search box to query the public MCP registry, then click Install to open VS Code\u2019s MCP setup."));
       return;
@@ -567,7 +856,7 @@ export function getHubWebviewHtml(csp: string): string {
 
   function appendSkillRemoteCatalog(rootEl) {
     rootEl.appendChild(el("div", "section-title", "skills.sh catalog"));
-    var qv = $("#q").value.trim();
+    var qv = qTrim();
     if (!qv && !skillRm.loading && skillRm.items.length === 0) {
       rootEl.appendChild(el("div", "empty", "Search to browse skills from skills.sh. Install runs npx skills add (often targets Cursor). Local SKILL.md folders below are listed for browsing only — they are not registered with Copilot."));
       return;
@@ -614,7 +903,7 @@ export function getHubWebviewHtml(csp: string): string {
         b.classList.toggle("active", b.getAttribute("data-page") === page);
       });
       updateChrome();
-      var qq = $("#q").value.trim();
+      var qq = qTrim();
       if (page === "mcp" && sub === "browse" && qq) scheduleRegistry(false);
       if (page === "skills" && sub === "browse" && qq) scheduleSkillRemote();
       render();
@@ -627,29 +916,34 @@ export function getHubWebviewHtml(csp: string): string {
         b.classList.toggle("active", b.getAttribute("data-sub") === sub);
       });
       updateChrome();
-      var qq = $("#q").value.trim();
+      var qq = qTrim();
       if (page === "mcp" && sub === "browse" && qq) scheduleRegistry(false);
       if (page === "skills" && sub === "browse" && qq) scheduleSkillRemote();
       render();
     });
   });
-  $("#q").addEventListener("input", function () {
-    if (page === "workspace") {
-      filterWorkspaceTools();
-      return;
-    }
-    if (page === "mcp" && sub === "browse") {
-      scheduleRegistry(false);
-      return;
-    }
-    if (page === "skills" && sub === "browse") {
-      scheduleSkillRemote();
-      return;
-    }
-    render();
-  });
+  var qInput = $("#q");
+  if (qInput) {
+    qInput.addEventListener("input", function () {
+      if (page === "workspace") {
+        filterWorkspaceTools();
+        return;
+      }
+      if (page === "mcp" && sub === "browse") {
+        scheduleRegistry(false);
+        return;
+      }
+      if (page === "skills" && sub === "browse") {
+        scheduleSkillRemote();
+        return;
+      }
+      render();
+    });
+  }
 
-  document.getElementById("scroll").addEventListener("click", function (e) {
+  var scrollEl = document.getElementById("scroll");
+  if (scrollEl) {
+    scrollEl.addEventListener("click", function (e) {
     var ir = e.target.closest("button[data-reg-idx]");
     if (ir) {
       var i = parseInt(ir.getAttribute("data-reg-idx"), 10);
@@ -677,6 +971,7 @@ export function getHubWebviewHtml(csp: string): string {
       });
     }
   });
+  }
 
   document.body.addEventListener("click", function (e) {
     var btn = e.target.closest("button[data-cmd]");
@@ -700,6 +995,30 @@ export function getHubWebviewHtml(csp: string): string {
     if (sn) {
       sn.addEventListener("click", function () {
         vscode.postMessage({ type: "runCommand", command: "GitHubCopilotToolBox.showMcpSkillsAwareness" });
+      });
+    }
+    var ocs = $("#one-click-setup-settings");
+    if (ocs) {
+      ocs.addEventListener("click", function () {
+        vscode.postMessage({ type: "runCommand", command: "GitHubCopilotToolBox.openOneClickSetupSettings" });
+      });
+    }
+    var ocr = $("#one-click-setup-run");
+    if (ocr) {
+      ocr.addEventListener("click", function () {
+        vscode.postMessage({ type: "runCommand", command: "GitHubCopilotToolBox.runOneClickSetup" });
+      });
+    }
+    var tm = $("#thinking-machine-mode-cb");
+    if (tm) {
+      tm.addEventListener("change", function () {
+        vscode.postMessage({ type: "setThinkingMachineModeEnabled", value: tm.checked });
+      });
+    }
+    var tms = $("#thinking-machine-settings");
+    if (tms) {
+      tms.addEventListener("click", function () {
+        vscode.postMessage({ type: "runCommand", command: "GitHubCopilotToolBox.openThinkingMachineModeSettings" });
       });
     }
   })();
@@ -742,7 +1061,7 @@ export function getHubWebviewHtml(csp: string): string {
   });
 
   function filterText(items, getStr) {
-    var q = norm($("#q").value);
+    var q = norm(qTrim());
     if (!q) return items;
     return items.filter(function (it) { return norm(getStr(it)).indexOf(q) !== -1; });
   }
@@ -755,7 +1074,7 @@ export function getHubWebviewHtml(csp: string): string {
   }
 
   function filterWorkspaceTools() {
-    var q = norm($("#q").value);
+    var q = norm(qTrim());
     document.querySelectorAll(".tile").forEach(function (tile) {
       var hay = norm(tile.getAttribute("data-filter") || "");
       tile.style.display = !q || hay.indexOf(q) !== -1 ? "flex" : "none";
@@ -781,9 +1100,9 @@ export function getHubWebviewHtml(csp: string): string {
     card.appendChild(inner);
     var rowBtns = el("div", "row");
     if (row.isWizard) {
-      var w = el("button", "btn primary", "Run wizard");
+      var w = el("button", "btn primary", "One Click Setup");
       w.addEventListener("click", function () {
-        vscode.postMessage({ type: "runCommand", command: "GitHubCopilotToolBox.workspaceSetupWizard" });
+        vscode.postMessage({ type: "runCommand", command: "GitHubCopilotToolBox.runOneClickSetup" });
       });
       rowBtns.appendChild(w);
     } else if (row.present && row.openUri) {
@@ -894,28 +1213,31 @@ export function getHubWebviewHtml(csp: string): string {
 
   function renderContextHygiene() {
     var hy = state && state.hygiene;
+    $("#root").appendChild(el("div", "section-title", "Context hygiene"));
+    if (hy) {
+      var snap = el("div", "callout");
+      snap.appendChild(el("h4", null, "Snapshot"));
+      var line1 =
+        "Workspace MCP servers: " +
+        hy.workspaceMcpServerCount +
+        ". User MCP servers: " +
+        hy.userMcpServerCount +
+        ". .github/copilot-instructions.md: " +
+        (hy.copilotInstructionsMissing ? "missing." : hy.copilotInstructionsLines + " line(s).");
+      snap.appendChild(el("p", null, line1));
+      snap.appendChild(
+        el(
+          "p",
+          null,
+          "These counts come from local config files only — not chat token usage or live MCP runtime state."
+        )
+      );
+      $("#root").appendChild(snap);
+    }
+
     if (!hy) {
       return;
     }
-    $("#root").appendChild(el("div", "section-title", "Context hygiene"));
-    var snap = el("div", "callout");
-    snap.appendChild(el("h4", null, "Snapshot"));
-    var line1 =
-      "Workspace MCP servers: " +
-      hy.workspaceMcpServerCount +
-      ". User MCP servers: " +
-      hy.userMcpServerCount +
-      ". .github/copilot-instructions.md: " +
-      (hy.copilotInstructionsMissing ? "missing." : hy.copilotInstructionsLines + " line(s).");
-    snap.appendChild(el("p", null, line1));
-    snap.appendChild(
-      el(
-        "p",
-        null,
-        "These counts come from local config files only — not chat token usage or live MCP runtime state."
-      )
-    );
-    $("#root").appendChild(snap);
 
     var grid = el("div", "hygiene-actions");
     var actions = [
@@ -976,33 +1298,38 @@ export function getHubWebviewHtml(csp: string): string {
       {
         ic: "\\uD83D\\uDD0C",
         t: "Port Cursor MCP",
-        p: "npx package cursor-mcp-to-github-copilot-port: Cursor ~/.cursor/mcp.json to VS Code mcp.json. Source: amitchorasiya/Github-Copilot-ToolBox on GitHub.",
+        p: "cursor-mcp-to-github-copilot-port: Cursor ~/.cursor/mcp.json to VS Code mcp.json. Without npx runs the same CLI bundled with this extension (no npm fetch).",
         c: "GitHubCopilotToolBox.portCursorMcp",
         b: "Run npx port",
-        r: "GitHubCopilotToolBox.openIntelligenceRepoMcpPort"
+        manualCmd: "GitHubCopilotToolBox.manualPortCursorMcpWithoutNpx",
+        manualLabel: "Without npx"
       },
       {
         ic: "\\uD83E\\uDDE0",
         t: "GitHub Copilot memory bank",
-        p: "npx package github-copilot-memory-bank: scaffold memory-bank/ and merge .github/copilot-instructions.md. Source: amitchorasiya/Github-Copilot-Memory-Bank on GitHub.",
+        p: "github-copilot-memory-bank: scaffold memory-bank/ and merge .github/copilot-instructions.md. Without npx runs the bundled Node CLI.",
         c: "GitHubCopilotToolBox.initMemoryBank",
         b: "Run npx init",
-        r: "GitHubCopilotToolBox.openIntelligenceRepoMemoryBank"
+        manualCmd: "GitHubCopilotToolBox.memoryBankWithoutNpx",
+        manualLabel: "Without npx"
       },
       {
         ic: "\\uD83D\\uDD04",
         t: "Cursor rules to Copilot",
-        p: "npx package cursor-rules-to-github-copilot: .cursor/rules to Copilot instruction files under .github/. Source: amitchorasiya/Github-Copilot-Cursor-Rules-Converter on GitHub.",
+        p: "cursor-rules-to-github-copilot: .cursor/rules to Copilot instruction files under .github/. Without npx runs the bundled Node CLI.",
         c: "GitHubCopilotToolBox.syncCursorRules",
         b: "Run converter",
-        r: "GitHubCopilotToolBox.openIntelligenceRepoRulesConverter"
+        manualCmd: "GitHubCopilotToolBox.cursorRulesToCopilotWithoutNpx",
+        manualLabel: "Without npx"
       },
       {
         ic: "\\uD83D\\uDCE5",
         t: "Migrate skills to .agents",
         p: "Copy or move SKILL.md skill folders from .cursor/skills to .agents/skills (workspace and/or home). Editor-side layout only; does not register skills with Copilot.",
         c: "GitHubCopilotToolBox.migrateSkillsCursorToAgents",
-        b: "Run migration"
+        b: "Run migration",
+        manualCmd: "GitHubCopilotToolBox.revealSkillFoldersWithoutNpx",
+        manualLabel: "Open folders"
       }
     ];
     bridges.forEach(function (h0) {
@@ -1016,12 +1343,12 @@ export function getHubWebviewHtml(csp: string): string {
         vscode.postMessage({ type: "runCommand", command: h0.c });
       });
       row.appendChild(b1);
-      if (h0.r) {
-        var b2 = el("button", "btn", "GitHub");
-        b2.addEventListener("click", function () {
-          vscode.postMessage({ type: "runCommand", command: h0.r });
+      if (h0.manualCmd) {
+        var b3 = el("button", "btn", h0.manualLabel || "Without npx");
+        b3.addEventListener("click", function () {
+          vscode.postMessage({ type: "runCommand", command: h0.manualCmd });
         });
-        row.appendChild(b2);
+        row.appendChild(b3);
       }
       h.appendChild(row);
       $("#root").appendChild(h);
@@ -1030,10 +1357,11 @@ export function getHubWebviewHtml(csp: string): string {
     $("#root").appendChild(el("div", "section-title", "Context & readiness"));
 
     var heroes = [
-      { ic: "\\uD83D\\uDD0D", t: "Scan MCP & Skills awareness", p: "Opens a markdown report of mcp.json servers and local SKILL.md skill folders — with notes on Agent/MCP tools vs reference-only skills.", c: "GitHubCopilotToolBox.showMcpSkillsAwareness", b: "Run scan" },
+      { ic: "\\uD83D\\uDE80", t: "Prime session", p: "Optional MCP & Skills scan, then context pack to clipboard (enable Thinking Machine Mode in settings first).", c: "GitHubCopilotToolBox.runThinkingMachinePriming", b: "Prime" },
+      { ic: "\\uD83D\\uDD0D", t: "Scan MCP & Skills awareness", p: "Writes .github/copilot-toolbox-mcp-skills-awareness.md and refreshes the MCP/skills block in .github/copilot-instructions.md. No tab unless you choose Open report on the toast.", c: "GitHubCopilotToolBox.showMcpSkillsAwareness", b: "Run scan" },
       { ic: "\\uD83D\\uDCE6", t: "Context pack for Chat", p: "Gathers workspace signals you choose (files, git, diagnostics) and copies a pack for Copilot.", c: "GitHubCopilotToolBox.buildContextPack", b: "Build pack" },
       { ic: "\\uD83D\\uDEE1", t: "Readiness summary", p: "Markdown checklist: instructions, rules, MCP, and suggested next commands.", c: "GitHubCopilotToolBox.showIntelligenceReadiness", b: "Run readiness" },
-      { ic: "\\u2699", t: "Tune defaults", p: "Pre-select git, diagnostics, notepad, and chat follow-ups in the pack flow.", c: "GitHubCopilotToolBox.openIntelligenceSettings", b: "Open settings" }
+      { ic: "\\uD83D\\uDCDD", t: "Context pack defaults", p: "Pre-select git, diagnostics, notepad, and open Chat after the interactive pack flow.", c: "GitHubCopilotToolBox.openIntelligenceSettings", b: "Open settings" }
     ];
     heroes.forEach(function (h0) {
       var h = el("div", "hero");
@@ -1048,7 +1376,7 @@ export function getHubWebviewHtml(csp: string): string {
       $("#root").appendChild(h);
     });
 
-    $("#root").appendChild(el("div", "empty", "Tip: run \u201cIntelligence\u201d actions from the Command Palette anytime — they live here for quick access."));
+    $("#root").appendChild(el("div", "empty", "Tip: run Thinking Machine Mode actions from the Command Palette anytime — they live here for quick access."));
   }
 
   function renderWorkspace() {
@@ -1093,6 +1421,9 @@ export function getHubWebviewHtml(csp: string): string {
 
   function render() {
     var root = $("#root");
+    if (!root) {
+      return;
+    }
     root.textContent = "";
     updateChrome();
     if (!state) {
@@ -1100,6 +1431,21 @@ export function getHubWebviewHtml(csp: string): string {
       return;
     }
     syncIntelAutoScanCheckbox();
+    syncThinkingMachineModeCheckbox();
+
+    if (state.hubLoadError) {
+      var warn = el("div", "callout");
+      warn.style.borderLeftColor = "var(--vscode-inputValidation-warningBorder, var(--vscode-editorWarning-foreground))";
+      warn.appendChild(el("h4", null, "Could not load hub data"));
+      warn.appendChild(
+        el(
+          "p",
+          null,
+          String(state.hubLoadError) + " You can still use tabs below; try Refresh or reload the window."
+        )
+      );
+      root.appendChild(warn);
+    }
 
     if (page === "intel") {
       renderIntel();
@@ -1202,8 +1548,26 @@ export function getHubWebviewHtml(csp: string): string {
     }
   }
 
-  updateChrome();
-  vscode.postMessage({ type: "ready" });
+  try {
+    updateChrome();
+    render();
+  } catch (bootErr) {
+    try {
+      var rootEl = document.getElementById("root");
+      var em = bootErr && bootErr.message ? bootErr.message : String(bootErr);
+      if (rootEl) {
+        rootEl.textContent = "";
+        var pe = document.createElement("div");
+        pe.className = "empty";
+        pe.textContent = "Hub failed to start: " + em;
+        rootEl.appendChild(pe);
+      }
+    } catch (_) {}
+  } finally {
+    try {
+      vscode.postMessage({ type: "ready" });
+    } catch (_) {}
+  }
 })();
   </script>
 </body>

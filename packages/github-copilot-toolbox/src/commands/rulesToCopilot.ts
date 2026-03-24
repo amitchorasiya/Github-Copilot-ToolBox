@@ -2,6 +2,25 @@ import * as vscode from "vscode";
 import * as mcpPaths from "../mcpPaths";
 import { runNpxInTerminal } from "../terminal/runNpx";
 
+/** Sync Cursor rules without quick picks (One Click Setup). */
+export function runSyncCursorRulesWithOptions(
+  folder: vscode.WorkspaceFolder,
+  tag: string,
+  dryRun: boolean
+): void {
+  const args = ["--cwd", folder.uri.fsPath];
+  if (dryRun) {
+    args.push("--dry-run");
+  }
+  runNpxInTerminal(
+    folder.uri.fsPath,
+    "cursor-rules-to-github-copilot",
+    tag,
+    args,
+    "Cursor rules → Copilot"
+  );
+}
+
 export async function syncCursorRules(): Promise<void> {
   const folder = mcpPaths.getPrimaryWorkspaceFolder();
   if (!folder) {
@@ -22,16 +41,5 @@ export async function syncCursorRules(): Promise<void> {
     return;
   }
 
-  const args = ["--cwd", folder.uri.fsPath];
-  if (pick.value === "dry") {
-    args.push("--dry-run");
-  }
-
-  runNpxInTerminal(
-    folder.uri.fsPath,
-    "cursor-rules-to-github-copilot",
-    tag,
-    args,
-    "Cursor rules → Copilot"
-  );
+  runSyncCursorRulesWithOptions(folder, tag, pick.value === "dry");
 }

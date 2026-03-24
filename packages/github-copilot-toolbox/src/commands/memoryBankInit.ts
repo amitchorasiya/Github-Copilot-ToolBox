@@ -2,6 +2,38 @@ import * as vscode from "vscode";
 import * as mcpPaths from "../mcpPaths";
 import { runNpxInTerminal } from "../terminal/runNpx";
 
+export type InitMemoryBankNpxOptions = {
+  dryRun: boolean;
+  cursorRules: boolean;
+  force: boolean;
+};
+
+/** Init memory bank via npx without quick picks (One Click Setup). */
+export function runInitMemoryBankWithOptions(
+  folder: vscode.WorkspaceFolder,
+  tag: string,
+  opts: InitMemoryBankNpxOptions
+): void {
+  const flags: string[] = [];
+  if (opts.dryRun) {
+    flags.push("--dry-run");
+  }
+  if (opts.cursorRules) {
+    flags.push("--cursor-rules");
+  }
+  if (opts.force) {
+    flags.push("--force");
+  }
+  const args = ["init", "--cwd", folder.uri.fsPath, ...flags];
+  runNpxInTerminal(
+    folder.uri.fsPath,
+    "github-copilot-memory-bank",
+    tag,
+    args,
+    "GitHub Copilot memory bank"
+  );
+}
+
 export async function initMemoryBank(): Promise<void> {
   const folder = mcpPaths.getPrimaryWorkspaceFolder();
   if (!folder) {
@@ -66,12 +98,9 @@ export async function initMemoryBank(): Promise<void> {
     flags.push("--force");
   }
 
-  const args = ["init", "--cwd", folder.uri.fsPath, ...flags];
-  runNpxInTerminal(
-    folder.uri.fsPath,
-    "github-copilot-memory-bank",
-    tag,
-    args,
-    "GitHub Copilot memory bank"
-  );
+  runInitMemoryBankWithOptions(folder, tag, {
+    dryRun: dryPick.value,
+    cursorRules: cursorRulesPick.value,
+    force: forcePick.value,
+  });
 }

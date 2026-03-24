@@ -1,6 +1,7 @@
 import * as os from "node:os";
 import * as path from "node:path";
 import * as vscode from "vscode";
+import { TOOLBOX_SETTINGS_PREFIX } from "./toolboxSettings";
 
 export function userMcpJsonPath(insiders: boolean): string {
   const home = os.homedir();
@@ -27,6 +28,6 @@ export function getPrimaryWorkspaceFolder(): vscode.WorkspaceFolder | undefined 
 }
 
 export function npxTag(config: vscode.WorkspaceConfiguration): string {
-  const t = config.get<string>("GitHubCopilotToolBox.npxTag", "latest").trim();
+  const t = config.get<string>(`${TOOLBOX_SETTINGS_PREFIX}.npxTag`, "latest").trim();
   return t || "latest";
 }

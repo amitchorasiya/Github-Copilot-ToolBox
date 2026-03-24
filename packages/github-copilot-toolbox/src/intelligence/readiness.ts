@@ -45,7 +45,7 @@ export function evaluateReadiness(input: ReadinessInput): ReadinessCheck[] {
         ? "`.github/copilot-instructions.md` exists but is nearly empty."
         : "`.github/copilot-instructions.md` looks populated.",
     suggestedCommand: !input.copilotInstructions.exists
-      ? "GitHubCopilotToolBox.workspaceSetupWizard"
+      ? "GitHubCopilotToolBox.runOneClickSetup"
       : isEffectivelyEmpty(input.copilotInstructions)
         ? "GitHubCopilotToolBox.appendCursorrules"
         : "GitHubCopilotToolBox.openInstructionsPicker",
@@ -121,7 +121,7 @@ export function formatReadinessMarkdown(checks: ReadinessCheck[]): string {
   const lines: string[] = [
     "# GitHub Copilot Toolbox — Intelligence readiness",
     "",
-    "Run commands from the Command Palette (`GitHub Copilot Toolbox: …`) or the **Guide & tools** view.",
+    "Run commands from the Command Palette (`GitHub Copilot Toolbox: …`) or the **MCP & skills** hub.",
     "",
   ];
   for (const c of checks) {

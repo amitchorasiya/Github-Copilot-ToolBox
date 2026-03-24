@@ -114,10 +114,10 @@ export async function gatherWorkspaceKitSnapshot(): Promise<KitSnapshotRow[]> {
     isDirectory: p.isDirectory,
   }));
   rows.unshift({
-    id: "wizard",
-    label: "Full setup wizard",
+    id: "one-click",
+    label: "One Click Setup",
     present: true,
-    displayPath: "Cursor → Copilot workspace checklist",
+    displayPath: "Configurable Cursor → Copilot flow (see settings)",
     isWizard: true,
   });
   return rows;
@@ -164,8 +164,8 @@ export class WorkspaceKitProvider implements vscode.TreeDataProvider<KitTreeItem
     );
 
     items.unshift(
-      new KitTreeItem("wizard", "Run full setup wizard…", {
-        key: "wizard",
+      new KitTreeItem("one-click", "One Click Setup…", {
+        key: "one-click",
         present: true,
         path: "",
         isWizard: true,
@@ -183,10 +183,10 @@ export class KitTreeItem extends vscode.TreeItem {
     this.description = payload.present ? "" : "click to scaffold";
     this.tooltip = payload.path || payload.key;
     if (payload.isWizard) {
-      this.iconPath = new vscode.ThemeIcon("wand");
+      this.iconPath = new vscode.ThemeIcon("rocket");
       this.command = {
-        command: "GitHubCopilotToolBox.workspaceSetupWizard",
-        title: "Wizard",
+        command: "GitHubCopilotToolBox.runOneClickSetup",
+        title: "One Click Setup",
       };
       return;
     }

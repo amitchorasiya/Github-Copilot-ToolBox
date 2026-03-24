@@ -49,15 +49,19 @@ export type HubPayload = {
   userMcp: "missing" | "empty" | "ok";
   skills: SkillEntry[];
   kit: KitSnapshotRow[];
-  /** Mirrors `GitHubCopilotToolBox.intelligence.autoScanMcpSkillsOnWorkspaceOpen`. */
+  /** Mirrors `copilot-toolbox.intelligence.autoScanMcpSkillsOnWorkspaceOpen`. */
   autoScanMcpSkillsOnWorkspaceOpen: boolean;
-  /** File/config snapshot for the Intelligence hub (not token usage). */
+  /** Mirrors `copilot-toolbox.thinkingMachineMode.enabled`. */
+  thinkingMachineModeEnabled: boolean;
+  /** File/config snapshot for the Thinking Machine hub (not token usage). */
   hygiene: HubHygiene;
+  /** Set when `gatherHubPayload` failed; UI still loads with `emptyHubPayload()` defaults. */
+  hubLoadError?: string;
 };
 
 export async function gatherHubPayload(context: vscode.ExtensionContext): Promise<HubPayload> {
   const cfg = vscode.workspace.getConfiguration();
-  const insiders = cfg.get<boolean>("GitHubCopilotToolBox.useInsidersPaths") === true;
+  const insiders = cfg.get<boolean>("copilot-toolbox.useInsidersPaths") === true;
   const folder = mcpPaths.getPrimaryWorkspaceFolder();
 
   let workspaceServers: McpServerRow[] = [];
@@ -94,7 +98,9 @@ export async function gatherHubPayload(context: vscode.ExtensionContext): Promis
   const kit = await gatherWorkspaceKitSnapshot();
 
   const autoScanMcpSkillsOnWorkspaceOpen =
-    cfg.get<boolean>("GitHubCopilotToolBox.intelligence.autoScanMcpSkillsOnWorkspaceOpen") === true;
+    cfg.get<boolean>("copilot-toolbox.intelligence.autoScanMcpSkillsOnWorkspaceOpen") === true;
+  const thinkingMachineModeEnabled =
+    cfg.get<boolean>("copilot-toolbox.thinkingMachineMode.enabled") === true;
 
   let copilotInstructionsLines: number | null = null;
   let copilotInstructionsMissing = true;
@@ -126,8 +132,48 @@ export async function gatherHubPayload(context: vscode.ExtensionContext): Promis
     skills,
     kit,
     autoScanMcpSkillsOnWorkspaceOpen,
+    thinkingMachineModeEnabled,
     hygiene,
   };
+}
+
+/** Safe defaults when `gatherHubPayload` throws so the hub webview can still render. */
+export function emptyHubPayload(): HubPayload {
+  return {
+    workspaceServers: [],
+    userServers: [],
+    workspaceMcp: "missing",
+    userMcp: "missing",
+    skills: [],
+    kit: [],
+    autoScanMcpSkillsOnWorkspaceOpen: false,
+    thinkingMachineModeEnabled: false,
+    hygiene: {
+      workspaceMcpServerCount: 0,
+      userMcpServerCount: 0,
+      copilotInstructionsLines: null,
+      copilotInstructionsMissing: true,
+    },
+  };
+}
+
+const HUB_PAYLOAD_TIMEOUT_MS = 12_000;
+
+function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
+  let timer: ReturnType<typeof setTimeout>;
+  return new Promise<T>((resolve, reject) => {
+    timer = setTimeout(() => reject(new Error(`timed out after ${ms}ms`)), ms);
+    promise.then(
+      (v) => {
+        clearTimeout(timer);
+        resolve(v);
+      },
+      (e) => {
+        clearTimeout(timer);
+        reject(e);
+      }
+    );
+  });
 }
 
 /** Activity bar (Copilot Toolbox) — first view */
@@ -140,6 +186,8 @@ export class McpSkillsHubViewProvider implements vscode.WebviewViewProvider {
   public static readonly viewType = MCP_SKILLS_HUB_VIEW_ACTIVITY;
 
   private _view?: vscode.WebviewView;
+  /** Serialize hub refreshes so parallel `gatherHubPayload` calls cannot stack on slow disks. */
+  private _hubPostChain: Promise<void> = Promise.resolve();
 
   constructor(private readonly _ctx: vscode.ExtensionContext) {}
 
@@ -159,7 +207,7 @@ export class McpSkillsHubViewProvider implements vscode.WebviewViewProvider {
       switch (msg.type) {
         case "ready":
         case "refresh":
-          await this._postState();
+          this._postState();
           break;
         case "runCommand":
           if (typeof msg.command === "string") {
@@ -169,7 +217,7 @@ export class McpSkillsHubViewProvider implements vscode.WebviewViewProvider {
               vscode.window.showErrorMessage(`Command failed: ${msg.command}`);
             }
           }
-          await this._postState();
+          this._postState();
           break;
         case "runCommandWithArgs":
           if (typeof msg.command === "string" && Array.isArray(msg.args)) {
@@ -179,7 +227,7 @@ export class McpSkillsHubViewProvider implements vscode.WebviewViewProvider {
               vscode.window.showErrorMessage(`Command failed: ${msg.command}`);
             }
           }
-          await this._postState();
+          this._postState();
           break;
         case "openFile":
           if (typeof msg.fsPath === "string") {
@@ -262,7 +310,7 @@ export class McpSkillsHubViewProvider implements vscode.WebviewViewProvider {
         }
         case "installMcpRegistry":
           await installMcpFromRegistryEntry(msg.entry);
-          await this._postState();
+          this._postState();
           break;
         case "installSkillSh":
           if (typeof msg.source === "string" && typeof msg.skillId === "string") {
@@ -272,18 +320,28 @@ export class McpSkillsHubViewProvider implements vscode.WebviewViewProvider {
               global: msg.global === true,
             });
           }
-          await this._postState();
+          this._postState();
           break;
-        case "setAutoScanMcpSkillsOnWorkspaceOpen":
-          await vscode.workspace
-            .getConfiguration()
-            .update(
-              "GitHubCopilotToolBox.intelligence.autoScanMcpSkillsOnWorkspaceOpen",
-              msg.value === true,
-              vscode.ConfigurationTarget.Global
-            );
-          await this._postState();
+        case "setAutoScanMcpSkillsOnWorkspaceOpen": {
+          const hasWs = (vscode.workspace.workspaceFolders?.length ?? 0) > 0;
+          await vscode.workspace.getConfiguration().update(
+            "copilot-toolbox.intelligence.autoScanMcpSkillsOnWorkspaceOpen",
+            msg.value === true,
+            hasWs ? vscode.ConfigurationTarget.Workspace : vscode.ConfigurationTarget.Global
+          );
+          this._postState();
           break;
+        }
+        case "setThinkingMachineModeEnabled": {
+          const hasWs = (vscode.workspace.workspaceFolders?.length ?? 0) > 0;
+          await vscode.workspace.getConfiguration().update(
+            "copilot-toolbox.thinkingMachineMode.enabled",
+            msg.value === true,
+            hasWs ? vscode.ConfigurationTarget.Workspace : vscode.ConfigurationTarget.Global
+          );
+          this._postState();
+          break;
+        }
         case "mcpToggleServer": {
           const scope = msg.scope === "user" ? "user" : "workspace";
           const id = typeof msg.id === "string" ? msg.id : "";
@@ -301,7 +359,7 @@ export class McpSkillsHubViewProvider implements vscode.WebviewViewProvider {
             const m = e instanceof Error ? e.message : String(e);
             vscode.window.showErrorMessage(`MCP toggle failed: ${m}`);
           }
-          await this._postState();
+          this._postState();
           break;
         }
         case "mcpDeleteServer": {
@@ -316,7 +374,7 @@ export class McpSkillsHubViewProvider implements vscode.WebviewViewProvider {
             const m = e instanceof Error ? e.message : String(e);
             vscode.window.showErrorMessage(`MCP remove failed: ${m}`);
           }
-          await this._postState();
+          this._postState();
           break;
         }
         case "skillToggleHub": {
@@ -336,7 +394,7 @@ export class McpSkillsHubViewProvider implements vscode.WebviewViewProvider {
             const m = e instanceof Error ? e.message : String(e);
             vscode.window.showErrorMessage(`Skill hub toggle failed: ${m}`);
           }
-          await this._postState();
+          this._postState();
           break;
         }
         case "deleteSkillFolder": {
@@ -346,7 +404,7 @@ export class McpSkillsHubViewProvider implements vscode.WebviewViewProvider {
             break;
           }
           await deleteSkillFolderFromHub(this._ctx, fsPath, scope);
-          await this._postState();
+          this._postState();
           break;
         }
         default:
@@ -356,22 +414,43 @@ export class McpSkillsHubViewProvider implements vscode.WebviewViewProvider {
 
     webviewView.onDidChangeVisibility(() => {
       if (webviewView.visible) {
-        void this._postState();
+        this._postState();
       }
     });
-
-    void this._postState();
   }
 
   refresh(): void {
-    void this._postState();
+    this._postState();
   }
 
-  private async _postState(): Promise<void> {
+  /** Enqueue a hub payload refresh (serialized; safe to call from message handlers). */
+  private _postState(): void {
+    this._hubPostChain = this._hubPostChain
+      .then(() => this._postStateOnce())
+      .catch((e) => {
+        console.error("[GitHub Copilot Toolbox] hub post chain", e);
+      });
+  }
+
+  private async _postStateOnce(): Promise<void> {
     if (!this._view) {
       return;
     }
-    const payload = await gatherHubPayload(this._ctx);
+    let payload: HubPayload;
+    try {
+      payload = await withTimeout(gatherHubPayload(this._ctx), HUB_PAYLOAD_TIMEOUT_MS);
+    } catch (e) {
+      const message = e instanceof Error ? e.message : String(e);
+      console.error("[GitHub Copilot Toolbox] gatherHubPayload failed or timed out", e);
+      const hint =
+        message.includes("timed out") || message.includes("timeout")
+          ? `Timed out after ${HUB_PAYLOAD_TIMEOUT_MS / 1000}s (slow or remote workspace disk). Try opening a local folder or reload the window.`
+          : message;
+      payload = { ...emptyHubPayload(), hubLoadError: hint };
+    }
+    if (!this._view) {
+      return;
+    }
     this._view.webview.postMessage({ type: "state", payload });
   }
 

@@ -6,7 +6,7 @@
     <title>GitHub Copilot Toolbox — One place for Copilot setup in VS Code</title>
     <meta
       name="description"
-      content="A dedicated Copilot Toolbox in VS Code: port from Cursor, browse MCP and skills, workspace checklist, and Intelligence context packs."
+      content="GitHub Copilot Toolbox for VS Code: One Click Setup and Thinking Machine Mode, MCP &amp; skills hub, Cursor→Copilot bridges, and context packs."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -14,7 +14,7 @@
       href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="css/site.css?v=19" />
+    <link rel="stylesheet" href="css/site.css?v=20" />
   </head>
   <body>
     <header class="site-header">
@@ -61,7 +61,7 @@
                 class="zoomable"
                 tabindex="0"
                 data-caption="Where to open Copilot Toolbox — Activity Bar → Copilot Toolbox, then Side Bar → MCP &amp; skills"
-                src="https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/00-copilot-toolbox-access.png?v=0.5.11"
+                src="https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/00-copilot-toolbox-access.png?v=0.5.39"
                 alt="VS Code: Activity Bar Copilot Toolbox icon and Side Bar MCP &amp; skills. Click to view fullscreen."
                 width="3024"
                 height="1732"
@@ -73,7 +73,7 @@
                 class="zoomable"
                 tabindex="0"
                 data-caption="Intelligence tab — Cursor → VS Code &amp; Copilot bridges (inside the hub)"
-                src="https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/01-intelligence-cursor-to-vscode-copilot.png?v=0.5.11"
+                src="https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/01-intelligence-cursor-to-vscode-copilot.png?v=0.5.39"
                 alt="GitHub Copilot Toolbox hub: Intelligence tab with Cursor to VS Code and Copilot bridges. Click to view fullscreen."
                 width="2476"
                 height="1594"
@@ -108,6 +108,42 @@
         </div>
       </section>
 
+      <section class="modes" aria-labelledby="modes-heading">
+        <div class="wrap">
+          <h2 id="modes-heading">One Click Setup &amp; Thinking Machine Mode</h2>
+          <p class="sub">
+            Two highlighted controls on the <strong>Intelligence</strong> tab turn messy, one-off Copilot setup into something your team can repeat and reason about.
+          </p>
+          <div class="modes-grid">
+            <article class="mode-card">
+              <h3>One Click Setup</h3>
+              <p>
+                <strong>What it does:</strong> After you confirm you understand the risk, it runs the sequence you configured in Settings — typically porting Cursor MCP into VS Code
+                <code>mcp.json</code>, initializing the GitHub Copilot memory bank, syncing Cursor rules into <code>.github/</code>, optional <code>.cursorrules</code> merge, skills
+                migration, MCP &amp; Skills awareness scan, readiness summary, config scan, and optional Claude cloud-agent toggles. Bridges use the
+                <strong>bundled Node CLIs</strong> shipped with the extension (no <code>npx</code> fetch).
+              </p>
+              <p>
+                <strong>Why it matters:</strong> Onboarding and “make this repo Copilot-ready” shouldn’t depend on who remembers which README or which CLI flag. One Click encodes your
+                team’s playbook once, then anyone can execute the same steps and review the same terminals and files.
+              </p>
+            </article>
+            <article class="mode-card">
+              <h3>Thinking Machine Mode</h3>
+              <p>
+                <strong>What it does:</strong> A master switch for <strong>session priming</strong> — optional MCP &amp; Skills awareness (writes under <code>.github/</code>) plus a
+                <strong>context pack</strong> copied for Copilot Chat, with settings for confirmations and defaults. The first time you enable it, VS Code asks you to
+                <strong>Engage</strong> (or cancel to turn the mode off again). Turning the mode off clears that acknowledgment so the next enable shows the dialog again.
+              </p>
+              <p>
+                <strong>Why it matters:</strong> Copilot works best when Chat starts from <strong>accurate, explicit context</strong> — what MCP servers exist, where skills live, and a
+                structured snapshot of the workspace — not from guesswork. Thinking Machine Mode makes that priming a deliberate, repeatable gesture instead of a forgotten manual step.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
       <section class="gallery" aria-labelledby="gallery-heading">
         <div class="wrap">
           <h2 id="gallery-heading">What you get in VS Code</h2>
@@ -122,7 +158,7 @@
                 class="zoomable"
                 tabindex="0"
                 data-caption="Open the hub — Activity Bar: Copilot Toolbox → Side Bar: MCP &amp; skills"
-                src="https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/00-copilot-toolbox-access.png?v=0.5.11"
+                src="https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/00-copilot-toolbox-access.png?v=0.5.39"
                 alt="How to open GitHub Copilot Toolbox after install: Activity Bar and MCP &amp; skills. Click to view fullscreen."
                 width="3024"
                 height="1732"
@@ -135,7 +171,7 @@
                 class="zoomable"
                 tabindex="0"
                 data-caption="Port Cursor — MCP, rules, memory bank to VS Code &amp; Copilot"
-                src="https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/02-intelligence-cursor-port.png?v=0.5.11"
+                src="https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/02-intelligence-cursor-port.png?v=0.5.39"
                 alt="Intelligence: Port Cursor MCP, rules, and memory bank to Copilot. Click to view fullscreen."
                 width="2482"
                 height="1600"
@@ -148,7 +184,7 @@
                 class="zoomable"
                 tabindex="0"
                 data-caption="Cursor → VS Code &amp; Copilot bridges"
-                src="https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/01-intelligence-cursor-to-vscode-copilot.png?v=0.5.11"
+                src="https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/01-intelligence-cursor-to-vscode-copilot.png?v=0.5.39"
                 alt="Intelligence: Cursor to VS Code bridges. Click to view fullscreen."
                 width="2476"
                 height="1594"
@@ -161,7 +197,7 @@
                 class="zoomable"
                 tabindex="0"
                 data-caption="Context &amp; readiness"
-                src="https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/02-intelligence-context-readiness.png?v=0.5.11"
+                src="https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/02-intelligence-context-readiness.png?v=0.5.39"
                 alt="Context and readiness actions. Click to view fullscreen."
                 width="2484"
                 height="1592"
@@ -174,7 +210,7 @@
                 class="zoomable"
                 tabindex="0"
                 data-caption="MCP — installed servers"
-                src="https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/03-mcp-browse-workspace-servers.png?v=0.5.11"
+                src="https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/03-mcp-browse-workspace-servers.png?v=0.5.39"
                 alt="MCP installed servers. Click to view fullscreen."
                 width="2468"
                 height="1596"
@@ -187,7 +223,7 @@
                 class="zoomable"
                 tabindex="0"
                 data-caption="MCP — registry browse"
-                src="https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/04-mcp-registry-search.png?v=0.5.11"
+                src="https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/04-mcp-registry-search.png?v=0.5.39"
                 alt="MCP registry browse. Click to view fullscreen."
                 width="2470"
                 height="1596"
@@ -200,7 +236,7 @@
                 class="zoomable"
                 tabindex="0"
                 data-caption="Skills — skills.sh catalog"
-                src="https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/05-skills-catalog-skills-sh.png?v=0.5.11"
+                src="https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/05-skills-catalog-skills-sh.png?v=0.5.39"
                 alt="Skills catalog. Click to view fullscreen."
                 width="2466"
                 height="1596"
@@ -213,7 +249,7 @@
                 class="zoomable"
                 tabindex="0"
                 data-caption="Skills — installed"
-                src="https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/06-skills-installed-local.png?v=0.5.11"
+                src="https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/06-skills-installed-local.png?v=0.5.39"
                 alt="Installed local skills. Click to view fullscreen."
                 width="2490"
                 height="1590"
@@ -226,7 +262,7 @@
                 class="zoomable"
                 tabindex="0"
                 data-caption="Workspace checklist"
-                src="https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/07-workspace-checklist.png?v=0.5.11"
+                src="https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/07-workspace-checklist.png?v=0.5.39"
                 alt="Workspace checklist. Click to view fullscreen."
                 width="2490"
                 height="1594"
@@ -239,7 +275,7 @@
                 class="zoomable"
                 tabindex="0"
                 data-caption="Intelligence — context hygiene"
-                src="https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/08-workspace-toolbox-commands.png?v=0.5.11"
+                src="https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/08-workspace-toolbox-commands.png?v=0.5.39"
                 alt="Context hygiene and quick actions. Click to view fullscreen."
                 width="2490"
                 height="1608"

@@ -25,6 +25,7 @@ describe("formatMcpSkillsAwarenessMarkdown", () => {
       ],
       kit: [],
       autoScanMcpSkillsOnWorkspaceOpen: false,
+      thinkingMachineModeEnabled: false,
       hygiene: {
         workspaceMcpServerCount: 1,
         userMcpServerCount: 0,
@@ -41,7 +42,7 @@ describe("formatMcpSkillsAwarenessMarkdown", () => {
     expect(md).toContain("stdio");
     expect(md).toContain("my-skill");
     expect(md).toContain("Agent");
-    expect(md).toContain("does not automatically load");
+    expect(md).toContain("does not auto-load");
   });
 
   it("separates hub-off skills in the report", () => {
@@ -72,6 +73,7 @@ describe("formatMcpSkillsAwarenessMarkdown", () => {
       ],
       kit: [],
       autoScanMcpSkillsOnWorkspaceOpen: false,
+      thinkingMachineModeEnabled: false,
       hygiene: {
         workspaceMcpServerCount: 0,
         userMcpServerCount: 0,
@@ -110,6 +112,7 @@ describe("formatMcpSkillsCopilotInstructionsBlock", () => {
       ],
       kit: [],
       autoScanMcpSkillsOnWorkspaceOpen: false,
+      thinkingMachineModeEnabled: false,
       hygiene: {
         workspaceMcpServerCount: 1,
         userMcpServerCount: 0,
@@ -125,5 +128,7 @@ describe("formatMcpSkillsCopilotInstructionsBlock", () => {
     expect(md).toContain("s1");
     expect(md).toContain("my-skill");
     expect(md).toContain("MCP & Skills awareness");
+    expect(md).toContain("copilot-toolbox-mcp-skills-awareness.md");
+    expect(md).toContain("Confluence");
   });
 });

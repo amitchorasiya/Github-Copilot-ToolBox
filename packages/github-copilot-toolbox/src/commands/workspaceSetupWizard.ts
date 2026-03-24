@@ -1,70 +1,19 @@
 import * as vscode from "vscode";
-import * as mcpPaths from "../mcpPaths";
-import { appendCursorrules } from "./migrateCursorrules";
-import { initMemoryBank } from "./memoryBankInit";
-import { portCursorMcp } from "./portFromCursor";
-import { syncCursorRules } from "./rulesToCopilot";
 
+/**
+ * Legacy “workspace wizard” entry: Cursor → Copilot setup is **One Click Setup** (configurable steps).
+ * The old four-step wizard duplicated those bridges; we delegate here.
+ */
 export async function workspaceSetupWizard(): Promise<void> {
-  if (!mcpPaths.getPrimaryWorkspaceFolder()) {
-    vscode.window.showErrorMessage("Open a workspace folder first.");
-    return;
-  }
-
-  const step1 = await vscode.window.showInformationMessage(
-    "Step 1/4: Initialize memory bank (optional)?",
-    "Run memory bank init",
-    "Skip",
-    "Cancel"
+  const next = await vscode.window.showInformationMessage(
+    "Cursor → Copilot setup uses **One Click Setup** (configure steps under Settings → One Click Setup).",
+    { modal: false },
+    "Run One Click Setup",
+    "Open One Click settings"
   );
-  if (step1 === "Cancel" || step1 === undefined) {
-    return;
+  if (next === "Run One Click Setup") {
+    await vscode.commands.executeCommand("GitHubCopilotToolBox.runOneClickSetup");
+  } else if (next === "Open One Click settings") {
+    await vscode.commands.executeCommand("GitHubCopilotToolBox.openOneClickSetupSettings");
   }
-  if (step1 === "Run memory bank init") {
-    await initMemoryBank();
-  }
-
-  const step2 = await vscode.window.showInformationMessage(
-    "Step 2/4: Sync `.cursor/rules` → Copilot instructions (npx)?",
-    "Run rules sync",
-    "Skip",
-    "Cancel"
-  );
-  if (step2 === "Cancel") {
-    return;
-  }
-  if (step2 === "Run rules sync") {
-    await syncCursorRules();
-  }
-
-  const step2b = await vscode.window.showInformationMessage(
-    "Step 3/4: Append root `.cursorrules` into `.github/copilot-instructions.md` (if .cursorrules exists)?",
-    "Append .cursorrules",
-    "Skip",
-    "Cancel"
-  );
-  if (step2b === "Cancel") {
-    return;
-  }
-  if (step2b === "Append .cursorrules") {
-    await appendCursorrules();
-  }
-
-  const step3 = await vscode.window.showInformationMessage(
-    "Step 4/4: Port Cursor `~/.cursor/mcp.json` → workspace `mcp.json`?",
-    "Run MCP port",
-    "Skip",
-    "Cancel"
-  );
-  if (step3 === "Cancel") {
-    return;
-  }
-  if (step3 === "Run MCP port") {
-    await portCursorMcp();
-  }
-
-  await vscode.window.showInformationMessage(
-    "Wizard complete. Use GitHub Copilot Toolbox views for MCP, workspace files, and the Guide.",
-    "OK"
-  );
 }

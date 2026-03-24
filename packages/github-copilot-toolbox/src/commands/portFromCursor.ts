@@ -2,6 +2,35 @@ import * as vscode from "vscode";
 import * as mcpPaths from "../mcpPaths";
 import { runNpxInTerminal } from "../terminal/runNpx";
 
+export type PortCursorMcpMode = "dry" | "force" | "merge" | "user";
+
+/** Run Cursor MCP port without quick picks (One Click Setup, scripts). */
+export function runPortCursorMcpWithMode(
+  folder: vscode.WorkspaceFolder,
+  mode: PortCursorMcpMode,
+  tag: string
+): void {
+  const cfg = vscode.workspace.getConfiguration();
+  const insiders = cfg.get<boolean>("copilot-toolbox.useInsidersPaths") === true;
+  const args: string[] = [];
+  if (mode === "dry") {
+    args.push("--dry-run");
+  } else if (mode === "user") {
+    args.push("-t", insiders ? "insiders" : "user", "--force");
+  } else if (mode === "merge") {
+    args.push("--merge", "--force");
+  } else {
+    args.push("--force");
+  }
+  runNpxInTerminal(
+    folder.uri.fsPath,
+    "cursor-mcp-to-github-copilot-port",
+    tag,
+    args,
+    "Cursor MCP port"
+  );
+}
+
 export async function portCursorMcp(): Promise<void> {
   const folder = mcpPaths.getPrimaryWorkspaceFolder();
   if (!folder) {
@@ -13,9 +42,9 @@ export async function portCursorMcp(): Promise<void> {
 
   const mode = await vscode.window.showQuickPick(
     [
-      { label: "Write .vscode/mcp.json (overwrite)", value: "force" as const },
-      { label: "Merge into existing .vscode/mcp.json", value: "merge" as const },
       { label: "User mcp.json (all workspaces)", value: "user" as const },
+      { label: "Merge into existing .vscode/mcp.json", value: "merge" as const },
+      { label: "Write .vscode/mcp.json (overwrite)", value: "force" as const },
       { label: "Dry run (print JSON only)", value: "dry" as const },
     ],
     { title: "Port Cursor MCP → VS Code" }
@@ -24,27 +53,5 @@ export async function portCursorMcp(): Promise<void> {
     return;
   }
 
-  const args: string[] = [];
-  if (mode.value === "dry") {
-    args.push("--dry-run");
-  } else if (mode.value === "user") {
-    args.push("-t", "user", "--force");
-  } else if (mode.value === "merge") {
-    args.push("--merge", "--force");
-  } else {
-    args.push("--force");
-  }
-
-  if (mode.value === "dry") {
-    runNpxInTerminal(folder.uri.fsPath, "cursor-mcp-to-github-copilot-port", tag, args, "Cursor MCP port");
-    return;
-  }
-
-  runNpxInTerminal(
-    folder.uri.fsPath,
-    "cursor-mcp-to-github-copilot-port",
-    tag,
-    args,
-    "Cursor MCP port"
-  );
+  runPortCursorMcpWithMode(folder, mode.value, tag);
 }

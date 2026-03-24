@@ -21,7 +21,7 @@ export async function mcpHubTurnOffServer(
   serverId: string
 ): Promise<void> {
   const cfg = vscode.workspace.getConfiguration();
-  const insiders = cfg.get<boolean>("GitHubCopilotToolBox.useInsidersPaths") === true;
+  const insiders = cfg.get<boolean>("copilot-toolbox.useInsidersPaths") === true;
   const uri = mcpUriForScope(scope, insiders);
   if (!uri) {
     vscode.window.showErrorMessage("Open a workspace folder to change workspace MCP servers.");
@@ -48,7 +48,7 @@ export async function mcpHubTurnOnServer(
   serverId: string
 ): Promise<void> {
   const cfg = vscode.workspace.getConfiguration();
-  const insiders = cfg.get<boolean>("GitHubCopilotToolBox.useInsidersPaths") === true;
+  const insiders = cfg.get<boolean>("copilot-toolbox.useInsidersPaths") === true;
   const uri = mcpUriForScope(scope, insiders);
   if (!uri) {
     vscode.window.showErrorMessage("Open a workspace folder to change workspace MCP servers.");
@@ -88,7 +88,7 @@ export async function mcpHubDeleteServer(
     return;
   }
   const cfg = vscode.workspace.getConfiguration();
-  const insiders = cfg.get<boolean>("GitHubCopilotToolBox.useInsidersPaths") === true;
+  const insiders = cfg.get<boolean>("copilot-toolbox.useInsidersPaths") === true;
   const uri = mcpUriForScope(scope, insiders);
   if (!uri) {
     vscode.window.showErrorMessage("Open a workspace folder to change workspace MCP servers.");

@@ -1,8 +1,8 @@
 {
   "name": "github-copilot-toolbox",
   "displayName": "GitHub Copilot Toolbox",
-  "description": "GitHub Copilot Toolbox: MCP hub, workspace helpers, Intelligence context packs & readiness, and npx bridges from Cursor→Copilot. Not affiliated with Microsoft or GitHub. See README Disclaimer. Workflow ideas credited in NOTICE (everything-claude-code, MIT).",
-  "version": "0.5.11",
+  "description": "GitHub Copilot Toolbox: MCP hub, workspace helpers, Thinking Machine Mode (context packs & priming), readiness, and npx bridges from Cursor→Copilot. Not affiliated with Microsoft or GitHub. See README Disclaimer. Workflow ideas credited in NOTICE (everything-claude-code, MIT).",
+  "version": "0.5.39",
   "publisher": "amitchorasiya",
   "author": "amitchorasiya",
   "license": "MIT",
@@ -28,51 +28,328 @@
   ],
   "main": "./out/extension.js",
   "contributes": {
-    "configuration": {
-      "title": "GitHub Copilot Toolbox",
-      "properties": {
-        "GitHubCopilotToolBox.npxTag": {
-          "type": "string",
-          "default": "latest",
-          "description": "npm dist-tag or version appended after @ for npx packages (e.g. latest or 1.0.1)."
-        },
-        "GitHubCopilotToolBox.useInsidersPaths": {
-          "type": "boolean",
-          "default": false,
-          "description": "Resolve user mcp.json under VS Code Insiders instead of stable."
-        },
-        "GitHubCopilotToolBox.intelligence.includeGitByDefault": {
-          "type": "boolean",
-          "default": false,
-          "description": "Pre-select “Include git” in the Intelligence context pack quick pick (still confirm each run)."
-        },
-        "GitHubCopilotToolBox.intelligence.includeDiagnosticsByDefault": {
-          "type": "boolean",
-          "default": false,
-          "description": "Pre-select “Include diagnostics” in the Intelligence context pack quick pick."
-        },
-        "GitHubCopilotToolBox.intelligence.appendNotepadAfterPack": {
-          "type": "boolean",
-          "default": false,
-          "description": "Pre-select “Append to session notepad” after building a context pack."
-        },
-        "GitHubCopilotToolBox.intelligence.openChatAfterPack": {
-          "type": "boolean",
-          "default": false,
-          "description": "Pre-select “Open Copilot Chat” after building a context pack."
-        },
-        "GitHubCopilotToolBox.intelligence.autoScanMcpSkillsOnWorkspaceOpen": {
-          "type": "boolean",
-          "default": false,
-          "description": "When enabled, after a workspace folder opens (debounced): open the MCP & Skills awareness report, refresh hub data, and merge a replaceable MCP/skills section into .github/copilot-instructions.md. Also applies when you run the awareness scan while this is on."
-        },
-        "GitHubCopilotToolBox.translateWrapMultilineInFence": {
-          "type": "boolean",
-          "default": false,
-          "description": "When translating selection, wrap multiline result in a markdown code fence (language = active editor)."
+    "configuration": [
+      {
+        "title": "GitHub Copilot Toolbox",
+        "order": 5,
+        "properties": {
+          "copilot-toolbox.npxTag": {
+            "type": "string",
+            "default": "latest",
+            "description": "npm dist-tag or version appended after @ for npx packages (e.g. latest or 1.0.1)."
+          },
+          "copilot-toolbox.embeddedBridgeNodeExecutable": {
+            "type": "string",
+            "default": "",
+            "description": "Absolute path to the Node.js binary for hub “Without npx” bundled CLIs. Leave empty to run the command `node` from the integrated terminal PATH (same expectation as npx). Do not point at VS Code itself — `node` must be a real Node install."
+          },
+          "copilot-toolbox.useInsidersPaths": {
+            "type": "boolean",
+            "default": false,
+            "description": "Resolve user mcp.json under VS Code Insiders instead of stable."
+          },
+          "copilot-toolbox.intelligence.includeGitByDefault": {
+            "type": "boolean",
+            "default": false,
+            "description": "Pre-select “Include git” in the context pack quick pick (still confirm each run)."
+          },
+          "copilot-toolbox.intelligence.includeDiagnosticsByDefault": {
+            "type": "boolean",
+            "default": false,
+            "description": "Pre-select “Include diagnostics” in the context pack quick pick."
+          },
+          "copilot-toolbox.intelligence.appendNotepadAfterPack": {
+            "type": "boolean",
+            "default": false,
+            "description": "Pre-select “Append to session notepad” after building a context pack."
+          },
+          "copilot-toolbox.intelligence.openChatAfterPack": {
+            "type": "boolean",
+            "default": false,
+            "description": "Pre-select “Open Copilot Chat” after building a context pack."
+          },
+          "copilot-toolbox.translateWrapMultilineInFence": {
+            "type": "boolean",
+            "default": false,
+            "description": "When translating selection, wrap multiline result in a markdown code fence (language = active editor)."
+          }
+        }
+      },
+      {
+        "title": "One Click Setup — General",
+        "order": 100,
+        "properties": {
+          "copilot-toolbox.oneClickSetup.settingsScope": {
+            "type": "string",
+            "enum": ["workspace", "user"],
+            "default": "workspace",
+            "description": "Where One Click writes settings it updates (e.g. enabling auto-scan). User = global; workspace = folder .vscode/settings.json.",
+            "enumDescriptions": [
+              "Write to the open workspace folder’s .vscode/settings.json when possible.",
+              "Write to your User settings (applies to all folders)."
+            ]
+          }
+        }
+      },
+      {
+        "title": "One Click Setup — Memory Bank",
+        "order": 110,
+        "properties": {
+          "copilot-toolbox.oneClickSetup.initMemoryBankMode": {
+            "type": "string",
+            "enum": ["apply", "dryRun", "applyForce", "off"],
+            "default": "apply",
+            "description": "Memory bank init (github-copilot-memory-bank): one mode per run. **Default: apply** (init without --force; keeps existing SKILL templates unless you choose applyForce).",
+            "enumDescriptions": [
+              "Default — run init without --force (same as interactive “No” when templates already exist).",
+              "Run with --dry-run only (preview).",
+              "Run init with --force (overwrite templates).",
+              "Skip memory bank init."
+            ]
+          },
+          "copilot-toolbox.oneClickSetup.initMemoryBankCursorRules": {
+            "type": "boolean",
+            "default": true,
+            "description": "When memory bank init runs, add --cursor-rules to the CLI. **Default: on** (pairs with rules → Copilot and .cursorrules merge when you use One Click)."
+          }
+        }
+      },
+      {
+        "title": "One Click Setup — Rules",
+        "order": 120,
+        "properties": {
+          "copilot-toolbox.oneClickSetup.syncCursorRulesMode": {
+            "type": "string",
+            "enum": ["apply", "dryRun", "off"],
+            "default": "apply",
+            "description": "Cursor rules → Copilot (cursor-rules-to-github-copilot): one mode per run. **Default: apply**.",
+            "enumDescriptions": [
+              "Default — write .github/ outputs (when not dry).",
+              "Run with --dry-run (preview only).",
+              "Skip rules sync."
+            ]
+          },
+          "copilot-toolbox.oneClickSetup.appendCursorrules": {
+            "type": "boolean",
+            "default": true,
+            "description": "If .cursorrules exists, merge into .github/copilot-instructions.md (replaceable block). **Default: on** for One Click."
+          }
+        }
+      },
+      {
+        "title": "One Click Setup — Skills",
+        "order": 130,
+        "properties": {
+          "copilot-toolbox.oneClickSetup.migrateSkillsTarget": {
+            "type": "string",
+            "enum": ["off", "workspace", "user", "both"],
+            "default": "off",
+            "description": "Migrate .cursor/skills → .agents/skills: pick one target (single-select). Copy/move is set below.",
+            "enumDescriptions": [
+              "Do not migrate skills during One Click.",
+              "Migrate under the open workspace folder only.",
+              "Migrate under your user home only.",
+              "Run migration for both workspace and user roots."
+            ]
+          },
+          "copilot-toolbox.oneClickSetup.migrateSkillsMode": {
+            "type": "string",
+            "enum": ["copy", "move"],
+            "default": "copy",
+            "description": "How to migrate when the target above is not “off”.",
+            "enumDescriptions": [
+              "Copy; keep files under .cursor/skills.",
+              "Copy then remove from .cursor/skills."
+            ]
+          }
+        }
+      },
+      {
+        "title": "One Click Setup — MCP",
+        "order": 140,
+        "properties": {
+          "copilot-toolbox.oneClickSetup.portCursorMcp": {
+            "type": "string",
+            "enum": ["user", "workspaceMerge", "workspaceOverwrite", "dry", "skip"],
+            "default": "user",
+            "description": "Port Cursor MCP → Copilot: pick one target (One Click and default for Settings). Single-select in Settings.",
+            "enumDescriptions": [
+              "Write user mcp.json (all workspaces).",
+              "Merge into workspace .vscode/mcp.json.",
+              "Overwrite workspace .vscode/mcp.json.",
+              "Print JSON only (dry).",
+              "Skip MCP port."
+            ]
+          }
+        }
+      },
+      {
+        "title": "One Click Setup — Follow-ups",
+        "order": 150,
+        "properties": {
+          "copilot-toolbox.oneClickSetup.instructionMergeAfterOneClick": {
+            "type": "string",
+            "enum": ["enableAutoScan", "mergeCopilotInstructionsOnce", "leaveUnchanged"],
+            "default": "enableAutoScan",
+            "description": "After bridges, how to treat MCP & Skills background auto-scan and merging MCP/skills into .github/copilot-instructions.md. Pick one (single-select).",
+            "enumDescriptions": [
+              "Turn on auto-scan (using settings scope above) so future opens/scans merge the MCP/skills block.",
+              "Do not enable auto-scan; still merge once during the awareness step in this run.",
+              "Do not enable auto-scan from One Click and do not force a one-time merge (merge only if auto-scan was already on)."
+            ]
+          },
+          "copilot-toolbox.oneClickSetup.runAwarenessScan": {
+            "type": "boolean",
+            "default": true,
+            "description": "After bridges, run MCP & Skills scan (writes `.github/copilot-toolbox-mcp-skills-awareness.md` and updates `copilot-instructions.md`). Turning on auto-scan from One Click is separate (instructionMergeAfterOneClick)."
+          },
+          "copilot-toolbox.oneClickSetup.runReadiness": {
+            "type": "boolean",
+            "default": true,
+            "description": "Open Thinking Machine readiness summary."
+          },
+          "copilot-toolbox.oneClickSetup.runConfigScan": {
+            "type": "boolean",
+            "default": true,
+            "description": "Run Copilot/MCP config scan to Output."
+          },
+          "copilot-toolbox.oneClickSetup.runFirstTestTask": {
+            "type": "boolean",
+            "default": false,
+            "description": "Run first test-like workspace task."
+          },
+          "copilot-toolbox.oneClickSetup.enableClaudeCopilotChatAgent": {
+            "type": "boolean",
+            "default": true,
+            "description": "During One Click: set User setting github.copilot.chat.claudeAgent.enabled to true so Copilot Chat can offer Claude as a cloud partner agent. Still requires eligible Copilot plan, org enablement of Claude under Partner Agents, and GitHub account settings for third-party agents where applicable. Use Intelligence hub → Claude agent prerequisites for details."
+          }
+        }
+      },
+      {
+        "title": "Thinking Machine Mode",
+        "order": 155,
+        "properties": {
+          "copilot-toolbox.thinkingMachineMode.enabled": {
+            "type": "boolean",
+            "default": false,
+            "title": "Thinking Machine Mode",
+            "description": "Master switch for Thinking Machine priming (hub + Command Palette). When you turn this on, confirm **Engage** in the dialog (Cancel turns it off). The hub has the same toggle under One Click Setup."
+          },
+          "copilot-toolbox.thinkingMachineMode.runAwarenessScan": {
+            "type": "boolean",
+            "default": true,
+            "description": "During Thinking Machine priming: run MCP & Skills awareness (writes `.github/copilot-toolbox-mcp-skills-awareness.md`)."
+          },
+          "copilot-toolbox.thinkingMachineMode.mergeAwarenessIntoCopilotInstructions": {
+            "type": "boolean",
+            "default": true,
+            "description": "During Thinking Machine priming: merge the MCP/skills block into `.github/copilot-instructions.md` when running the awareness scan (same rules as interactive scan + auto-scan)."
+          },
+          "copilot-toolbox.thinkingMachineMode.showConfirmationModal": {
+            "type": "boolean",
+            "default": true,
+            "description": "Show a confirmation before Thinking Machine priming writes under `.github/` or copies the context pack."
+          },
+          "copilot-toolbox.thinkingMachineMode.useSeparateContextPackDefaults": {
+            "type": "boolean",
+            "default": false,
+            "description": "When off, Thinking Machine priming uses the GitHub Copilot Toolbox context pack defaults. When on, use the four overrides in this section instead."
+          },
+          "copilot-toolbox.thinkingMachineMode.includeGit": {
+            "type": "boolean",
+            "default": false,
+            "description": "Thinking Machine priming only: include git section in the context pack (when useSeparateContextPackDefaults is on)."
+          },
+          "copilot-toolbox.thinkingMachineMode.includeDiagnostics": {
+            "type": "boolean",
+            "default": false,
+            "description": "Thinking Machine priming only: include diagnostics in the context pack (when useSeparateContextPackDefaults is on)."
+          },
+          "copilot-toolbox.thinkingMachineMode.appendNotepad": {
+            "type": "boolean",
+            "default": false,
+            "description": "Thinking Machine priming only: append context pack to session notepad (when useSeparateContextPackDefaults is on)."
+          },
+          "copilot-toolbox.thinkingMachineMode.openChat": {
+            "type": "boolean",
+            "default": true,
+            "description": "Thinking Machine priming only: open Copilot Chat after copying the pack (when useSeparateContextPackDefaults is on)."
+          }
+        }
+      },
+      {
+        "title": "One Click Setup — Legacy (migration only)",
+        "order": 190,
+        "properties": {
+          "copilot-toolbox.oneClickSetup.initMemoryBank": {
+            "type": "boolean",
+            "default": false,
+            "description": "Deprecated pre-0.5.15. Replaced by initMemoryBankMode. Removed automatically on activation if still present.",
+            "deprecationMessage": "Use copilot-toolbox.oneClickSetup.initMemoryBankMode instead."
+          },
+          "copilot-toolbox.oneClickSetup.initMemoryBankDryRun": {
+            "type": "boolean",
+            "default": false,
+            "description": "Deprecated pre-0.5.15. Replaced by initMemoryBankMode.",
+            "deprecationMessage": "Use copilot-toolbox.oneClickSetup.initMemoryBankMode instead."
+          },
+          "copilot-toolbox.oneClickSetup.initMemoryBankForce": {
+            "type": "boolean",
+            "default": false,
+            "description": "Deprecated pre-0.5.15. Replaced by initMemoryBankMode.",
+            "deprecationMessage": "Use copilot-toolbox.oneClickSetup.initMemoryBankMode instead."
+          },
+          "copilot-toolbox.oneClickSetup.syncCursorRules": {
+            "type": "boolean",
+            "default": true,
+            "description": "Deprecated pre-0.5.15. Replaced by syncCursorRulesMode.",
+            "deprecationMessage": "Use copilot-toolbox.oneClickSetup.syncCursorRulesMode instead."
+          },
+          "copilot-toolbox.oneClickSetup.syncCursorRulesDryRun": {
+            "type": "boolean",
+            "default": false,
+            "description": "Deprecated pre-0.5.15. Replaced by syncCursorRulesMode.",
+            "deprecationMessage": "Use copilot-toolbox.oneClickSetup.syncCursorRulesMode instead."
+          },
+          "copilot-toolbox.oneClickSetup.migrateSkills": {
+            "type": "boolean",
+            "default": false,
+            "description": "Deprecated pre-0.5.15. Replaced by migrateSkillsTarget.",
+            "deprecationMessage": "Use copilot-toolbox.oneClickSetup.migrateSkillsTarget instead."
+          },
+          "copilot-toolbox.oneClickSetup.migrateSkillsScope": {
+            "type": "string",
+            "enum": ["workspace", "user", "both"],
+            "default": "workspace",
+            "description": "Deprecated pre-0.5.15. Replaced by migrateSkillsTarget.",
+            "deprecationMessage": "Use copilot-toolbox.oneClickSetup.migrateSkillsTarget instead."
+          },
+          "copilot-toolbox.oneClickSetup.turnOnAutoScanAfter": {
+            "type": "boolean",
+            "default": true,
+            "description": "Deprecated pre-0.5.15. Replaced by instructionMergeAfterOneClick.",
+            "deprecationMessage": "Use copilot-toolbox.oneClickSetup.instructionMergeAfterOneClick instead."
+          },
+          "copilot-toolbox.oneClickSetup.mergeInstructionsWithoutAutoScan": {
+            "type": "boolean",
+            "default": false,
+            "description": "Deprecated pre-0.5.15. Replaced by instructionMergeAfterOneClick.",
+            "deprecationMessage": "Use copilot-toolbox.oneClickSetup.instructionMergeAfterOneClick instead."
+          }
+        }
+      },
+      {
+        "title": "MCP & Skills — background sync",
+        "order": 999,
+        "properties": {
+          "copilot-toolbox.intelligence.autoScanMcpSkillsOnWorkspaceOpen": {
+            "type": "boolean",
+            "default": true,
+            "description": "When checked: after a workspace opens (debounced), save MCP & Skills awareness to `.github/copilot-toolbox-mcp-skills-awareness.md` (overwritten), refresh hub, and update the MCP/skills block in `.github/copilot-instructions.md` — no editor tab. Re-runs on reopen so new MCP/skills are reflected. **Scan now** on the hub does the same immediately and always refreshes `copilot-instructions.md`. Use Copilot Chat in **Agent** mode with MCP trusted/started for live tools (e.g. Confluence → Confluence MCP)."
+          }
         }
       }
-    },
+    ],
     "viewsContainers": {
       "activitybar": [
         {
@@ -84,7 +361,7 @@
       "secondarySidebar": [
         {
           "id": "GitHubCopilotToolBoxSecondary",
-          "title": "GitHub Copilot ToolBox",
+          "title": "GitHub Copilot Toolbox",
           "icon": "resources/icon.svg"
         }
       ]
@@ -99,10 +376,6 @@
         {
           "id": "copilotKitWorkspace",
           "name": "Workspace kit"
-        },
-        {
-          "id": "copilotKitGuide",
-          "name": "Guide & tools"
         }
       ],
       "GitHubCopilotToolBoxSecondary": [
@@ -147,16 +420,28 @@
         "title": "GitHub Copilot Toolbox: Port Cursor MCP → VS Code (npx)"
       },
       {
+        "command": "GitHubCopilotToolBox.manualPortCursorMcpWithoutNpx",
+        "title": "GitHub Copilot Toolbox: Port Cursor MCP → VS Code (bundled CLI — no npx)"
+      },
+      {
         "command": "GitHubCopilotToolBox.syncCursorRules",
         "title": "GitHub Copilot Toolbox: Sync Cursor rules → Copilot instructions (npx)"
+      },
+      {
+        "command": "GitHubCopilotToolBox.cursorRulesToCopilotWithoutNpx",
+        "title": "GitHub Copilot Toolbox: Cursor rules → Copilot (bundled CLI — no npx)"
       },
       {
         "command": "GitHubCopilotToolBox.initMemoryBank",
         "title": "GitHub Copilot Toolbox: Init GitHub Copilot memory bank (npx)"
       },
       {
+        "command": "GitHubCopilotToolBox.memoryBankWithoutNpx",
+        "title": "GitHub Copilot Toolbox: Init memory bank (bundled CLI — no npx)"
+      },
+      {
         "command": "GitHubCopilotToolBox.workspaceSetupWizard",
-        "title": "GitHub Copilot Toolbox: Cursor → Copilot workspace wizard"
+        "title": "GitHub Copilot Toolbox: Cursor → Copilot setup (legacy — opens One Click)"
       },
       {
         "command": "GitHubCopilotToolBox.openCopilotChat",
@@ -222,59 +507,79 @@
       },
       {
         "command": "GitHubCopilotToolBox.buildContextPack",
-        "title": "GitHub Copilot Toolbox: Intelligence — build context pack for Chat (copy)"
+        "title": "GitHub Copilot Toolbox: Thinking Machine Mode — build context pack for Chat (copy)"
+      },
+      {
+        "command": "GitHubCopilotToolBox.runThinkingMachinePriming",
+        "title": "GitHub Copilot Toolbox: Thinking Machine Mode — prime session (awareness, context pack)"
       },
       {
         "command": "GitHubCopilotToolBox.showMcpSkillsAwareness",
-        "title": "GitHub Copilot Toolbox: Intelligence — scan MCP & Skills awareness (report)"
+        "title": "GitHub Copilot Toolbox: Thinking Machine Mode — scan MCP & Skills awareness (save to .github)"
       },
       {
         "command": "GitHubCopilotToolBox.showIntelligenceReadiness",
-        "title": "GitHub Copilot Toolbox: Intelligence — show readiness summary"
+        "title": "GitHub Copilot Toolbox: Thinking Machine Mode — show readiness summary"
       },
       {
         "command": "GitHubCopilotToolBox.openIntelligenceSettings",
-        "title": "GitHub Copilot Toolbox: Intelligence — open related settings"
+        "title": "GitHub Copilot Toolbox: Thinking Machine Mode — open related settings"
       },
       {
-        "command": "GitHubCopilotToolBox.openIntelligenceRepoMcpPort",
-        "title": "GitHub Copilot Toolbox: Intelligence — MCP port repo (GitHub)"
+        "command": "GitHubCopilotToolBox.openThinkingMachineModeSettings",
+        "title": "GitHub Copilot Toolbox: Thinking Machine Mode — open Thinking Machine settings"
       },
       {
-        "command": "GitHubCopilotToolBox.openIntelligenceRepoMemoryBank",
-        "title": "GitHub Copilot Toolbox: Intelligence — memory bank repo (GitHub)"
-      },
-      {
-        "command": "GitHubCopilotToolBox.openIntelligenceRepoRulesConverter",
-        "title": "GitHub Copilot Toolbox: Intelligence — Cursor rules converter repo (GitHub)"
+        "command": "GitHubCopilotToolBox.openIntelligenceToolboxRepos",
+        "title": "GitHub Copilot Toolbox: Thinking Machine Mode — open Toolbox CLI repo on GitHub…"
       },
       {
         "command": "GitHubCopilotToolBox.migrateSkillsCursorToAgents",
-        "title": "GitHub Copilot Toolbox: Intelligence — migrate skills .cursor → .agents"
+        "title": "GitHub Copilot Toolbox: Thinking Machine Mode — migrate skills .cursor → .agents"
+      },
+      {
+        "command": "GitHubCopilotToolBox.revealSkillFoldersWithoutNpx",
+        "title": "GitHub Copilot Toolbox: Thinking Machine Mode — reveal .cursor/.agents skill folders"
       },
       {
         "command": "GitHubCopilotToolBox.copilotToolboxConfigScan",
-        "title": "GitHub Copilot Toolbox: Intelligence — scan Copilot/MCP config files (Output)"
+        "title": "GitHub Copilot Toolbox: Thinking Machine Mode — scan Copilot/MCP config files (Output)"
       },
       {
         "command": "GitHubCopilotToolBox.appendNotepadToMemoryBank",
-        "title": "GitHub Copilot Toolbox: Intelligence — append session notepad to memory-bank file"
+        "title": "GitHub Copilot Toolbox: Thinking Machine Mode — append session notepad to memory-bank file"
       },
       {
         "command": "GitHubCopilotToolBox.createSkillStub",
-        "title": "GitHub Copilot Toolbox: Intelligence — create SKILL.md stub under .github/skills"
+        "title": "GitHub Copilot Toolbox: Thinking Machine Mode — create SKILL.md stub under .github/skills"
       },
       {
         "command": "GitHubCopilotToolBox.verificationChecklist",
-        "title": "GitHub Copilot Toolbox: Intelligence — verification checklist"
+        "title": "GitHub Copilot Toolbox: Thinking Machine Mode — verification checklist"
       },
       {
         "command": "GitHubCopilotToolBox.applyBundledMcpRecipe",
-        "title": "GitHub Copilot Toolbox: Intelligence — apply bundled MCP recipe to workspace"
+        "title": "GitHub Copilot Toolbox: Thinking Machine Mode — apply bundled MCP recipe to workspace"
       },
       {
         "command": "GitHubCopilotToolBox.runFirstWorkspaceTestTask",
-        "title": "GitHub Copilot Toolbox: Intelligence — run first test-like workspace task"
+        "title": "GitHub Copilot Toolbox: Thinking Machine Mode — run first test-like workspace task"
+      },
+      {
+        "command": "GitHubCopilotToolBox.runOneClickSetup",
+        "title": "GitHub Copilot Toolbox: Thinking Machine Mode — One Click Setup (configured steps)"
+      },
+      {
+        "command": "GitHubCopilotToolBox.openOneClickSetupSettings",
+        "title": "GitHub Copilot Toolbox: Thinking Machine Mode — open One Click Setup settings"
+      },
+      {
+        "command": "GitHubCopilotToolBox.enableClaudeCopilotChatAgent",
+        "title": "GitHub Copilot Toolbox: Thinking Machine Mode — enable Claude cloud agent (Copilot Chat setting)"
+      },
+      {
+        "command": "GitHubCopilotToolBox.showClaudeCopilotAgentPrerequisites",
+        "title": "GitHub Copilot Toolbox: Thinking Machine Mode — Claude cloud agent prerequisites…"
       }
     ],
     "menus": {
@@ -291,6 +596,11 @@
         }
       ]
     }
+  },
+  "dependencies": {
+    "cursor-mcp-to-github-copilot-port": "^1.0.1",
+    "cursor-rules-to-github-copilot": "^0.1.0",
+    "github-copilot-memory-bank": "^1.2.0"
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

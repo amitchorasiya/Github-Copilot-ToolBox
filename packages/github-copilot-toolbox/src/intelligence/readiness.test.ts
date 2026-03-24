@@ -14,7 +14,7 @@ describe("evaluateReadiness", () => {
     });
     const ci = checks.find((c) => c.id === "copilot-instructions");
     expect(ci?.ok).toBe(false);
-    expect(ci?.suggestedCommand).toBe("GitHubCopilotToolBox.workspaceSetupWizard");
+    expect(ci?.suggestedCommand).toBe("GitHubCopilotToolBox.runOneClickSetup");
   });
 
   it("adds mtime check when both rules exist", () => {

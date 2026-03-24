@@ -1,4 +1,5 @@
 import type { HubPayload } from "../webview/mcpSkillsHubView";
+import { MCP_SKILLS_AWARENESS_RELATIVE } from "./awarenessWorkspaceFile";
 
 export type AwarenessPaths = {
   userMcpPath: string;
@@ -41,9 +42,10 @@ export function formatMcpSkillsAwarenessMarkdown(payload: HubPayload, paths: Awa
     "",
     "## How to use this report",
     "",
-    "- **MCP:** This lists **configured** servers from `mcp.json`. GitHub Copilot only has **tool access** after you open **Copilot Chat → Agent**, then **trust/start** servers in the MCP tools UI — not from this file alone.",
-    "- **Skills:** These are **on-disk** folders containing `SKILL.md` under the usual project/user roots. Copilot **does not automatically load** them; open or @-attach files in chat, or fold key points into `.github/copilot-instructions.md`.",
-    "- You can **paste sections of this report into Copilot Chat** as context when planning work.",
+    `- **Saved copy:** This file is **\`${MCP_SKILLS_AWARENESS_RELATIVE}\`** — refreshed whenever the toolbox runs an MCP & Skills scan (including on workspace open when auto-scan is enabled). It is meant for **Copilot workspace context** together with \`.github/copilot-instructions.md\` (which gets a shorter replaceable summary when auto-merge is on).`,
+    "- **MCP:** Lists **configured** servers from `mcp.json`. **Live tool use** still requires **Copilot Chat → Agent** with those servers **trusted/started** in the MCP tools UI.",
+    "- **Skills:** **On-disk** folders with `SKILL.md`. Copilot does not auto-load them; attach `SKILL.md` or paths in chat when useful.",
+    "- **Task routing:** When the user’s request matches a server’s purpose (e.g. Confluence → Confluence/Atlassian MCP), prefer that **server id** from the tables below.",
     "",
     "---",
     "",
@@ -197,8 +199,10 @@ export function formatMcpSkillsCopilotInstructionsBlock(
     "",
     `_Last synced: ${ts}._`,
     "",
-    "- **MCP:** Use **Copilot Chat → Agent** and trust/start servers in the MCP tools UI for live tool access.",
-    "- **Skills:** Folders below contain `SKILL.md`; Copilot does not auto-load them—attach files or quote excerpts in chat.",
+    `- **Full report:** \`${MCP_SKILLS_AWARENESS_RELATIVE}\` in this workspace (auto-overwritten on each scan). Use it as ground truth for configured servers and skill folders.`,
+    "- **MCP:** For **live tools**, use **Copilot Chat → Agent** and **trust/start** the right servers in the MCP UI.",
+    "- **When the user’s task matches a server** (e.g. “open this Confluence page” and a **Confluence** / **Atlassian** MCP is listed), **prefer that server id** and plan on Agent + MCP for actions—not only file search.",
+    "- **Skills:** Folders below contain `SKILL.md`; attach or cite paths in chat when relevant.",
     "",
     "#### Workspace MCP",
     "",

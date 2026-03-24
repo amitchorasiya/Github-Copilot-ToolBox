@@ -9,6 +9,12 @@ import { openCopilotBillingDocs } from "./commands/openPruDocs";
 import { openCursorCopilotReference } from "./commands/openReference";
 import { openCopilotChat } from "./commands/openCopilot";
 import { openInstructionsPicker } from "./commands/openInstructionsPicker";
+import {
+  cursorRulesToCopilotWithoutNpx,
+  manualPortCursorMcpWithoutNpx,
+  memoryBankWithoutNpx,
+  revealSkillFoldersWithoutNpx,
+} from "./commands/bridgeWithoutNpx";
 import { portCursorMcp } from "./commands/portFromCursor";
 import { syncCursorRules } from "./commands/rulesToCopilot";
 import { runCopilotToolboxConfigScan } from "./commands/copilotConfigScan";
@@ -24,17 +30,29 @@ import {
   openIntelligenceRepoMemoryBank,
   openIntelligenceRepoMcpPort,
   openIntelligenceRepoRulesConverter,
+  openIntelligenceToolboxRepos,
 } from "./commands/openIntelligenceGithubRepos";
 import { migrateSkillsCursorToAgents } from "./commands/migrateSkillsCursorToAgents";
 import { openIntelligenceSettings } from "./commands/openIntelligenceSettings";
+import { openThinkingMachineModeSettings } from "./commands/openThinkingMachineModeSettings";
+import { openOneClickSetupSettings, runOneClickSetup } from "./commands/oneClickSetup";
+import {
+  enableClaudeCopilotChatAgent,
+  showClaudeCopilotAgentPrerequisites,
+} from "./commands/claudeCopilotAgentSettings";
 import { workspaceSetupWizard } from "./commands/workspaceSetupWizard";
 import { runBuildContextPackFlow } from "./intelligence/contextPackCommand";
 import { showMcpSkillsAwareness } from "./intelligence/mcpSkillsAwarenessCommand";
 import { registerMcpSkillsAutoScanOnWorkspaceOpen } from "./intelligence/workspaceAutoScan";
 import { showIntelligenceReadiness } from "./intelligence/readinessCommand";
+import { runThinkingMachinePriming } from "./intelligence/thinkingMachineModeCommand";
+import {
+  maybeShowAutoScanDefaultMigrationToast,
+  registerThinkingMachineModeActivation,
+  thinkingMachineModeActivationStartupCheck,
+} from "./intelligence/thinkingMachineModeActivation";
 import * as mcpPaths from "./mcpPaths";
 import { mcpAddServerNative, mcpBrowseRegistry } from "./registry/mcpInstall";
-import { GuideTreeProvider } from "./tree/guideTreeProvider";
 import { MCP_CMD } from "./tree/mcpTreeProvider";
 import { WorkspaceKitProvider } from "./tree/workspaceKitProvider";
 import {
@@ -42,8 +60,22 @@ import {
   MCP_SKILLS_HUB_VIEW_SECONDARY,
   McpSkillsHubViewProvider,
 } from "./webview/mcpSkillsHubView";
+import { migrateOneClickSetupToNewKeys } from "./oneClickSetupSettingsMigrate";
+import { affectsToolboxSetting, migrateLegacyToolboxSettings } from "./toolboxSettings";
 
-export function activate(context: vscode.ExtensionContext): void {
+export async function activate(context: vscode.ExtensionContext): Promise<void> {
+  try {
+    await migrateLegacyToolboxSettings();
+  } catch (e) {
+    console.error("[GitHub Copilot Toolbox] migrateLegacyToolboxSettings failed", e);
+  }
+  try {
+    await migrateOneClickSetupToNewKeys();
+  } catch (e) {
+    console.error("[GitHub Copilot Toolbox] migrateOneClickSetupToNewKeys failed", e);
+  }
+  void thinkingMachineModeActivationStartupCheck(context);
+  void maybeShowAutoScanDefaultMigrationToast(context);
   const mcpHubActivity = new McpSkillsHubViewProvider(context);
   const mcpHubSecondary = new McpSkillsHubViewProvider(context);
   const refreshMcpHubs = (): void => {
@@ -52,16 +84,16 @@ export function activate(context: vscode.ExtensionContext): void {
   };
 
   const kitProvider = new WorkspaceKitProvider();
-  const guideProvider = new GuideTreeProvider();
 
   context.subscriptions.push(
     vscode.window.registerWebviewViewProvider(MCP_SKILLS_HUB_VIEW_ACTIVITY, mcpHubActivity),
     vscode.window.registerWebviewViewProvider(MCP_SKILLS_HUB_VIEW_SECONDARY, mcpHubSecondary),
-    vscode.window.registerTreeDataProvider("copilotKitWorkspace", kitProvider),
-    vscode.window.registerTreeDataProvider("copilotKitGuide", guideProvider)
+    vscode.window.registerTreeDataProvider("copilotKitWorkspace", kitProvider)
   );
 
   const sub = (d: vscode.Disposable) => context.subscriptions.push(d);
+
+  sub(registerThinkingMachineModeActivation(context));
 
   sub(
     vscode.commands.registerCommand("GitHubCopilotToolBox.refreshMcpView", () => refreshMcpHubs())
@@ -107,8 +139,21 @@ export function activate(context: vscode.ExtensionContext): void {
   sub(vscode.commands.registerCommand("GitHubCopilotToolBox.mcpBrowseRegistry", mcpBrowseRegistry));
   sub(vscode.commands.registerCommand("GitHubCopilotToolBox.mcpAddServer", mcpAddServerNative));
   sub(vscode.commands.registerCommand("GitHubCopilotToolBox.portCursorMcp", portCursorMcp));
+  sub(
+    vscode.commands.registerCommand(
+      "GitHubCopilotToolBox.manualPortCursorMcpWithoutNpx",
+      manualPortCursorMcpWithoutNpx
+    )
+  );
   sub(vscode.commands.registerCommand("GitHubCopilotToolBox.syncCursorRules", syncCursorRules));
+  sub(
+    vscode.commands.registerCommand(
+      "GitHubCopilotToolBox.cursorRulesToCopilotWithoutNpx",
+      cursorRulesToCopilotWithoutNpx
+    )
+  );
   sub(vscode.commands.registerCommand("GitHubCopilotToolBox.initMemoryBank", initMemoryBank));
+  sub(vscode.commands.registerCommand("GitHubCopilotToolBox.memoryBankWithoutNpx", memoryBankWithoutNpx));
   sub(
     vscode.commands.registerCommand("GitHubCopilotToolBox.workspaceSetupWizard", workspaceSetupWizard)
   );
@@ -153,6 +198,11 @@ export function activate(context: vscode.ExtensionContext): void {
   );
   sub(vscode.commands.registerCommand("GitHubCopilotToolBox.buildContextPack", runBuildContextPackFlow));
   sub(
+    vscode.commands.registerCommand("GitHubCopilotToolBox.runThinkingMachinePriming", () =>
+      void runThinkingMachinePriming(context)
+    )
+  );
+  sub(
     vscode.commands.registerCommand("GitHubCopilotToolBox.showMcpSkillsAwareness", () =>
       showMcpSkillsAwareness(context)
     )
@@ -162,6 +212,37 @@ export function activate(context: vscode.ExtensionContext): void {
   );
   sub(
     vscode.commands.registerCommand("GitHubCopilotToolBox.openIntelligenceSettings", openIntelligenceSettings)
+  );
+  sub(
+    vscode.commands.registerCommand(
+      "GitHubCopilotToolBox.openThinkingMachineModeSettings",
+      openThinkingMachineModeSettings
+    )
+  );
+  sub(
+    vscode.commands.registerCommand("GitHubCopilotToolBox.openOneClickSetupSettings", openOneClickSetupSettings)
+  );
+  sub(
+    vscode.commands.registerCommand("GitHubCopilotToolBox.enableClaudeCopilotChatAgent", () => {
+      void enableClaudeCopilotChatAgent({ silent: false });
+    })
+  );
+  sub(
+    vscode.commands.registerCommand(
+      "GitHubCopilotToolBox.showClaudeCopilotAgentPrerequisites",
+      showClaudeCopilotAgentPrerequisites
+    )
+  );
+  sub(
+    vscode.commands.registerCommand("GitHubCopilotToolBox.runOneClickSetup", () =>
+      runOneClickSetup(context, refreshMcpHubs)
+    )
+  );
+  sub(
+    vscode.commands.registerCommand("GitHubCopilotToolBox.openIntelligenceToolboxRepos", (...args: unknown[]) => {
+      const pref = typeof args[0] === "string" ? args[0] : undefined;
+      void openIntelligenceToolboxRepos(pref);
+    })
   );
   sub(
     vscode.commands.registerCommand("GitHubCopilotToolBox.openIntelligenceRepoMcpPort", openIntelligenceRepoMcpPort)
@@ -182,6 +263,12 @@ export function activate(context: vscode.ExtensionContext): void {
     vscode.commands.registerCommand(
       "GitHubCopilotToolBox.migrateSkillsCursorToAgents",
       migrateSkillsCursorToAgents
+    )
+  );
+  sub(
+    vscode.commands.registerCommand(
+      "GitHubCopilotToolBox.revealSkillFoldersWithoutNpx",
+      revealSkillFoldersWithoutNpx
     )
   );
 
@@ -249,7 +336,7 @@ export function activate(context: vscode.ExtensionContext): void {
 
   const cfg = vscode.workspace.getConfiguration();
   const userMcp = vscode.Uri.file(
-    mcpPaths.userMcpJsonPath(cfg.get<boolean>("GitHubCopilotToolBox.useInsidersPaths") === true)
+    mcpPaths.userMcpJsonPath(cfg.get<boolean>("copilot-toolbox.useInsidersPaths") === true)
   );
   sub(
     vscode.workspace.onDidSaveTextDocument((doc) => {
@@ -261,10 +348,13 @@ export function activate(context: vscode.ExtensionContext): void {
 
   sub(
     vscode.workspace.onDidChangeConfiguration((e) => {
-      if (e.affectsConfiguration("GitHubCopilotToolBox.useInsidersPaths")) {
+      if (affectsToolboxSetting(e, "useInsidersPaths")) {
         refreshMcpHubs();
       }
-      if (e.affectsConfiguration("GitHubCopilotToolBox.intelligence.autoScanMcpSkillsOnWorkspaceOpen")) {
+      if (affectsToolboxSetting(e, "intelligence.autoScanMcpSkillsOnWorkspaceOpen")) {
+        refreshMcpHubs();
+      }
+      if (affectsToolboxSetting(e, "thinkingMachineMode.enabled")) {
         refreshMcpHubs();
       }
     })
