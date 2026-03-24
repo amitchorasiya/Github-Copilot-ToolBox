@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.41
+
+- **Thinking Machine Mode:** Turning the mode **on** (hub or Settings), after **Engage** or when already acknowledged, now runs **MCP & Skills awareness** when **During Thinking Machine priming: run MCP & Skills awareness** is on — so `.github/copilot-toolbox-mcp-skills-awareness.md` is recreated without relying only on workspace reopen or **Scan now**.
+
 ## 0.5.40
 
 - Patch version bump.

@@ -1,10 +1,31 @@
 import * as vscode from "vscode";
 import { TOOLBOX_SETTINGS_PREFIX } from "../toolboxSettings";
+import { showMcpSkillsAwareness } from "./mcpSkillsAwarenessCommand";
 import { cascadeThinkingMachineChildSettingsToTrue } from "./thinkingMachineModeCascade";
+
+const RUN_AWARENESS_SCAN_KEY = `${TOOLBOX_SETTINGS_PREFIX}.thinkingMachineMode.runAwarenessScan`;
+const MERGE_AWARENESS_KEY = `${TOOLBOX_SETTINGS_PREFIX}.thinkingMachineMode.mergeAwarenessIntoCopilotInstructions`;
 
 const ENABLED_KEY = `${TOOLBOX_SETTINGS_PREFIX}.thinkingMachineMode.enabled`;
 const GLOBAL_ACK = "thinkingMachineModeActivationAcknowledged";
 const MIGRATION_TOAST = "thinkingMachineAutoScanDefaultMigration0529";
+
+/**
+ * After cascade turns child prefs on, persist MCP & Skills awareness when that sub-setting is enabled.
+ * Matches user expectation that turning Thinking Machine Mode back on restores `.github/copilot-toolbox-mcp-skills-awareness.md`.
+ */
+async function runThinkingMachineAwarenessAfterCascade(context: vscode.ExtensionContext): Promise<void> {
+  const cfg = vscode.workspace.getConfiguration();
+  if (cfg.get<boolean>(RUN_AWARENESS_SCAN_KEY) !== true) {
+    return;
+  }
+  const mergeBlock = cfg.get<boolean>(MERGE_AWARENESS_KEY) === true;
+  await showMcpSkillsAwareness(context, {
+    silentNotification: true,
+    forceMergeIntoInstructions: mergeBlock,
+  });
+  void vscode.commands.executeCommand("GitHubCopilotToolBox.refreshMcpView");
+}
 
 /**
  * When Thinking Machine Mode is enabled, show the Engage modal until acknowledged; each time the user turns
@@ -38,6 +59,7 @@ export function registerThinkingMachineModeActivation(
       if (choice === "Engage") {
         await context.globalState.update(GLOBAL_ACK, true);
         await cascadeThinkingMachineChildSettingsToTrue();
+        await runThinkingMachineAwarenessAfterCascade(context);
       } else {
         await revertThinkingMachineEnabledFalse();
       }
@@ -45,6 +67,7 @@ export function registerThinkingMachineModeActivation(
     }
 
     await cascadeThinkingMachineChildSettingsToTrue();
+    await runThinkingMachineAwarenessAfterCascade(context);
   });
 }
 
@@ -88,6 +111,7 @@ export async function thinkingMachineModeActivationStartupCheck(
   if (choice === "Engage") {
     await context.globalState.update(GLOBAL_ACK, true);
     await cascadeThinkingMachineChildSettingsToTrue();
+    await runThinkingMachineAwarenessAfterCascade(context);
   } else {
     await revertThinkingMachineEnabledFalse();
   }
