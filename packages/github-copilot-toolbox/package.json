@@ -2,7 +2,7 @@
   "name": "github-copilot-toolbox",
   "displayName": "Github Copilot ToolBox (MCP, Skills, Cursor/Claude → Copilot)",
   "description": "Github Copilot ToolBox (MCP, Skills, Cursor/Claude → Copilot): MCP hub, workspace helpers, Thinking Machine Mode (context packs & priming), readiness, One Click dual migration (Cursor + Claude Code → Copilot), and bundled bridges. Not affiliated with Microsoft or GitHub. See README Disclaimer. Workflow ideas credited in NOTICE (everything-claude-code, MIT).",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "publisher": "amitchorasiya",
   "author": "amitchorasiya",
   "license": "MIT",

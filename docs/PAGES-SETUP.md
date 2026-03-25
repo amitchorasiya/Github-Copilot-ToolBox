@@ -34,7 +34,7 @@ cd docs && python3 -m http.server 8080
 
 Open **http://localhost:8080**.
 
-Screenshots load from `raw.githubusercontent.com` (needs network). After you push to `main`, images always match the repo.
+**Screenshots:** `index.html` uses **same-origin** paths under **`docs/screenshots/`** (copies of the repo-root `screenshots/`). That way the live site does not depend on `raw.githubusercontent.com`, which some browsers, extensions, or `Content-Security-Policy` rules block—those blocks showed as broken images on the marketing page. When you update hub captures, from the **repo root** run: `cp screenshots/*.png docs/screenshots/`.
 
 ## Publish on GitHub Pages
 

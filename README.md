@@ -1,8 +1,8 @@
 # Github Copilot ToolBox (MCP, Skills, Cursor/Claude → Copilot)
 
-**VS Code extension + monorepo:** [`Github-Copilot-ToolBox`](https://github.com/amitchorasiya/Github-Copilot-ToolBox) on GitHub · **License:** [MIT](LICENSE) · **Marketplace:** `amitchorasiya.github-copilot-toolbox` · **Extension version:** `1.0.1`
+**VS Code extension + monorepo:** [`Github-Copilot-ToolBox`](https://github.com/amitchorasiya/Github-Copilot-ToolBox) on GitHub · **License:** [MIT](LICENSE) · **Marketplace:** `amitchorasiya.github-copilot-toolbox` · **Extension version:** `1.0.2`
 
-**Project site (GitHub Pages):** [copilottoolbox.layai.co](https://copilottoolbox.layai.co) — static pages in [`docs/`](docs/); copy aligned with this README for **1.0.1**.
+**Project site (GitHub Pages):** [copilottoolbox.layai.co](https://copilottoolbox.layai.co) — static pages in [`docs/`](docs/); copy aligned with this README for **1.0.2**.
 
 ## After install: open Copilot Toolbox
 

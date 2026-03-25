@@ -10,7 +10,7 @@
 
 **Missing the icon?** **Command Palette** (**Ctrl+Shift+P** / **⌘⇧P**) → type **GitHub Copilot Toolbox** → run a command, or **Developer: Reload Window**, then repeat steps 2–3.
 
-![Activity Bar → Copilot Toolbox; Side Bar → MCP & skills hub](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/00-copilot-toolbox-access.png?v=1.0.1)
+![Activity Bar → Copilot Toolbox; Side Bar → MCP & skills hub](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/00-copilot-toolbox-access.png?v=1.0.2)
 
 ## One place for Copilot-related setup
 
@@ -29,7 +29,7 @@
 
 **Packaging:** `npm run package` in this folder stages the [monorepo root README](../../README.md) (with GitHub URLs for screenshots) into this `README.md` for the `.vsix`, then restores this extension reference. Use `npm run package:extension-readme-only` only if you must package the file below as-is.
 
-**License:** [MIT](LICENSE) · **Marketplace ID:** `amitchorasiya.github-copilot-toolbox` · **npm package name:** `github-copilot-toolbox` · **Version:** 1.0.1 · **Site:** [copilottoolbox.layai.co](https://copilottoolbox.layai.co)
+**License:** [MIT](LICENSE) · **Marketplace ID:** `amitchorasiya.github-copilot-toolbox` · **npm package name:** `github-copilot-toolbox` · **Version:** 1.0.2 · **Site:** [copilottoolbox.layai.co](https://copilottoolbox.layai.co)
 
 Install: `code --install-extension amitchorasiya.github-copilot-toolbox` (when published) or install from a built `.vsix`.
 
@@ -73,33 +73,33 @@ VS Code resolves README images relative to this package folder. Screenshots live
 
 **Intelligence** (hub): **Cursor → Copilot** and **Claude Code → Copilot** bridge rows (MCP, rules, memory bank, `CLAUDE.md`, `.mcp.json`, skills), then context pack, readiness, MCP & Skills scan.
 
-![Intelligence: Port Cursor MCP, rules, and memory bank to VS Code & Copilot](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/02-intelligence-cursor-port.png?v=1.0.1)
+![Intelligence: Port Cursor MCP, rules, and memory bank to VS Code & Copilot](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/02-intelligence-cursor-port.png?v=1.0.2)
 
-![Intelligence tab: Cursor and Claude Code bridges to VS Code and Copilot](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/01-intelligence-cursor-to-vscode-copilot.png?v=1.0.1)
+![Intelligence tab: Cursor and Claude Code bridges to VS Code and Copilot](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/01-intelligence-cursor-to-vscode-copilot.png?v=1.0.2)
 
-![Intelligence: context pack and readiness actions](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/02-intelligence-context-readiness.png?v=1.0.1)
+![Intelligence: context pack and readiness actions](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/02-intelligence-context-readiness.png?v=1.0.2)
 
 **MCP**: installed workspace/user servers and registry browse.
 
-![MCP: installed workspace servers (Browse / Installed)](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/03-mcp-browse-workspace-servers.png?v=1.0.1)
+![MCP: installed workspace servers (Browse / Installed)](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/03-mcp-browse-workspace-servers.png?v=1.0.2)
 
-![MCP: registry browse & search](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/04-mcp-registry-search.png?v=1.0.1)
+![MCP: registry browse & search](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/04-mcp-registry-search.png?v=1.0.2)
 
 **Skills**: catalog (skills.sh) and local installed `SKILL.md` trees.
 
-![Skills: catalog (skills.sh)](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/05-skills-catalog-skills-sh.png?v=1.0.1)
+![Skills: catalog (skills.sh)](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/05-skills-catalog-skills-sh.png?v=1.0.2)
 
-![Skills: installed local skill folders](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/06-skills-installed-local.png?v=1.0.1)
+![Skills: installed local skill folders](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/06-skills-installed-local.png?v=1.0.2)
 
 **Workspace** checklist and **Intelligence** hub (context hygiene).
 
-![Workspace kit checklist](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/07-workspace-checklist.png?v=1.0.1)
+![Workspace kit checklist](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/07-workspace-checklist.png?v=1.0.2)
 
-![Intelligence: context hygiene, snapshot, and quick actions](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/08-workspace-toolbox-commands.png?v=1.0.1)
+![Intelligence: context hygiene, snapshot, and quick actions](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/08-workspace-toolbox-commands.png?v=1.0.2)
 
 **Reference diagram** (Mermaid export; not a live UI capture).
 
-![Cursor vs Copilot capability map (diagram)](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/mermaid-copilot-map.png?v=1.0.1)
+![Cursor vs Copilot capability map (diagram)](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/mermaid-copilot-map.png?v=1.0.2)
 
 ---
 

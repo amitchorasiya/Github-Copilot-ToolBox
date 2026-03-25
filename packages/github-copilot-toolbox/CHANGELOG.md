@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.2
+
+- **GitHub Pages / marketing site:** Hero and gallery images now load from **same-origin** paths under **`docs/screenshots/`** instead of hotlinking **`raw.githubusercontent.com`**, which was blocked for some visitors (strict `Content-Security-Policy`, privacy tools, or Safari). Copy PNGs from repo-root `screenshots/` into `docs/screenshots/` when you refresh captures.
+
 ## 1.0.1
 
 - **Branding:** Marketplace **displayName**, settings group title, secondary sidebar label, READMEs, and GitHub Pages use **Github Copilot ToolBox (MCP, Skills, Cursor/Claude → Copilot)**. Debug config label shortened to **Run Extension: Github Copilot ToolBox**.
