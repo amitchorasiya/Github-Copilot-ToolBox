@@ -1,12 +1,14 @@
-# GitHub Copilot Toolbox
+# Github Copilot ToolBox (MCP, Skills, Cursor/Claude → Copilot)
 
-**VS Code extension + monorepo:** [`Github-Copilot-ToolBox`](https://github.com/amitchorasiya/Github-Copilot-ToolBox) on GitHub · **License:** [MIT](LICENSE) · **Marketplace:** `amitchorasiya.github-copilot-toolbox` · **Extension version:** `1.0.0`
+**VS Code extension + monorepo:** [`Github-Copilot-ToolBox`](https://github.com/amitchorasiya/Github-Copilot-ToolBox) on GitHub · **License:** [MIT](LICENSE) · **Marketplace:** `amitchorasiya.github-copilot-toolbox` · **Extension version:** `1.0.1`
+
+**Project site (GitHub Pages):** [copilottoolbox.layai.co](https://copilottoolbox.layai.co) — static pages in [`docs/`](docs/); copy aligned with this README for **1.0.1**.
 
 ## After install: open Copilot Toolbox
 
 **There is no separate application**—the extension runs **inside Visual Studio Code** only.
 
-1. **Install** *GitHub Copilot Toolbox* from the Marketplace (or a `.vsix`). If VS Code prompts you, **reload the window** (**Developer: Reload Window**).
+1. **Install** *Github Copilot ToolBox (MCP, Skills, Cursor/Claude → Copilot)* from the Marketplace (or a `.vsix`). If VS Code prompts you, **reload the window** (**Developer: Reload Window**).
 2. Find the **Activity Bar**: the **narrow column of icons on the far left** of the VS Code window (Explorer, Search, Source Control, …).
 3. Click the **Copilot Toolbox** icon added by this extension. The **Side Bar** opens next to it.
 4. In the Side Bar, click **MCP & skills**. That opens the **hub** (webview) with tabs **Intelligence**, **MCP**, **Skills**, and **Workspace**—that is the main surface for MCP, skills, and setup flows.
@@ -17,7 +19,7 @@
 
 ## One place for Copilot-related setup
 
-**In plain terms:** Copilot only works as well as the setup around it—but that setup is usually scattered across files, machines, and habits. **GitHub Copilot Toolbox** is **one dedicated Copilot Toolbox in VS Code**: you can **see** what’s configured, **standardize** how teams move to Copilot (including from Cursor), and **give Chat better context** while each developer still **chooses** what to share.
+**In plain terms:** Copilot only works as well as the setup around it—but that setup is usually scattered across files, machines, and habits. **Github Copilot ToolBox (MCP, Skills, Cursor/Claude → Copilot)** is **one dedicated Copilot Toolbox in VS Code**: you can **see** what’s configured, **standardize** how teams move to Copilot (including from Cursor), and **give Chat better context** while each developer still **chooses** what to share.
 
 **For engineering teams, that means:**
 
@@ -73,7 +75,7 @@ These are the two **highlighted cards** at the top of the hub’s **Intelligence
 
 | Deliverable | Purpose |
 |-------------|---------|
-| **[GitHub Copilot Toolbox](packages/github-copilot-toolbox/)** | VS Code extension: **MCP & skills** hub, **workspace kit**, **Intelligence** (Cursor + Claude Code bridge rows, context packs, readiness, MCP/Skills awareness under `.github`, auto-scan, **One Click** dual tracks with **bundled** bridge CLIs and extension-side Claude merges) |
+| **[Github Copilot ToolBox (MCP, Skills, Cursor/Claude → Copilot)](packages/github-copilot-toolbox/)** | VS Code extension: **MCP & skills** hub, **workspace kit**, **Intelligence** (Cursor + Claude Code bridge rows, context packs, readiness, MCP/Skills awareness under `.github`, auto-scan, **One Click** dual tracks with **bundled** bridge CLIs and extension-side Claude merges) |
 | **[memory-bank/](memory-bank/)** | Optional project memory files for you and Copilot (not required to build the extension) |
 | **[packages/cursor-mcp-to-github-copilot-port/](packages/cursor-mcp-to-github-copilot-port/)** | Placeholder README for the MCP port CLI layout; the CLI is published separately on npm |
 
@@ -304,13 +306,13 @@ npm run compile    # same as npm run compile --prefix packages/github-copilot-to
 npm test
 ```
 
-**Run in VS Code:** open this repository → **Run and Debug** → **Run Extension: GitHub Copilot Toolbox** (see [`.vscode/launch.json`](.vscode/launch.json)).
+**Run in VS Code:** open this repository → **Run and Debug** → **Run Extension: Github Copilot ToolBox** (see [`.vscode/launch.json`](.vscode/launch.json)).
 
 ---
 
 ## Install the extension
 
-- **Marketplace:** search for **GitHub Copilot Toolbox** or install by id:  
+- **Marketplace:** search for **Github Copilot ToolBox (MCP, Skills, Cursor/Claude → Copilot)** or install by id:  
   `code --install-extension amitchorasiya.github-copilot-toolbox`
 - **From VSIX:** build with `npm run package` inside `packages/github-copilot-toolbox/`, then **Install from VSIX…** in VS Code.
 

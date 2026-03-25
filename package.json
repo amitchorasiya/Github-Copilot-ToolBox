@@ -1,7 +1,7 @@
 {
   "name": "github-copilot-cursor-mcp-port",
   "private": true,
-  "description": "Monorepo: GitHub Copilot Toolbox (VS Code) and Cursor→Copilot helpers. Build a VSIX with npm run package (runs packages/github-copilot-toolbox). Do not run npx vsce from the repo root — that manifest is not the extension.",
+  "description": "Monorepo: Github Copilot ToolBox (MCP, Skills, Cursor/Claude → Copilot) VS Code extension and Cursor→Copilot helpers. Build a VSIX with npm run package (runs packages/github-copilot-toolbox). Do not run npx vsce from the repo root — that manifest is not the extension.",
   "license": "MIT",
   "engines": {
     "node": ">=20.0.0"

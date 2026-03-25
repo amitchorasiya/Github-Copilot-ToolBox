@@ -1,8 +1,8 @@
 {
   "name": "github-copilot-toolbox",
-  "displayName": "GitHub Copilot Toolbox",
-  "description": "GitHub Copilot Toolbox: MCP hub, workspace helpers, Thinking Machine Mode (context packs & priming), readiness, One Click dual migration (Cursor + Claude Code → Copilot), and bundled bridges. Not affiliated with Microsoft or GitHub. See README Disclaimer. Workflow ideas credited in NOTICE (everything-claude-code, MIT).",
-  "version": "1.0.0",
+  "displayName": "Github Copilot ToolBox (MCP, Skills, Cursor/Claude → Copilot)",
+  "description": "Github Copilot ToolBox (MCP, Skills, Cursor/Claude → Copilot): MCP hub, workspace helpers, Thinking Machine Mode (context packs & priming), readiness, One Click dual migration (Cursor + Claude Code → Copilot), and bundled bridges. Not affiliated with Microsoft or GitHub. See README Disclaimer. Workflow ideas credited in NOTICE (everything-claude-code, MIT).",
+  "version": "1.0.1",
   "publisher": "amitchorasiya",
   "author": "amitchorasiya",
   "license": "MIT",
@@ -30,7 +30,7 @@
   "contributes": {
     "configuration": [
       {
-        "title": "GitHub Copilot Toolbox",
+        "title": "Github Copilot ToolBox (MCP, Skills, Cursor/Claude → Copilot)",
         "order": 5,
         "properties": {
           "copilot-toolbox.npxTag": {
@@ -433,7 +433,7 @@
       "secondarySidebar": [
         {
           "id": "GitHubCopilotToolBoxSecondary",
-          "title": "GitHub Copilot Toolbox",
+          "title": "Github Copilot ToolBox (MCP, Skills, Cursor/Claude → Copilot)",
           "icon": "resources/icon.svg"
         }
       ]

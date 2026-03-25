@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.1
+
+- **Branding:** Marketplace **displayName**, settings group title, secondary sidebar label, READMEs, and GitHub Pages use **Github Copilot ToolBox (MCP, Skills, Cursor/Claude → Copilot)**. Debug config label shortened to **Run Extension: Github Copilot ToolBox**.
+- **Docs / site:** Root and extension READMEs link the **GitHub Pages** site and **1.0.1**; landing page meta, pillars, and One Click copy describe **dual migration tracks** (Cursor + Claude Code); footer shows extension **1.0.1**.
+
 ## 1.0.0
 
 - **Release:** Stable **1.0** milestone. Same capability set as **0.5.44** (Intelligence hub, Cursor + Claude Code migration tracks, One Click Setup, Thinking Machine Mode, MCP & skills); version line marks general availability under semver **1.x**.
