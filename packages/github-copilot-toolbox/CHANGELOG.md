@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.44
+
+- **Docs:** Refreshed **Intelligence** screenshot `screenshots/01-intelligence-cursor-to-vscode-copilot.png` (Cursor + Claude Code hub rows). README cache-bust and marketing site image query updated.
+
 ## 0.5.43
 
 - **Intelligence hub:** New section **Claude Code → VS Code & Copilot** (below Cursor): merge **CLAUDE.md**, **port workspace .mcp.json**, **migrate .claude/skills → .agents**, and **memory bank** (same bundled init as Cursor row). New palette commands **`migrateSkillsClaudeToAgents`** and **`portClaudeProjectMcp`**.

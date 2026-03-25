@@ -1,6 +1,6 @@
 # GitHub Copilot Toolbox
 
-**VS Code extension + monorepo:** [`Github-Copilot-ToolBox`](https://github.com/amitchorasiya/Github-Copilot-ToolBox) on GitHub · **License:** [MIT](LICENSE) · **Marketplace:** `amitchorasiya.github-copilot-toolbox` · **Extension version:** `0.5.43`
+**VS Code extension + monorepo:** [`Github-Copilot-ToolBox`](https://github.com/amitchorasiya/Github-Copilot-ToolBox) on GitHub · **License:** [MIT](LICENSE) · **Marketplace:** `amitchorasiya.github-copilot-toolbox` · **Extension version:** `0.5.44`
 
 ## After install: open Copilot Toolbox
 
@@ -87,7 +87,7 @@ These are **actual VS Code UI captures** from the extension—what users see on 
 
 ![Intelligence: Port Cursor MCP, rules, and memory bank to VS Code & Copilot](screenshots/02-intelligence-cursor-port.png)
 
-![Intelligence tab: Cursor to VS Code and Copilot bridges](screenshots/01-intelligence-cursor-to-vscode-copilot.png)
+![Intelligence tab: Cursor and Claude Code bridges to VS Code and Copilot](screenshots/01-intelligence-cursor-to-vscode-copilot.png)
 
 ![Intelligence: context pack and readiness actions](screenshots/02-intelligence-context-readiness.png)
 
