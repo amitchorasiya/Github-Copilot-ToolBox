@@ -34,6 +34,8 @@ import {
   openIntelligenceToolboxRepos,
 } from "./commands/openIntelligenceGithubRepos";
 import { migrateSkillsCursorToAgents } from "./commands/migrateSkillsCursorToAgents";
+import { migrateSkillsClaudeToAgents } from "./commands/migrateSkillsClaudeToAgents";
+import { portClaudeProjectMcpCommand } from "./commands/portClaudeProjectMcpCommand";
 import { openIntelligenceSettings } from "./commands/openIntelligenceSettings";
 import { openThinkingMachineModeSettings } from "./commands/openThinkingMachineModeSettings";
 import { openOneClickSetupSettings, runOneClickSetup } from "./commands/oneClickSetup";
@@ -271,6 +273,15 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
       "GitHubCopilotToolBox.migrateSkillsCursorToAgents",
       migrateSkillsCursorToAgents
     )
+  );
+  sub(
+    vscode.commands.registerCommand(
+      "GitHubCopilotToolBox.migrateSkillsClaudeToAgents",
+      migrateSkillsClaudeToAgents
+    )
+  );
+  sub(
+    vscode.commands.registerCommand("GitHubCopilotToolBox.portClaudeProjectMcp", portClaudeProjectMcpCommand)
   );
   sub(
     vscode.commands.registerCommand(

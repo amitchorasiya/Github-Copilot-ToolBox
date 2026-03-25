@@ -1,6 +1,6 @@
 # GitHub Copilot Toolbox
 
-**VS Code extension + monorepo:** [`Github-Copilot-ToolBox`](https://github.com/amitchorasiya/Github-Copilot-ToolBox) on GitHub · **License:** [MIT](LICENSE) · **Marketplace:** `amitchorasiya.github-copilot-toolbox` · **Extension version:** `0.5.42`
+**VS Code extension + monorepo:** [`Github-Copilot-ToolBox`](https://github.com/amitchorasiya/Github-Copilot-ToolBox) on GitHub · **License:** [MIT](LICENSE) · **Marketplace:** `amitchorasiya.github-copilot-toolbox` · **Extension version:** `0.5.43`
 
 ## After install: open Copilot Toolbox
 
@@ -123,7 +123,7 @@ Open the **MCP & skills** hub from the **Side Bar** after you click **Copilot To
 
 | Tab | Purpose |
 |-----|---------|
-| **Intelligence** | Bridges (Cursor → VS Code), **Context hygiene** tiles, **Context & readiness** actions, plus auto-scan controls. Default tab. |
+| **Intelligence** | **Cursor → VS Code & Copilot** and **Claude Code → VS Code & Copilot** bridge rows, **Context hygiene** tiles, **Context & readiness** actions, plus auto-scan controls. Default tab. |
 | **MCP** | **Browse** official registry search or **Installed** workspace + user servers from `mcp.json`. |
 | **Skills** | **Browse** [skills.sh](https://skills.sh) catalog or **Installed** local folders that contain `SKILL.md` under standard roots. |
 | **Workspace** | **Workspace checklist** (One Click Setup, rules, memory bank, instructions, `mcp.json`) and **All toolbox commands** (searchable tiles). |
@@ -194,6 +194,15 @@ Hidden on **Intelligence**. On other tabs it filters: **registry / skills.sh res
 | **Run converter** (Cursor rules to Copilot) | Runs **`syncCursorRules`** → `npx` **cursor-rules-to-github-copilot**. |
 | **GitHub** | Rules converter repo. |
 | **Run migration** (Migrate skills to `.agents`) | Runs **`migrateSkillsCursorToAgents`** — copy/move **`.cursor/skills`** → **`.agents/skills`** (workspace and/or user). |
+
+### Intelligence → Claude Code → VS Code & Copilot (hero cards)
+
+| Card / button | What it does |
+|---------------|----------------|
+| **Run merge** (Merge CLAUDE.md) | Runs **`mergeClaudeMdIntoCopilotInstructions`** — replaceable block in **`.github/copilot-instructions.md`**. |
+| **Choose target…** (Port workspace `.mcp.json`) | Runs **`portClaudeProjectMcp`** — merge project **`mcpServers`/`servers`** into VS Code **`mcp.json`**. |
+| **Run migration** (Migrate Claude skills) | Runs **`migrateSkillsClaudeToAgents`** — **`.claude/skills`** → **`.agents/skills`**. |
+| **Memory bank** | Same **`initMemoryBank`** / **`memoryBankWithoutNpx`** as the Cursor row (shared Copilot scaffold). |
 
 ### Intelligence → Context & readiness (hero cards)
 

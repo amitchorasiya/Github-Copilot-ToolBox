@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.43
+
+- **Intelligence hub:** New section **Claude Code → VS Code & Copilot** (below Cursor): merge **CLAUDE.md**, **port workspace .mcp.json**, **migrate .claude/skills → .agents**, and **memory bank** (same bundled init as Cursor row). New palette commands **`migrateSkillsClaudeToAgents`** and **`portClaudeProjectMcp`**.
+
 ## 0.5.42
 
 - **One Click Setup — dual migration tracks:** **`runCursorToCopilotTrack`** and **`runClaudeCodeToCopilotTrack`** (both default **on**); Intelligence hub shows matching checkboxes. Cursor steps run only when the Cursor track is on; **memory bank `--cursor-rules`** only when that track is on.

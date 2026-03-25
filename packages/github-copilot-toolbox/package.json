@@ -2,7 +2,7 @@
   "name": "github-copilot-toolbox",
   "displayName": "GitHub Copilot Toolbox",
   "description": "GitHub Copilot Toolbox: MCP hub, workspace helpers, Thinking Machine Mode (context packs & priming), readiness, One Click dual migration (Cursor + Claude Code → Copilot), and bundled bridges. Not affiliated with Microsoft or GitHub. See README Disclaimer. Workflow ideas credited in NOTICE (everything-claude-code, MIT).",
-  "version": "0.5.42",
+  "version": "0.5.43",
   "publisher": "amitchorasiya",
   "author": "amitchorasiya",
   "license": "MIT",
@@ -612,6 +612,14 @@
       {
         "command": "GitHubCopilotToolBox.migrateSkillsCursorToAgents",
         "title": "GitHub Copilot Toolbox: Thinking Machine Mode — migrate skills .cursor → .agents"
+      },
+      {
+        "command": "GitHubCopilotToolBox.migrateSkillsClaudeToAgents",
+        "title": "GitHub Copilot Toolbox: Intelligence — migrate skills .claude → .agents"
+      },
+      {
+        "command": "GitHubCopilotToolBox.portClaudeProjectMcp",
+        "title": "GitHub Copilot Toolbox: Intelligence — port workspace .mcp.json to VS Code"
       },
       {
         "command": "GitHubCopilotToolBox.revealSkillFoldersWithoutNpx",

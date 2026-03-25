@@ -638,6 +638,8 @@ export function getHubWebviewHtml(csp: string): string {
         { ic: "\\uD83D\\uDCD6", t: "Memory bank (bundled CLI)", d: "Same as npx init; runs Node CLI from the extension", c: "GitHubCopilotToolBox.memoryBankWithoutNpx" },
         { ic: "\\uD83D\\uDCC4", t: "Cursor rules (bundled CLI)", d: "Same as npx converter; runs Node CLI from the extension", c: "GitHubCopilotToolBox.cursorRulesToCopilotWithoutNpx" },
         { ic: "\\uD83D\\uDCDD", t: "Merge CLAUDE.md → instructions", d: "Claude Code project root into copilot-instructions.md", c: "GitHubCopilotToolBox.mergeClaudeMdIntoCopilotInstructions" },
+        { ic: "\\uD83D\\uDD0C", t: "Port workspace .mcp.json", d: "Claude Code style → VS Code mcp.json", c: "GitHubCopilotToolBox.portClaudeProjectMcp" },
+        { ic: "\\uD83D\\uDCE5", t: "Migrate skills .claude → .agents", d: "SKILL.md folders like Cursor migration", c: "GitHubCopilotToolBox.migrateSkillsClaudeToAgents" },
         { ic: "\\uD83D\\uDCC2", t: "Reveal skill folders", d: ".cursor/skills and .agents/skills", c: "GitHubCopilotToolBox.revealSkillFoldersWithoutNpx" },
         { ic: "\\uD83D\\uDCE5", t: "Migrate skills .cursor → .agents", d: "SKILL.md folders to .agents/skills (copy or move)", c: "GitHubCopilotToolBox.migrateSkillsCursorToAgents" },
         { ic: "\\uD83D\\uDD0D", t: "Scan MCP & Skills awareness", d: "Save to .github + update copilot-instructions (optional open from toast)", c: "GitHubCopilotToolBox.showMcpSkillsAwareness" },
@@ -1376,6 +1378,62 @@ export function getHubWebviewHtml(csp: string): string {
       }
     ];
     bridges.forEach(function (h0) {
+      var h = el("div", "hero");
+      h.appendChild(el("div", "ic", h0.ic));
+      h.appendChild(el("h3", null, h0.t));
+      h.appendChild(el("p", null, h0.p));
+      var row = el("div", "row");
+      var b1 = el("button", "btn primary", h0.b);
+      b1.addEventListener("click", function () {
+        vscode.postMessage({ type: "runCommand", command: h0.c });
+      });
+      row.appendChild(b1);
+      if (h0.manualCmd) {
+        var b3 = el("button", "btn", h0.manualLabel || "Without npx");
+        b3.addEventListener("click", function () {
+          vscode.postMessage({ type: "runCommand", command: h0.manualCmd });
+        });
+        row.appendChild(b3);
+      }
+      h.appendChild(row);
+      $("#root").appendChild(h);
+    });
+
+    $("#root").appendChild(el("div", "section-title", "Claude Code \\u2192 VS Code & Copilot"));
+
+    var claudeBridges = [
+      {
+        ic: "\\uD83D\\uDCDD",
+        t: "Merge CLAUDE.md into Copilot instructions",
+        p: "Writes a replaceable block into .github/copilot-instructions.md from repo-root CLAUDE.md (Claude Code). For CLAUDE.local.md, enable mergeClaudeLocalMd under One Click → Claude Code.",
+        c: "GitHubCopilotToolBox.mergeClaudeMdIntoCopilotInstructions",
+        b: "Run merge"
+      },
+      {
+        ic: "\\uD83D\\uDD0C",
+        t: "Port workspace .mcp.json",
+        p: "Merges workspace .mcp.json (mcpServers or servers) into VS Code user or .vscode/mcp.json. No-op if the file is missing. Dry-run logs to Output \\u2192 GitHub Copilot Toolbox.",
+        c: "GitHubCopilotToolBox.portClaudeProjectMcp",
+        b: "Choose target…"
+      },
+      {
+        ic: "\\uD83D\\uDCE5",
+        t: "Migrate Claude skills to .agents",
+        p: "Copy or move SKILL.md folders from .claude/skills to .agents/skills (workspace and/or home). Same layout rules as .cursor/skills migration.",
+        c: "GitHubCopilotToolBox.migrateSkillsClaudeToAgents",
+        b: "Run migration"
+      },
+      {
+        ic: "\\uD83E\\uDDE0",
+        t: "GitHub Copilot memory bank",
+        p: "Same bundled init as above: scaffold memory-bank/ for Copilot. Often run after merging CLAUDE.md so Copilot sees both instruction sources.",
+        c: "GitHubCopilotToolBox.initMemoryBank",
+        b: "Run npx init",
+        manualCmd: "GitHubCopilotToolBox.memoryBankWithoutNpx",
+        manualLabel: "Without npx"
+      }
+    ];
+    claudeBridges.forEach(function (h0) {
       var h = el("div", "hero");
       h.appendChild(el("div", "ic", h0.ic));
       h.appendChild(el("h3", null, h0.t));
