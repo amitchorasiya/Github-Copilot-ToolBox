@@ -71,7 +71,7 @@ VS Code resolves README images relative to this package folder. Screenshots live
 
 **What you see in VS Code**—real UI, not mockups. **Opening the hub** is explained at the top: [After install: open Copilot Toolbox](#after-install-open-copilot-toolbox). Hub captures below are **high-resolution** (~2.5k width) where noted.
 
-**Intelligence** (hub): **Port Cursor → Copilot** (MCP, rules, memory bank), then broader bridges, context pack, readiness, MCP & Skills scan.
+**Intelligence** (hub): **Cursor → Copilot** and **Claude Code → Copilot** bridge rows (MCP, rules, memory bank, `CLAUDE.md`, `.mcp.json`, skills), then context pack, readiness, MCP & Skills scan.
 
 ![Intelligence: Port Cursor MCP, rules, and memory bank to VS Code & Copilot](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/02-intelligence-cursor-port.png?v=0.5.44)
 

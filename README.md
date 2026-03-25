@@ -83,7 +83,7 @@ The extension does **not** replace GitHub Copilot or Cursor; it helps you **alig
 
 These are **actual VS Code UI captures** from the extension—what users see on screen. **How to open the hub** (Activity Bar → Copilot Toolbox → **MCP & skills**) is at the top: [After install: open Copilot Toolbox](#after-install-open-copilot-toolbox). Most hub shots below are **high-resolution** (~2.5k width) so labels stay readable in README and on the [project site](https://copilottoolbox.layai.co).
 
-**Intelligence** (hub): **Port Cursor → Copilot** (MCP, rules, memory bank), then broader bridges, context pack, readiness, MCP & Skills scan.
+**Intelligence** (hub): **Cursor → Copilot** and **Claude Code → Copilot** bridge rows (MCP, rules, memory bank, `CLAUDE.md`, `.mcp.json`, skills), then context pack, readiness, MCP & Skills scan.
 
 ![Intelligence: Port Cursor MCP, rules, and memory bank to VS Code & Copilot](screenshots/02-intelligence-cursor-port.png)
 
