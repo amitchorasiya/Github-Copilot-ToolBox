@@ -1,6 +1,6 @@
 # GitHub Copilot Toolbox
 
-**VS Code extension + monorepo:** [`Github-Copilot-ToolBox`](https://github.com/amitchorasiya/Github-Copilot-ToolBox) on GitHub · **License:** [MIT](LICENSE) · **Marketplace:** `amitchorasiya.github-copilot-toolbox` · **Extension version:** `0.5.44`
+**VS Code extension + monorepo:** [`Github-Copilot-ToolBox`](https://github.com/amitchorasiya/Github-Copilot-ToolBox) on GitHub · **License:** [MIT](LICENSE) · **Marketplace:** `amitchorasiya.github-copilot-toolbox` · **Extension version:** `1.0.0`
 
 ## After install: open Copilot Toolbox
 

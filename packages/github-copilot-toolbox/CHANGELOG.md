@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.0
+
+- **Release:** Stable **1.0** milestone. Same capability set as **0.5.44** (Intelligence hub, Cursor + Claude Code migration tracks, One Click Setup, Thinking Machine Mode, MCP & skills); version line marks general availability under semver **1.x**.
+
 ## 0.5.44
 
 - **Docs:** Refreshed **Intelligence** screenshot `screenshots/01-intelligence-cursor-to-vscode-copilot.png` (Cursor + Claude Code hub rows). README cache-bust and marketing site image query updated.
