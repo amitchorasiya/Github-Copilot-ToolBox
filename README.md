@@ -21,7 +21,7 @@
 
 **For engineering teams, that means:**
 
-- **Faster path from Cursor to Copilot** — guided actions to port connections (MCP), rules, and scaffold a memory bank.
+- **Faster path from Cursor or Claude Code to Copilot** — guided actions to port MCP, sync rules or **`CLAUDE.md`**, migrate **`.cursor/skills`** or **`.claude/skills`**, merge project **`.mcp.json`**, and scaffold a memory bank (**One Click** can run both migration tracks together).
 - **Discover and add servers and skills from one hub** — browse catalogs, see what’s already installed, fewer raw config edits.
 - **A single checklist view** — workspace vs personal setup, local skill folders, rules, instructions, and memory bank so the repo matches what you think you shipped.
 - **Smarter context for Chat** — structured “context packs” and readiness flows, with **explicit** choices so teams stay aligned on what Copilot is allowed to see.
@@ -73,7 +73,7 @@ These are the two **highlighted cards** at the top of the hub’s **Intelligence
 
 | Deliverable | Purpose |
 |-------------|---------|
-| **[GitHub Copilot Toolbox](packages/github-copilot-toolbox/)** | VS Code extension: **MCP & skills** hub, **workspace kit**, **Intelligence** (context packs, readiness, MCP/Skills awareness saved under `.github`, auto-scan on folder open, `.cursor`→`.agents` skill migration), Cursor→Copilot `npx` bridges from the UI |
+| **[GitHub Copilot Toolbox](packages/github-copilot-toolbox/)** | VS Code extension: **MCP & skills** hub, **workspace kit**, **Intelligence** (Cursor + Claude Code bridge rows, context packs, readiness, MCP/Skills awareness under `.github`, auto-scan, **One Click** dual tracks with **bundled** bridge CLIs and extension-side Claude merges) |
 | **[memory-bank/](memory-bank/)** | Optional project memory files for you and Copilot (not required to build the extension) |
 | **[packages/cursor-mcp-to-github-copilot-port/](packages/cursor-mcp-to-github-copilot-port/)** | Placeholder README for the MCP port CLI layout; the CLI is published separately on npm |
 
@@ -187,7 +187,7 @@ Hidden on **Intelligence**. On other tabs it filters: **registry / skills.sh res
 
 | Card / button | What it does |
 |---------------|----------------|
-| **Run npx port** (Port Cursor MCP) | Runs **`GitHubCopilotToolBox.portCursorMcp`** → `npx` **cursor-mcp-to-github-copilot-port**. |
+| **Run npx port** (Port Cursor MCP) | Runs **`GitHubCopilotToolBox.portCursorMcp`** → `npx` **cursor-mcp-to-github-copilot-port**. **Without npx** runs the same CLI **bundled** with the extension (no npm fetch). |
 | **GitHub** (same card) | Opens the port CLI repo in the browser. |
 | **Run npx init** (GitHub Copilot memory bank) | Runs **`initMemoryBank`** → `npx` **github-copilot-memory-bank** (scaffold `memory-bank/`, merge instructions). |
 | **GitHub** | Memory bank repo. |
@@ -258,13 +258,13 @@ Hidden on **Intelligence**. On other tabs it filters: **registry / skills.sh res
 
 Use the **search** box to filter. Each **tile** runs one command (same as Command Palette). Groups and actions:
 
-**Intelligence:** Build context pack · Readiness summary · Intelligence settings · MCP port repo (GitHub) · Memory bank repo (GitHub) · Rules converter repo (GitHub) · Migrate skills `.cursor` → `.agents` · Scan MCP & Skills awareness · Copilot/MCP config scan · Append notepad → memory-bank · Create SKILL.md stub · Verification checklist · Apply bundled MCP recipe · Run first test task.
+**Intelligence:** Build context pack · Readiness summary · Intelligence settings · MCP port repo (GitHub) · Memory bank repo (GitHub) · Rules converter repo (GitHub) · Migrate skills `.cursor` → `.agents` · Merge **CLAUDE.md** → instructions · Port workspace **`.mcp.json`** · Migrate **`.claude/skills`** → `.agents` · Scan MCP & Skills awareness · Copilot/MCP config scan · Append notepad → memory-bank · Create SKILL.md stub · Verification checklist · Apply bundled MCP recipe · Run first test task.
 
 **Chat & session:** Open Copilot Chat · Session notepad · Copy notepad · Composer tips hub · Inline chat (Cursor-style).
 
-**Rules & instructions:** Cursor vs Copilot reference · Translate @-mentions · Append `.cursorrules` · Open instruction file… · Create `.cursorrules` template · Sync Cursor rules → Copilot.
+**Rules & instructions:** Cursor vs Copilot reference · Translate @-mentions · Append `.cursorrules` · Open instruction file… · Create `.cursorrules` template · Sync Cursor rules → Copilot · Merge **CLAUDE.md** into Copilot instructions.
 
-**MCP & Cursor bridges:** Open workspace `mcp.json` · Open user `mcp.json` · Toggle MCP discovery · Add server (native).
+**MCP & bridges:** Open workspace `mcp.json` · Open user `mcp.json` · Port Cursor MCP (npx / bundled) · Port workspace **`.mcp.json`** (Claude Code style) · Toggle MCP discovery · Add server (native).
 
 **Workspace setup:** One Click Setup · Init memory bank.
 
@@ -282,9 +282,9 @@ The **MCP & skills** and **Workspace kit** views expose a **Refresh** action in 
 
 ## Why it exists
 
-- **Different formats:** Cursor uses `~/.cursor/mcp.json` and `mcpServers`; VS Code + Copilot expect `mcp.json` with a `servers` object and `stdio` / `http` types.
+- **Different formats:** Cursor uses `~/.cursor/mcp.json` and `mcpServers`; VS Code + Copilot expect `mcp.json` with a `servers` object and `stdio` / `http` types. **Claude Code** projects often keep **`CLAUDE.md`** and a workspace **`.mcp.json`** (`mcpServers` or `servers`)—the extension can merge those into **`.github/copilot-instructions.md`** and VS Code **`mcp.json`**.
 - **Different “skills” story:** Local `SKILL.md` folders are useful for humans and for tools that read them; **Copilot does not automatically ingest** arbitrary skill folders—the extension lists them for **browse / open** and documents that in the UI.
-- **One sidebar:** Open workspace and user MCP, run port/sync/memory-bank CLIs, and run Intelligence flows without hunting commands.
+- **One sidebar:** Open workspace and user MCP, run port/sync/memory-bank CLIs, **Cursor** and **Claude Code** migration actions, and Intelligence flows without hunting commands.
 
 ---
 
@@ -327,6 +327,8 @@ These work alongside the extension; the **Intelligence** hub links to their repo
 | `cursor-mcp-to-github-copilot-port` | Port Cursor `mcp.json` → VS Code `mcp.json` | [Github-Copilot-ToolBox](https://github.com/amitchorasiya/Github-Copilot-ToolBox) |
 | `github-copilot-memory-bank` | Scaffold `memory-bank/` + merge Copilot instructions | [Github-Copilot-Memory-Bank](https://github.com/amitchorasiya/Github-Copilot-Memory-Bank) |
 | `cursor-rules-to-github-copilot` | Generate Copilot instruction files from `.cursor/rules` | [Github-Copilot-Cursor-Rules-Converter](https://github.com/amitchorasiya/Github-Copilot-Cursor-Rules-Converter) |
+
+**Claude Code → Copilot** helpers (**`CLAUDE.md`** merge, workspace **`.mcp.json`** merge, **`.claude/skills`** migration) are **implemented in the extension** — not separate npm packages.
 
 ---
 
@@ -401,6 +403,7 @@ Notable settings (see extension README for the full list):
 - `copilot-toolbox.npxTag`, `useInsidersPaths`
 - `copilot-toolbox.intelligence.*` (context pack defaults, **auto-scan MCP & Skills on workspace open**, etc.)
 - `copilot-toolbox.oneClickSetup.*` (**One Click Setup** — General **migration tracks**, Memory Bank, Rules, Skills, **Claude Code**, MCP, Follow-ups; use string enums where provided instead of conflicting checkboxes)
+- `copilot-toolbox.thinkingMachineMode.*` (**Thinking Machine Mode** — master switch, priming scan/instructions merge, context pack defaults)
 - `copilot-toolbox.translateWrapMultilineInFence`
 
 Open filtered settings: Command Palette → **Intelligence: open related settings** (or search **`copilot-toolbox`** in Settings UI).
