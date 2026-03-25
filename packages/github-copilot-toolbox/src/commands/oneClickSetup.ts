@@ -13,9 +13,15 @@ import { showIntelligenceReadiness } from "../intelligence/readinessCommand";
 import { runCopilotToolboxConfigScan } from "./copilotConfigScan";
 import { runFirstWorkspaceTestTask } from "./runFirstTestTask";
 import type { MigrateSkillMode } from "../skills/migrateCursorSkillsToAgents";
-import { runMigrationForRoot } from "../skills/migrateCursorSkillsToAgents";
+import {
+  runClaudeSkillsMigrationForRoot,
+  runMigrationForRoot,
+} from "../skills/migrateCursorSkillsToAgents";
 import { TOOLBOX_SETTINGS_PREFIX } from "../toolboxSettings";
 import { enableClaudeCopilotChatAgent } from "./claudeCopilotAgentSettings";
+import { mergeClaudeMdIntoCopilotInstructions } from "./mergeClaudeMdIntoCopilotInstructions";
+import type { PortProjectMcpJsonMode } from "./portClaudeProjectMcpJson";
+import { portClaudeProjectMcpJson } from "./portClaudeProjectMcpJson";
 
 const CFG = TOOLBOX_SETTINGS_PREFIX;
 
@@ -42,6 +48,22 @@ function getPortMode(): PortCursorMcpMode | "skip" {
   return "merge";
 }
 
+function getClaudeProjectMcpMode(): PortProjectMcpJsonMode {
+  const v = vscode.workspace
+    .getConfiguration()
+    .get<string>(`${CFG}.oneClickSetup.portClaudeCodeMcp`, "user");
+  if (
+    v === "user" ||
+    v === "workspaceMerge" ||
+    v === "workspaceOverwrite" ||
+    v === "dry" ||
+    v === "skip"
+  ) {
+    return v;
+  }
+  return "user";
+}
+
 export async function openOneClickSetupSettings(): Promise<void> {
   await vscode.commands.executeCommand("workbench.action.openSettings", `${CFG}.oneClickSetup`);
 }
@@ -62,11 +84,10 @@ export async function runOneClickSetup(
     {
       modal: true,
       detail:
-        "Adjust steps under Settings → GitHub Copilot Toolbox → One Click Setup.\n\n" +
-        "Claude cloud agent (optional step): if enabled in One Click settings, this sets User setting " +
-        "github.copilot.chat.claudeAgent.enabled. That still requires an eligible Copilot plan, org allowlisting " +
-        "of Claude under Partner Agents, and GitHub account settings for third-party agents where applicable. " +
-        "Then use Chat → New Chat → Cloud → Claude.",
+        "By default, **both** migration tracks run: **Cursor → GitHub Copilot** and **Claude Code → GitHub Copilot** (toggle under Settings → One Click Setup — General).\n\n" +
+        "Adjust sub-steps under One Click Setup (Memory Bank, Rules, Skills, Claude Code, MCP, Follow-ups).\n\n" +
+        "Copilot Chat **Claude cloud agent** (optional): if enabled, sets User setting github.copilot.chat.claudeAgent.enabled. " +
+        "That is separate from Claude Code repo migration and still requires plan/org/GitHub prerequisites.",
     },
     "I understand — run setup"
   );
@@ -78,10 +99,14 @@ export async function runOneClickSetup(
   const notes: string[] = [];
   const qm = { quietMissing: true } as const;
   const scope = cfgScope();
+  const insiders = ws.get<boolean>(`${CFG}.useInsidersPaths`) === true;
+
+  const runCursorTrack = ws.get<boolean>(`${CFG}.oneClickSetup.runCursorToCopilotTrack`, true);
+  const runClaudeTrack = ws.get<boolean>(`${CFG}.oneClickSetup.runClaudeCodeToCopilotTrack`, true);
 
   const skillsTarget = ws.get<string>(`${CFG}.oneClickSetup.migrateSkillsTarget`, "off");
-  const migrate = skillsTarget !== "off";
-  const migrateScope = (migrate ? skillsTarget : "workspace") as "workspace" | "user" | "both";
+  const migrateCursor = runCursorTrack && skillsTarget !== "off";
+  const migrateScope = (migrateCursor ? skillsTarget : "workspace") as "workspace" | "user" | "both";
   const migrateMode = (ws.get<string>(`${CFG}.oneClickSetup.migrateSkillsMode`, "copy") === "move"
     ? "move"
     : "copy") as MigrateSkillMode;
@@ -93,12 +118,31 @@ export async function runOneClickSetup(
   const initMbCursor = ws.get<boolean>(`${CFG}.oneClickSetup.initMemoryBankCursorRules`, true);
 
   const syncCursorRulesMode = ws.get<string>(`${CFG}.oneClickSetup.syncCursorRulesMode`, "apply");
-  const syncRules = syncCursorRulesMode !== "off";
+  const syncRules = runCursorTrack && syncCursorRulesMode !== "off";
   const syncRulesDry = syncCursorRulesMode === "dryRun";
 
-  const appendCr = ws.get<boolean>(`${CFG}.oneClickSetup.appendCursorrules`, true);
+  const appendCr = runCursorTrack && ws.get<boolean>(`${CFG}.oneClickSetup.appendCursorrules`, true);
 
   const portMode = getPortMode();
+  const portCursor = runCursorTrack && portMode !== "skip";
+
+  const mergeClaudeMdMode = ws.get<string>(`${CFG}.oneClickSetup.mergeClaudeMdMode`, "apply");
+  const mergeClaude = runClaudeTrack && mergeClaudeMdMode !== "off";
+  const mergeClaudeDry = mergeClaudeMdMode === "dryRun";
+  const mergeClaudeLocal = ws.get<boolean>(`${CFG}.oneClickSetup.mergeClaudeLocalMd`, false);
+
+  const claudeSkillsTarget = ws.get<string>(`${CFG}.oneClickSetup.migrateClaudeSkillsTarget`, "workspace");
+  const migrateClaudeSkills = runClaudeTrack && claudeSkillsTarget !== "off";
+  const claudeMigrateScope = (migrateClaudeSkills
+    ? claudeSkillsTarget
+    : "workspace") as "workspace" | "user" | "both";
+  const claudeMigrateMode = (ws.get<string>(`${CFG}.oneClickSetup.migrateClaudeSkillsMode`, "copy") ===
+  "move"
+    ? "move"
+    : "copy") as MigrateSkillMode;
+
+  const claudeMcpMode = getClaudeProjectMcpMode();
+  const portClaudeMcp = runClaudeTrack && claudeMcpMode !== "skip";
 
   const mergePolicy = ws.get<string>(
     `${CFG}.oneClickSetup.instructionMergeAfterOneClick`,
@@ -117,7 +161,7 @@ export async function runOneClickSetup(
   );
 
   try {
-    if (migrate) {
+    if (migrateCursor) {
       const bases: string[] = [];
       if (migrateScope === "workspace" || migrateScope === "both") {
         bases.push(folder.uri.fsPath);
@@ -128,25 +172,10 @@ export async function runOneClickSetup(
       for (const base of bases) {
         const run = await runMigrationForRoot(base, migrateMode);
         if (run.errors > 0) {
-          notes.push(`Skills migrate: ${run.errors} error(s) under ${run.cursorRoot}`);
+          notes.push(`Cursor skills migrate: ${run.errors} error(s) under ${run.sourceRoot}`);
         }
       }
       refreshHub();
-    }
-
-    if (initMb) {
-      const okMb = runInitMemoryBankBundledWithOptions(
-        folder,
-        {
-          dryRun: initMbDry,
-          cursorRules: initMbCursor,
-          force: initMbForce,
-        },
-        qm
-      );
-      if (!okMb) {
-        notes.push("Memory bank: bundled CLI not found under extension");
-      }
     }
 
     if (syncRules) {
@@ -160,16 +189,69 @@ export async function runOneClickSetup(
       try {
         const rulesUri = vscode.Uri.joinPath(folder.uri, ".cursorrules");
         await vscode.workspace.fs.stat(rulesUri);
-        await appendCursorrules();
+        await appendCursorrules({ silent: true });
       } catch {
         /* no .cursorrules — skip quietly */
       }
     }
 
-    if (portMode !== "skip") {
+    if (portCursor) {
       const okPort = runPortCursorMcpBundledWithMode(folder, portMode, qm);
       if (!okPort) {
-        notes.push("MCP port: bundled CLI not found under extension");
+        notes.push("Cursor MCP port: bundled CLI not found under extension");
+      }
+    }
+
+    if (mergeClaude) {
+      const r = await mergeClaudeMdIntoCopilotInstructions(folder, {
+        dryRun: mergeClaudeDry,
+        includeLocalMd: mergeClaudeLocal,
+      });
+      if (r.status === "dryRun" && r.detail) {
+        notes.push(r.detail);
+      } else if (r.status === "skipped" && r.detail) {
+        /* quiet — only note if user might expect a write */
+      }
+    }
+
+    if (migrateClaudeSkills) {
+      const bases: string[] = [];
+      if (claudeMigrateScope === "workspace" || claudeMigrateScope === "both") {
+        bases.push(folder.uri.fsPath);
+      }
+      if (claudeMigrateScope === "user" || claudeMigrateScope === "both") {
+        bases.push(os.homedir());
+      }
+      for (const base of bases) {
+        const run = await runClaudeSkillsMigrationForRoot(base, claudeMigrateMode);
+        if (run.errors > 0) {
+          notes.push(`Claude skills migrate: ${run.errors} error(s) under ${run.sourceRoot}`);
+        }
+      }
+      refreshHub();
+    }
+
+    if (portClaudeMcp) {
+      const pr = await portClaudeProjectMcpJson(folder, claudeMcpMode, insiders);
+      if (!pr.ok) {
+        notes.push(pr.note);
+      } else if (pr.note) {
+        notes.push(pr.note);
+      }
+    }
+
+    if (initMb) {
+      const okMb = runInitMemoryBankBundledWithOptions(
+        folder,
+        {
+          dryRun: initMbDry,
+          cursorRules: initMbCursor && runCursorTrack,
+          force: initMbForce,
+        },
+        qm
+      );
+      if (!okMb) {
+        notes.push("Memory bank: bundled CLI not found under extension");
       }
     }
 

@@ -1,8 +1,8 @@
 {
   "name": "github-copilot-toolbox",
   "displayName": "GitHub Copilot Toolbox",
-  "description": "GitHub Copilot Toolbox: MCP hub, workspace helpers, Thinking Machine Mode (context packs & priming), readiness, and npx bridges from Cursor→Copilot. Not affiliated with Microsoft or GitHub. See README Disclaimer. Workflow ideas credited in NOTICE (everything-claude-code, MIT).",
-  "version": "0.5.41",
+  "description": "GitHub Copilot Toolbox: MCP hub, workspace helpers, Thinking Machine Mode (context packs & priming), readiness, One Click dual migration (Cursor + Claude Code → Copilot), and bundled bridges. Not affiliated with Microsoft or GitHub. See README Disclaimer. Workflow ideas credited in NOTICE (everything-claude-code, MIT).",
+  "version": "0.5.42",
   "publisher": "amitchorasiya",
   "author": "amitchorasiya",
   "license": "MIT",
@@ -88,6 +88,16 @@
               "Write to the open workspace folder’s .vscode/settings.json when possible.",
               "Write to your User settings (applies to all folders)."
             ]
+          },
+          "copilot-toolbox.oneClickSetup.runCursorToCopilotTrack": {
+            "type": "boolean",
+            "default": true,
+            "description": "One Click: run the **Cursor → GitHub Copilot** steps (`.cursor/skills` migrate, Cursor rules CLI, `.cursorrules` merge, Cursor MCP port). Turn off if you only use Claude Code."
+          },
+          "copilot-toolbox.oneClickSetup.runClaudeCodeToCopilotTrack": {
+            "type": "boolean",
+            "default": true,
+            "description": "One Click: run the **Claude Code → GitHub Copilot** steps (`CLAUDE.md` merge, `.claude/skills` migrate, project `.mcp.json` port). Turn off if you only use Cursor."
           }
         }
       },
@@ -110,7 +120,12 @@
           "copilot-toolbox.oneClickSetup.initMemoryBankCursorRules": {
             "type": "boolean",
             "default": true,
-            "description": "When memory bank init runs, add --cursor-rules to the CLI. **Default: on** (pairs with rules → Copilot and .cursorrules merge when you use One Click)."
+            "description": "When memory bank init runs, add --cursor-rules to the CLI. **Default: on** (pairs with rules → Copilot and .cursorrules merge when you use One Click). Only applied when the Cursor migration track is on."
+          },
+          "copilot-toolbox.oneClickSetup.initMemoryBankIncludeClaudeMd": {
+            "type": "boolean",
+            "default": true,
+            "description": "Reserved for when **github-copilot-memory-bank** adds a CLAUDE.md ingest flag. Until then, One Click merges **CLAUDE.md** into **copilot-instructions.md** via the Claude Code track; memory bank init stays unchanged."
           }
         }
       },
@@ -160,6 +175,63 @@
             "enumDescriptions": [
               "Copy; keep files under .cursor/skills.",
               "Copy then remove from .cursor/skills."
+            ]
+          }
+        }
+      },
+      {
+        "title": "One Click Setup — Claude Code",
+        "order": 135,
+        "properties": {
+          "copilot-toolbox.oneClickSetup.mergeClaudeMdMode": {
+            "type": "string",
+            "enum": ["off", "apply", "dryRun"],
+            "default": "apply",
+            "description": "Merge repo-root **CLAUDE.md** into `.github/copilot-instructions.md` (replaceable block). **CLAUDE.local.md** is controlled separately.",
+            "enumDescriptions": [
+              "Skip CLAUDE.md merge.",
+              "Write or update the merged block (default).",
+              "Preview only — no file write; a note appears in the One Click summary."
+            ]
+          },
+          "copilot-toolbox.oneClickSetup.mergeClaudeLocalMd": {
+            "type": "boolean",
+            "default": false,
+            "description": "When merging CLAUDE.md, also append **CLAUDE.local.md** if it exists (default **off** for privacy)."
+          },
+          "copilot-toolbox.oneClickSetup.migrateClaudeSkillsTarget": {
+            "type": "string",
+            "enum": ["off", "workspace", "user", "both"],
+            "default": "workspace",
+            "description": "Migrate **.claude/skills** → **.agents/skills** (SKILL.md folders). Colliding names in `.agents/skills` are skipped.",
+            "enumDescriptions": [
+              "Do not migrate Claude skills during One Click.",
+              "Migrate under the open workspace folder only (default).",
+              "Migrate under your user home only.",
+              "Run migration for both workspace and user roots."
+            ]
+          },
+          "copilot-toolbox.oneClickSetup.migrateClaudeSkillsMode": {
+            "type": "string",
+            "enum": ["copy", "move"],
+            "default": "copy",
+            "description": "How to migrate Claude skills when the target above is not “off”.",
+            "enumDescriptions": [
+              "Copy; keep files under .claude/skills.",
+              "Copy then remove from .claude/skills."
+            ]
+          },
+          "copilot-toolbox.oneClickSetup.portClaudeCodeMcp": {
+            "type": "string",
+            "enum": ["user", "workspaceMerge", "workspaceOverwrite", "dry", "skip"],
+            "default": "user",
+            "description": "Port **workspace `.mcp.json`** (`mcpServers` or `servers`) into VS Code **mcp.json**. No-op if the file is missing or invalid. **Dry** logs to Output → GitHub Copilot Toolbox.",
+            "enumDescriptions": [
+              "Merge into user mcp.json (default).",
+              "Merge into workspace .vscode/mcp.json.",
+              "Replace workspace .vscode/mcp.json `servers` with entries from .mcp.json only.",
+              "Log planned merge only (Output channel).",
+              "Skip Claude MCP port."
             ]
           }
         }
@@ -468,6 +540,10 @@
       {
         "command": "GitHubCopilotToolBox.appendCursorrules",
         "title": "GitHub Copilot Toolbox: Append .cursorrules to Copilot instructions"
+      },
+      {
+        "command": "GitHubCopilotToolBox.mergeClaudeMdIntoCopilotInstructions",
+        "title": "GitHub Copilot Toolbox: Merge CLAUDE.md into Copilot instructions"
       },
       {
         "command": "GitHubCopilotToolBox.createCursorrulesTemplate",

@@ -1,6 +1,6 @@
 # GitHub Copilot Toolbox
 
-**VS Code extension + monorepo:** [`Github-Copilot-ToolBox`](https://github.com/amitchorasiya/Github-Copilot-ToolBox) on GitHub · **License:** [MIT](LICENSE) · **Marketplace:** `amitchorasiya.github-copilot-toolbox` · **Extension version:** `0.5.41`
+**VS Code extension + monorepo:** [`Github-Copilot-ToolBox`](https://github.com/amitchorasiya/Github-Copilot-ToolBox) on GitHub · **License:** [MIT](LICENSE) · **Marketplace:** `amitchorasiya.github-copilot-toolbox` · **Extension version:** `0.5.42`
 
 ## After install: open Copilot Toolbox
 
@@ -34,7 +34,7 @@ These are the two **highlighted cards** at the top of the hub’s **Intelligence
 
 ### One Click Setup
 
-**What it does:** After you accept the responsibility warning, it runs the automated sequence you configured under **Settings → Copilot Toolbox → One Click Setup**. That usually includes **porting Cursor MCP** into VS Code `mcp.json`, **GitHub Copilot memory bank** init, **Cursor rules → Copilot** instruction sync, optional **`.cursorrules`** merge, **skills** `.cursor` → `.agents` migration, **MCP & Skills awareness** scan, **readiness** summary, **config scan**, optional **Claude cloud-agent** user flag, and optional **auto-scan** enablement. The three bridge CLIs run via **bundled `node …/cli.mjs`** inside the extension (no `npx` network fetch).
+**What it does:** After you accept the responsibility warning, it runs the automated sequence you configured under **Settings → Copilot Toolbox → One Click Setup**. By default **both** migration tracks are on: **Cursor → Copilot** (Cursor MCP port, rules, `.cursorrules`, `.cursor/skills` → `.agents/skills`) and **Claude Code → Copilot** (`CLAUDE.md` → `copilot-instructions.md`, `.claude/skills` → `.agents/skills`, workspace **`.mcp.json`** → VS Code `mcp.json`). Then **GitHub Copilot memory bank** init (Cursor `--cursor-rules` only when the Cursor track is on), **MCP & Skills awareness** scan, **readiness**, **config scan**, optional **Copilot Chat Claude cloud agent** flag, and optional **auto-scan**. Cursor bridge CLIs run via **bundled `node …/cli.mjs`** (no `npx` network fetch).
 
 **Why it matters:** “Make this repo Copilot-ready” shouldn’t depend on who read which doc. One Click encodes your team’s playbook once; anyone can run the same steps and review the same terminals and file changes.
 
@@ -140,6 +140,7 @@ Open the **MCP & skills** hub from the **Side Bar** after you click **Copilot To
 | Control | What it does |
 |---------|----------------|
 | **One Click Setup** (pill-shaped primary button) | Modal: you accept responsibility for all changes. Then runs the configured automated flow using **bundled Node CLIs** (no `npx`). See **Settings → One Click Setup**. |
+| **Cursor → Copilot** / **Claude Code → Copilot** checkboxes | Toggle **`runCursorToCopilotTrack`** and **`runClaudeCodeToCopilotTrack`** (both default **on**). |
 | **⚙** | Opens **Settings** filtered to **`copilot-toolbox.oneClickSetup`**. |
 
 ### Thinking Machine Mode card (Intelligence tab, top)
@@ -390,7 +391,7 @@ Notable settings (see extension README for the full list):
 
 - `copilot-toolbox.npxTag`, `useInsidersPaths`
 - `copilot-toolbox.intelligence.*` (context pack defaults, **auto-scan MCP & Skills on workspace open**, etc.)
-- `copilot-toolbox.oneClickSetup.*` (**One Click Setup** — sections in Settings: General, Memory Bank, Rules, Skills, MCP, Follow-ups; use **`initMemoryBankMode`** / **`syncCursorRulesMode`** / **`migrateSkillsTarget`** / **`instructionMergeAfterOneClick`** enums instead of conflicting checkboxes)
+- `copilot-toolbox.oneClickSetup.*` (**One Click Setup** — General **migration tracks**, Memory Bank, Rules, Skills, **Claude Code**, MCP, Follow-ups; use string enums where provided instead of conflicting checkboxes)
 - `copilot-toolbox.translateWrapMultilineInFence`
 
 Open filtered settings: Command Palette → **Intelligence: open related settings** (or search **`copilot-toolbox`** in Settings UI).

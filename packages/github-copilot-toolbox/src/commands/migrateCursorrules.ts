@@ -9,7 +9,12 @@ const BANNER_END = "<!-- github-copilot-toolbox:cursorrules-end -->";
 const LEGACY_BANNER_START = "<!-- cursor-copilot-kit:cursorrules-begin -->";
 const LEGACY_BANNER_END = "<!-- cursor-copilot-kit:cursorrules-end -->";
 
-export async function appendCursorrules(): Promise<void> {
+export type AppendCursorrulesOptions = {
+  /** When true (e.g. One Click), write file only — no editor tab or toast. */
+  silent?: boolean;
+};
+
+export async function appendCursorrules(opts?: AppendCursorrulesOptions): Promise<void> {
   const folder = mcpPaths.getPrimaryWorkspaceFolder();
   if (!folder) {
     vscode.window.showErrorMessage("Open a workspace folder first.");
@@ -73,6 +78,9 @@ export async function appendCursorrules(): Promise<void> {
   }
 
   await vscode.workspace.fs.writeFile(outUri, new TextEncoder().encode(next));
+  if (opts?.silent === true) {
+    return;
+  }
   await vscode.window.showTextDocument(outUri);
   vscode.window.showInformationMessage(
     "Merged .cursorrules into .github/copilot-instructions.md (replaceable block)."

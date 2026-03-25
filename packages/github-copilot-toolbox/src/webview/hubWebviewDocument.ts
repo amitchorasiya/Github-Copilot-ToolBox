@@ -358,6 +358,24 @@ export function getHubWebviewHtml(csp: string): string {
       color: var(--muted);
     }
     .ocs-desc strong { color: color-mix(in srgb, var(--vscode-foreground) 85%, var(--muted)); }
+    .ocs-tracks {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px 16px;
+      margin-top: 8px;
+      font-size: 10px;
+      line-height: 1.35;
+      color: var(--muted);
+    }
+    .ocs-tracks label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .ocs-tracks input { margin: 0; }
     button.btn.icon-gear.ocs-gear {
       align-self: flex-start;
       margin-top: 2px;
@@ -548,7 +566,11 @@ export function getHubWebviewHtml(csp: string): string {
         <div class="ocs-cb-slot" aria-hidden="true"></div>
         <div class="ocs-content">
           <button type="button" class="btn primary ocs-pill-btn" id="one-click-setup-run">One Click Setup</button>
-          <p class="ocs-desc">Runs your configured steps using <strong>bundled Node CLIs</strong> (no npx) — MCP port, memory bank, Cursor rules, merges, scans, and optional Claude cloud-agent flag (see <strong>Settings → One Click Setup</strong>). You confirm responsibility before anything runs.</p>
+          <p class="ocs-desc">Runs your configured steps using <strong>bundled Node CLIs</strong> (no npx) — dual migration tracks (Cursor + Claude Code), memory bank, rules merges, MCP ports, scans, and optional Copilot Chat <strong>Claude cloud agent</strong> flag (see <strong>Settings → One Click Setup</strong>). You confirm responsibility before anything runs.</p>
+          <div class="ocs-tracks" aria-label="One Click migration tracks">
+            <label for="one-click-cursor-track-cb"><input type="checkbox" id="one-click-cursor-track-cb" /> Cursor → Copilot</label>
+            <label for="one-click-claude-track-cb"><input type="checkbox" id="one-click-claude-track-cb" /> Claude Code → Copilot</label>
+          </div>
         </div>
         <button type="button" class="btn icon-gear ocs-gear" id="one-click-setup-settings" title="One Click Setup defaults" aria-label="One Click Setup settings">⚙</button>
       </div>
@@ -615,6 +637,7 @@ export function getHubWebviewHtml(csp: string): string {
         { ic: "\\uD83D\\uDCC1", t: "Port MCP (bundled CLI)", d: "Same as npx port; runs Node CLI from the extension", c: "GitHubCopilotToolBox.manualPortCursorMcpWithoutNpx" },
         { ic: "\\uD83D\\uDCD6", t: "Memory bank (bundled CLI)", d: "Same as npx init; runs Node CLI from the extension", c: "GitHubCopilotToolBox.memoryBankWithoutNpx" },
         { ic: "\\uD83D\\uDCC4", t: "Cursor rules (bundled CLI)", d: "Same as npx converter; runs Node CLI from the extension", c: "GitHubCopilotToolBox.cursorRulesToCopilotWithoutNpx" },
+        { ic: "\\uD83D\\uDCDD", t: "Merge CLAUDE.md → instructions", d: "Claude Code project root into copilot-instructions.md", c: "GitHubCopilotToolBox.mergeClaudeMdIntoCopilotInstructions" },
         { ic: "\\uD83D\\uDCC2", t: "Reveal skill folders", d: ".cursor/skills and .agents/skills", c: "GitHubCopilotToolBox.revealSkillFoldersWithoutNpx" },
         { ic: "\\uD83D\\uDCE5", t: "Migrate skills .cursor → .agents", d: "SKILL.md folders to .agents/skills (copy or move)", c: "GitHubCopilotToolBox.migrateSkillsCursorToAgents" },
         { ic: "\\uD83D\\uDD0D", t: "Scan MCP & Skills awareness", d: "Save to .github + update copilot-instructions (optional open from toast)", c: "GitHubCopilotToolBox.showMcpSkillsAwareness" },
@@ -728,6 +751,14 @@ export function getHubWebviewHtml(csp: string): string {
     var tcb = $("#thinking-machine-mode-cb");
     if (!tcb || !state) return;
     tcb.checked = state.thinkingMachineModeEnabled === true;
+  }
+
+  function syncOneClickMigrationTrackCheckboxes() {
+    var ccb = $("#one-click-cursor-track-cb");
+    var clb = $("#one-click-claude-track-cb");
+    if (!state) return;
+    if (ccb) ccb.checked = state.runCursorToCopilotTrack !== false;
+    if (clb) clb.checked = state.runClaudeCodeToCopilotTrack !== false;
   }
 
   function scheduleRegistry(append) {
@@ -1013,6 +1044,18 @@ export function getHubWebviewHtml(csp: string): string {
     if (tm) {
       tm.addEventListener("change", function () {
         vscode.postMessage({ type: "setThinkingMachineModeEnabled", value: tm.checked });
+      });
+    }
+    var oct = $("#one-click-cursor-track-cb");
+    if (oct) {
+      oct.addEventListener("change", function () {
+        vscode.postMessage({ type: "setOneClickRunCursorToCopilotTrack", value: oct.checked });
+      });
+    }
+    var ocl = $("#one-click-claude-track-cb");
+    if (ocl) {
+      ocl.addEventListener("change", function () {
+        vscode.postMessage({ type: "setOneClickRunClaudeCodeToCopilotTrack", value: ocl.checked });
       });
     }
     var tms = $("#thinking-machine-settings");
@@ -1432,6 +1475,7 @@ export function getHubWebviewHtml(csp: string): string {
     }
     syncIntelAutoScanCheckbox();
     syncThinkingMachineModeCheckbox();
+    syncOneClickMigrationTrackCheckboxes();
 
     if (state.hubLoadError) {
       var warn = el("div", "callout");

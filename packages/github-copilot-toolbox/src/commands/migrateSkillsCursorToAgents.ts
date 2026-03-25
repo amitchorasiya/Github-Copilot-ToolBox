@@ -84,10 +84,10 @@ export async function migrateSkillsCursorToAgents(): Promise<void> {
     totalS += run.skipped;
     totalE += run.errors;
     if (run.found === 0) {
-      lines.push(`No SKILL.md skills under ${run.cursorRoot}`);
+      lines.push(`No SKILL.md skills under ${run.sourceRoot}`);
     } else {
       lines.push(
-        `${run.cursorRoot}: migrated ${run.migrated}, skipped (already in .agents) ${run.skipped}, errors ${run.errors}`
+        `${run.sourceRoot}: migrated ${run.migrated}, skipped (already in .agents) ${run.skipped}, errors ${run.errors}`
       );
     }
   }

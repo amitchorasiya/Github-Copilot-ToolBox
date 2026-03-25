@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.42
+
+- **One Click Setup — dual migration tracks:** **`runCursorToCopilotTrack`** and **`runClaudeCodeToCopilotTrack`** (both default **on**); Intelligence hub shows matching checkboxes. Cursor steps run only when the Cursor track is on; **memory bank `--cursor-rules`** only when that track is on.
+- **One Click — Claude Code:** **`mergeClaudeMdMode`** (default **apply**) merges **`CLAUDE.md`** into `.github/copilot-instructions.md` (replaceable block); optional **`mergeClaudeLocalMd`**; **`migrateClaudeSkillsTarget`** (default **workspace**) migrates **`.claude/skills` → `.agents/skills`**; **`portClaudeCodeMcp`** merges workspace **`.mcp.json`** into user or workspace VS Code **`mcp.json`** (no-op if missing). Command **Merge CLAUDE.md → Copilot instructions**.
+- **Pipeline order:** Cursor bridges first, then Claude Code steps, then shared memory bank init and follow-ups. **Append `.cursorrules`** no longer opens an editor when run from One Click (silent write).
+
 ## 0.5.41
 
 - **Thinking Machine Mode:** Turning the mode **on** (hub or Settings), after **Engage** or when already acknowledged, now runs **MCP & Skills awareness** when **During Thinking Machine priming: run MCP & Skills awareness** is on — so `.github/copilot-toolbox-mcp-skills-awareness.md` is recreated without relying only on workspace reopen or **Scan now**.

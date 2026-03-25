@@ -10,7 +10,7 @@
 
 **Missing the icon?** **Command Palette** (**Ctrl+Shift+P** / **⌘⇧P**) → type **GitHub Copilot Toolbox** → run a command, or **Developer: Reload Window**, then repeat steps 2–3.
 
-![Activity Bar → Copilot Toolbox; Side Bar → MCP & skills hub](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/00-copilot-toolbox-access.png?v=0.5.41)
+![Activity Bar → Copilot Toolbox; Side Bar → MCP & skills hub](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/00-copilot-toolbox-access.png?v=0.5.42)
 
 ## One place for Copilot-related setup
 
@@ -73,33 +73,33 @@ VS Code resolves README images relative to this package folder. Screenshots live
 
 **Intelligence** (hub): **Port Cursor → Copilot** (MCP, rules, memory bank), then broader bridges, context pack, readiness, MCP & Skills scan.
 
-![Intelligence: Port Cursor MCP, rules, and memory bank to VS Code & Copilot](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/02-intelligence-cursor-port.png?v=0.5.41)
+![Intelligence: Port Cursor MCP, rules, and memory bank to VS Code & Copilot](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/02-intelligence-cursor-port.png?v=0.5.42)
 
-![Intelligence tab: Cursor to VS Code and Copilot bridges](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/01-intelligence-cursor-to-vscode-copilot.png?v=0.5.41)
+![Intelligence tab: Cursor to VS Code and Copilot bridges](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/01-intelligence-cursor-to-vscode-copilot.png?v=0.5.42)
 
-![Intelligence: context pack and readiness actions](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/02-intelligence-context-readiness.png?v=0.5.41)
+![Intelligence: context pack and readiness actions](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/02-intelligence-context-readiness.png?v=0.5.42)
 
 **MCP**: installed workspace/user servers and registry browse.
 
-![MCP: installed workspace servers (Browse / Installed)](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/03-mcp-browse-workspace-servers.png?v=0.5.41)
+![MCP: installed workspace servers (Browse / Installed)](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/03-mcp-browse-workspace-servers.png?v=0.5.42)
 
-![MCP: registry browse & search](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/04-mcp-registry-search.png?v=0.5.41)
+![MCP: registry browse & search](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/04-mcp-registry-search.png?v=0.5.42)
 
 **Skills**: catalog (skills.sh) and local installed `SKILL.md` trees.
 
-![Skills: catalog (skills.sh)](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/05-skills-catalog-skills-sh.png?v=0.5.41)
+![Skills: catalog (skills.sh)](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/05-skills-catalog-skills-sh.png?v=0.5.42)
 
-![Skills: installed local skill folders](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/06-skills-installed-local.png?v=0.5.41)
+![Skills: installed local skill folders](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/06-skills-installed-local.png?v=0.5.42)
 
 **Workspace** checklist and **Intelligence** hub (context hygiene).
 
-![Workspace kit checklist](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/07-workspace-checklist.png?v=0.5.41)
+![Workspace kit checklist](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/07-workspace-checklist.png?v=0.5.42)
 
-![Intelligence: context hygiene, snapshot, and quick actions](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/08-workspace-toolbox-commands.png?v=0.5.41)
+![Intelligence: context hygiene, snapshot, and quick actions](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/08-workspace-toolbox-commands.png?v=0.5.42)
 
 **Reference diagram** (Mermaid export; not a live UI capture).
 
-![Cursor vs Copilot capability map (diagram)](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/mermaid-copilot-map.png?v=0.5.41)
+![Cursor vs Copilot capability map (diagram)](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/mermaid-copilot-map.png?v=0.5.42)
 
 ---
 
@@ -258,7 +258,7 @@ Search `GitHub Copilot Toolbox` or `GitHubCopilotToolBox` in Keyboard Shortcuts 
 | `copilot-toolbox.intelligence.includeGitByDefault` / `includeDiagnosticsByDefault` | Pre-select context pack options |
 | `copilot-toolbox.intelligence.appendNotepadAfterPack` / `openChatAfterPack` | Pre-select follow-ups after pack |
 | `copilot-toolbox.intelligence.autoScanMcpSkillsOnWorkspaceOpen` | After workspace opens (debounced): auto-open awareness, refresh hub, merge MCP/skills into `.github/copilot-instructions.md`; same merge when you run the scan with this enabled |
-| `copilot-toolbox.oneClickSetup.*` | **One Click Setup** (Settings UI sections: **General**, **Memory Bank**, **Rules**, **Skills**, **MCP**, **Follow-ups**): `settingsScope`; **`initMemoryBankMode`** (default **apply**; enum lists apply first) + **`initMemoryBankCursorRules`** (default **on**); **`syncCursorRulesMode`** (default **apply**) + **`appendCursorrules`** (default **on**); **`migrateSkillsTarget`** (off / workspace / user / both) + `migrateSkillsMode`; **`portCursorMcp`** (default **user** — global mcp.json for all workspaces); **`instructionMergeAfterOneClick`** (enable auto-scan vs one-time merge vs leave); `runAwarenessScan`, `runReadiness`, `runConfigScan`, `runFirstTestTask`; **`enableClaudeCopilotChatAgent`** (default **on** — sets User `github.copilot.chat.claudeAgent.enabled`; org/GitHub prerequisites still apply). Mutually exclusive flows use string enums (single-select in Settings). |
+| `copilot-toolbox.oneClickSetup.*` | **One Click Setup** (sections: **General**, **Memory Bank**, **Rules**, **Skills**, **Claude Code**, **MCP**, **Follow-ups**): **`runCursorToCopilotTrack`** / **`runClaudeCodeToCopilotTrack`** (both default **on** — hub checkboxes mirror these); `settingsScope`; **`initMemoryBankMode`** + **`initMemoryBankCursorRules`** (only when Cursor track is on) + **`initMemoryBankIncludeClaudeMd`** (reserved for future CLI); **`syncCursorRulesMode`** + **`appendCursorrules`**; **`migrateSkillsTarget`** + `migrateSkillsMode`; **Claude Code:** **`mergeClaudeMdMode`** (default **apply**), **`mergeClaudeLocalMd`** (default **off**), **`migrateClaudeSkillsTarget`** (default **workspace**) + **`migrateClaudeSkillsMode`**, **`portClaudeCodeMcp`** (default **user** — merges workspace **`.mcp.json`** `mcpServers`/`servers` into VS Code `mcp.json`); **`portCursorMcp`**; **`instructionMergeAfterOneClick`**; `runAwarenessScan`, `runReadiness`, `runConfigScan`, `runFirstTestTask`; **`enableClaudeCopilotChatAgent`** (Copilot Chat cloud Claude — not Claude Code migration). |
 | `copilot-toolbox.translateWrapMultilineInFence` | Wrap multiline translation in a code fence |
 
 **Open filtered settings:** Command **Intelligence — open related settings** → `copilot-toolbox.intelligence`. Command **Intelligence — open One Click Setup settings** → `copilot-toolbox.oneClickSetup`.

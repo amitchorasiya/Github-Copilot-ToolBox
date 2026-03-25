@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import { appendCursorrules } from "./commands/migrateCursorrules";
+import { mergeClaudeMdCommand } from "./commands/mergeClaudeMdIntoCopilotInstructions";
 import { createCursorrulesTemplate } from "./commands/createCursorrulesTemplate";
 import { openComposerHubPanel } from "./commands/composerPanel";
 import { showEnvSyncChecklist } from "./commands/envSyncChecklist";
@@ -166,6 +167,12 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
   );
 
   sub(vscode.commands.registerCommand("GitHubCopilotToolBox.appendCursorrules", appendCursorrules));
+  sub(
+    vscode.commands.registerCommand(
+      "GitHubCopilotToolBox.mergeClaudeMdIntoCopilotInstructions",
+      mergeClaudeMdCommand
+    )
+  );
   sub(
     vscode.commands.registerCommand("GitHubCopilotToolBox.createCursorrulesTemplate", createCursorrulesTemplate)
   );
@@ -355,6 +362,12 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
         refreshMcpHubs();
       }
       if (affectsToolboxSetting(e, "thinkingMachineMode.enabled")) {
+        refreshMcpHubs();
+      }
+      if (
+        affectsToolboxSetting(e, "oneClickSetup.runCursorToCopilotTrack") ||
+        affectsToolboxSetting(e, "oneClickSetup.runClaudeCodeToCopilotTrack")
+      ) {
         refreshMcpHubs();
       }
     })

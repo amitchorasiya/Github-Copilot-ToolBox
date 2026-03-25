@@ -53,6 +53,9 @@ export type HubPayload = {
   autoScanMcpSkillsOnWorkspaceOpen: boolean;
   /** Mirrors `copilot-toolbox.thinkingMachineMode.enabled`. */
   thinkingMachineModeEnabled: boolean;
+  /** One Click migration tracks (defaults both true). */
+  runCursorToCopilotTrack: boolean;
+  runClaudeCodeToCopilotTrack: boolean;
   /** File/config snapshot for the Thinking Machine hub (not token usage). */
   hygiene: HubHygiene;
   /** Set when `gatherHubPayload` failed; UI still loads with `emptyHubPayload()` defaults. */
@@ -101,6 +104,10 @@ export async function gatherHubPayload(context: vscode.ExtensionContext): Promis
     cfg.get<boolean>("copilot-toolbox.intelligence.autoScanMcpSkillsOnWorkspaceOpen") === true;
   const thinkingMachineModeEnabled =
     cfg.get<boolean>("copilot-toolbox.thinkingMachineMode.enabled") === true;
+  const runCursorToCopilotTrack =
+    cfg.get<boolean>("copilot-toolbox.oneClickSetup.runCursorToCopilotTrack") !== false;
+  const runClaudeCodeToCopilotTrack =
+    cfg.get<boolean>("copilot-toolbox.oneClickSetup.runClaudeCodeToCopilotTrack") !== false;
 
   let copilotInstructionsLines: number | null = null;
   let copilotInstructionsMissing = true;
@@ -133,6 +140,8 @@ export async function gatherHubPayload(context: vscode.ExtensionContext): Promis
     kit,
     autoScanMcpSkillsOnWorkspaceOpen,
     thinkingMachineModeEnabled,
+    runCursorToCopilotTrack,
+    runClaudeCodeToCopilotTrack,
     hygiene,
   };
 }
@@ -148,6 +157,8 @@ export function emptyHubPayload(): HubPayload {
     kit: [],
     autoScanMcpSkillsOnWorkspaceOpen: false,
     thinkingMachineModeEnabled: false,
+    runCursorToCopilotTrack: true,
+    runClaudeCodeToCopilotTrack: true,
     hygiene: {
       workspaceMcpServerCount: 0,
       userMcpServerCount: 0,
@@ -336,6 +347,26 @@ export class McpSkillsHubViewProvider implements vscode.WebviewViewProvider {
           const hasWs = (vscode.workspace.workspaceFolders?.length ?? 0) > 0;
           await vscode.workspace.getConfiguration().update(
             "copilot-toolbox.thinkingMachineMode.enabled",
+            msg.value === true,
+            hasWs ? vscode.ConfigurationTarget.Workspace : vscode.ConfigurationTarget.Global
+          );
+          this._postState();
+          break;
+        }
+        case "setOneClickRunCursorToCopilotTrack": {
+          const hasWs = (vscode.workspace.workspaceFolders?.length ?? 0) > 0;
+          await vscode.workspace.getConfiguration().update(
+            "copilot-toolbox.oneClickSetup.runCursorToCopilotTrack",
+            msg.value === true,
+            hasWs ? vscode.ConfigurationTarget.Workspace : vscode.ConfigurationTarget.Global
+          );
+          this._postState();
+          break;
+        }
+        case "setOneClickRunClaudeCodeToCopilotTrack": {
+          const hasWs = (vscode.workspace.workspaceFolders?.length ?? 0) > 0;
+          await vscode.workspace.getConfiguration().update(
+            "copilot-toolbox.oneClickSetup.runClaudeCodeToCopilotTrack",
             msg.value === true,
             hasWs ? vscode.ConfigurationTarget.Workspace : vscode.ConfigurationTarget.Global
           );

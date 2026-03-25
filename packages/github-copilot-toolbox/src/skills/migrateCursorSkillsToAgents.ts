@@ -2,10 +2,15 @@ import * as fs from "node:fs/promises";
 import * as path from "node:path";
 
 export const CURSOR_SKILLS_SEGMENTS = [".cursor", "skills"] as const;
+export const CLAUDE_SKILLS_SEGMENTS = [".claude", "skills"] as const;
 export const AGENTS_SKILLS_SEGMENTS = [".agents", "skills"] as const;
 
 export function cursorSkillsDir(base: string): string {
   return path.join(base, ...CURSOR_SKILLS_SEGMENTS);
+}
+
+export function claudeSkillsDir(base: string): string {
+  return path.join(base, ...CLAUDE_SKILLS_SEGMENTS);
 }
 
 export function agentsSkillsDir(base: string): string {
@@ -69,7 +74,8 @@ export async function migrateOneSkillFolder(
 }
 
 export type ScopeRun = {
-  cursorRoot: string;
+  /** Source skills root that was scanned (.cursor/skills or .claude/skills). */
+  sourceRoot: string;
   found: number;
   migrated: number;
   skipped: number;
@@ -80,9 +86,24 @@ export async function runMigrationForRoot(
   baseDir: string,
   mode: MigrateSkillMode
 ): Promise<ScopeRun> {
-  const cursorRoot = cursorSkillsDir(baseDir);
+  return runSkillsMigrationFromRoot(baseDir, mode, cursorSkillsDir(baseDir));
+}
+
+/** Migrate `.claude/skills` → `.agents/skills` (same semantics as Cursor migration). */
+export async function runClaudeSkillsMigrationForRoot(
+  baseDir: string,
+  mode: MigrateSkillMode
+): Promise<ScopeRun> {
+  return runSkillsMigrationFromRoot(baseDir, mode, claudeSkillsDir(baseDir));
+}
+
+async function runSkillsMigrationFromRoot(
+  baseDir: string,
+  mode: MigrateSkillMode,
+  sourceSkillsRoot: string
+): Promise<ScopeRun> {
   const agentsRoot = agentsSkillsDir(baseDir);
-  const folders = await listCursorSkillFolders(cursorRoot);
+  const folders = await listCursorSkillFolders(sourceSkillsRoot);
   let migrated = 0;
   let skipped = 0;
   let errors = 0;
@@ -97,7 +118,7 @@ export async function runMigrationForRoot(
     }
   }
   return {
-    cursorRoot,
+    sourceRoot: sourceSkillsRoot,
     found: folders.length,
     migrated,
     skipped,
