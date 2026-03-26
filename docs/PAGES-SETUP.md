@@ -4,6 +4,8 @@ This folder is a **static sales landing** for **GitHub Copilot Toolbox**. No bui
 
 **Note:** This file is named **`PAGES-SETUP.md`** (not `README.md`) so GitHub Pages never treats it as the site homepage. The live site entry is **`index.html`**.
 
+**Themes:** The landing page defaults to **dark** mode, styled like **GitHub Copilot CLI** / **github.com dark** (`#0d1117` canvas, `#58a6ff` accent, `#d2a8ff` secondary, monospace **JetBrains Mono**). **Light** matches **github.com light** with the same font stack. **Light** / **Dark** toggles persist in **`localStorage`** under **`copilot-toolbox-site-theme`**. Styles: **`css/site.css`**.
+
 ## Preview locally
 
 From the **monorepo root**:

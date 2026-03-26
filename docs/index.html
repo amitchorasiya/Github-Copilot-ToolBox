@@ -1,6 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
+    <script>
+      (function () {
+        try {
+          var k = "copilot-toolbox-site-theme";
+          var t = localStorage.getItem(k);
+          if (t === "dark" || t === "light") document.documentElement.setAttribute("data-theme", t);
+          else document.documentElement.setAttribute("data-theme", "dark");
+        } catch (e) {
+          document.documentElement.setAttribute("data-theme", "dark");
+        }
+      })();
+    </script>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Github Copilot ToolBox (MCP, Skills, Cursor/Claude → Copilot)</title>
@@ -11,24 +23,33 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="css/site.css?v=20" />
+    <link rel="stylesheet" href="css/site.css?v=22" />
   </head>
   <body>
     <header class="site-header">
       <div class="wrap">
-        <a class="logo" href="#">Copilot <span>Toolbox</span></a>
-        <nav class="nav-cta" aria-label="Primary">
-          <a
-            class="btn btn-primary"
-            href="vscode:extension/amitchorasiya.github-copilot-toolbox"
-            title="Opens Visual Studio Code to this extension if it is installed"
-            >Install in VS Code</a
-          >
-          <a class="btn btn-ghost" href="https://github.com/amitchorasiya/Github-Copilot-ToolBox">Source on GitHub</a>
-        </nav>
+        <div class="brand-row">
+          <span class="titlebar-dots" aria-hidden="true"></span>
+          <a class="logo" href="#">Copilot <span>Toolbox</span></a>
+        </div>
+        <div class="header-actions">
+          <div class="theme-switch" role="group" aria-label="Color theme">
+            <button type="button" class="theme-btn" data-set-theme="light" aria-pressed="false">Light</button>
+            <button type="button" class="theme-btn" data-set-theme="dark" aria-pressed="true">Dark</button>
+          </div>
+          <nav class="nav-cta" aria-label="Primary">
+            <a
+              class="btn btn-primary"
+              href="vscode:extension/amitchorasiya.github-copilot-toolbox"
+              title="Opens Visual Studio Code to this extension if it is installed"
+              >Install in VS Code</a
+            >
+            <a class="btn btn-ghost" href="https://github.com/amitchorasiya/Github-Copilot-ToolBox">Source on GitHub</a>
+          </nav>
+        </div>
       </div>
     </header>
 
@@ -335,6 +356,32 @@
         </p>
       </div>
     </footer>
+    <script>
+      (function () {
+        var KEY = "copilot-toolbox-site-theme";
+        var docEl = document.documentElement;
+        function currentTheme() {
+          return docEl.getAttribute("data-theme") === "dark" ? "dark" : "light";
+        }
+        function applyTheme(theme) {
+          var t = theme === "dark" ? "dark" : "light";
+          docEl.setAttribute("data-theme", t);
+          try {
+            localStorage.setItem(KEY, t);
+          } catch (e) {}
+          document.querySelectorAll(".theme-switch .theme-btn").forEach(function (btn) {
+            var on = (btn.getAttribute("data-set-theme") || "") === t;
+            btn.setAttribute("aria-pressed", on ? "true" : "false");
+          });
+        }
+        document.querySelectorAll(".theme-switch .theme-btn").forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            applyTheme(btn.getAttribute("data-set-theme") || "light");
+          });
+        });
+        applyTheme(currentTheme());
+      })();
+    </script>
     <script>
       (function () {
         var root = document.getElementById("lightbox-root");
