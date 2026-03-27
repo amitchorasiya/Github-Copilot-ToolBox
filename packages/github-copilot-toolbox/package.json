@@ -2,7 +2,7 @@
   "name": "github-copilot-toolbox",
   "displayName": "Github Copilot ToolBox (MCP, Skills, Cursor/Claude → Copilot)",
   "description": "Github Copilot ToolBox (MCP, Skills, Cursor/Claude → Copilot): MCP hub, workspace helpers, Thinking Machine Mode (context packs & priming), readiness, One Click dual migration (Cursor + Claude Code → Copilot), and bundled bridges. Not affiliated with Microsoft or GitHub. See README Disclaimer. Workflow ideas credited in NOTICE (everything-claude-code, MIT).",
-  "version": "1.0.2",
+  "version": "1.0.11",
   "publisher": "amitchorasiya",
   "author": "amitchorasiya",
   "license": "MIT",
@@ -294,6 +294,16 @@
             "type": "boolean",
             "default": true,
             "description": "During One Click: set User setting github.copilot.chat.claudeAgent.enabled to true so Copilot Chat can offer Claude as a cloud partner agent. Still requires eligible Copilot plan, org enablement of Claude under Partner Agents, and GitHub account settings for third-party agents where applicable. Use Intelligence hub → Claude agent prerequisites for details."
+          },
+          "copilot-toolbox.oneClickSetup.enableCopilotCliChatSettings": {
+            "type": "boolean",
+            "default": true,
+            "description": "During One Click: set User GitHub Copilot Chat keys (backgroundAgent.enabled, terminalChatLocation, cli.branchSupport.enabled, cli.sessionController.enabled) and run **New Copilot CLI Session** when Copilot provides that command — targets the Copilot CLI / background-agent Chat UI in VS Code. Default on; modal: “Skip Copilot CLI + Chat (this run only)”. Pair with installCopilotCliGlobalDuringOneClick (default on) for npm install. Use **VS Code + GitHub Copilot Chat**, not Cursor chat."
+          },
+          "copilot-toolbox.oneClickSetup.installCopilotCliGlobalDuringOneClick": {
+            "type": "boolean",
+            "default": true,
+            "description": "During One Click: open a terminal and run npm install -g @github/copilot (official CLI). Default **on** so the `copilot` command is installed; turn off to skip global npm. The terminal prints the NPM global bin path if `copilot` is still not on PATH. Requires Node 22+, Copilot subscription — see GitHub docs."
           }
         }
       },
@@ -427,14 +437,14 @@
         {
           "id": "GitHubCopilotToolBox",
           "title": "Copilot Toolbox",
-          "icon": "resources/icon.svg"
+          "icon": "resources/activity-bar-icon.svg"
         }
       ],
       "secondarySidebar": [
         {
           "id": "GitHubCopilotToolBoxSecondary",
           "title": "Github Copilot ToolBox (MCP, Skills, Cursor/Claude → Copilot)",
-          "icon": "resources/icon.svg"
+          "icon": "resources/activity-bar-icon.svg"
         }
       ]
     },
@@ -664,6 +674,14 @@
       {
         "command": "GitHubCopilotToolBox.showClaudeCopilotAgentPrerequisites",
         "title": "GitHub Copilot Toolbox: Thinking Machine Mode — Claude cloud agent prerequisites…"
+      },
+      {
+        "command": "GitHubCopilotToolBox.enableCopilotCli",
+        "title": "GitHub Copilot Toolbox: Install Copilot CLI & configure Chat"
+      },
+      {
+        "command": "GitHubCopilotToolBox.openCopilotCliChatSession",
+        "title": "GitHub Copilot Toolbox: Open Copilot CLI session in Chat (footer → Copilot CLI)"
       }
     ],
     "menus": {
@@ -701,5 +719,11 @@
     "@vscode/vsce": "^3.7.0",
     "typescript": "^5.9.0",
     "vitest": "^2.1.9"
+  },
+  "overrides": {
+    "glob": {
+      "brace-expansion": "5.0.5"
+    },
+    "picomatch": "2.3.2"
   }
 }

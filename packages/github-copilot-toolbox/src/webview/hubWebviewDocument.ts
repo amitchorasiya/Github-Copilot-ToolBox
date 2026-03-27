@@ -654,6 +654,8 @@ export function getHubWebviewHtml(csp: string): string {
     {
       title: "Chat & session",
       items: [
+        { ic: "\\u2328\\uFE0F", t: "Install Copilot CLI + Chat", d: "npm i -g @github/copilot + Copilot Chat CLI settings", c: "GitHubCopilotToolBox.enableCopilotCli" },
+        { ic: "\\uD83D\\uDD0C", t: "Open Copilot CLI in Chat", d: "Opens Chat then New CLI session; hint if still on Local", c: "GitHubCopilotToolBox.openCopilotCliChatSession" },
         { ic: "\\uD83D\\uDCAC", t: "Open Copilot Chat", d: "Focus GitHub Copilot Chat", c: "GitHubCopilotToolBox.openCopilotChat" },
         { ic: "\\uD83D\\uDCD2", t: "Session notepad", d: "Scratch space for this session", c: "GitHubCopilotToolBox.openSessionNotepad" },
         { ic: "\\uD83D\\uDCCB", t: "Copy notepad", d: "Clipboard", c: "GitHubCopilotToolBox.copySessionNotepad" },

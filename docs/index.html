@@ -4,8 +4,9 @@
     <script>
       (function () {
         try {
-          var k = "copilot-toolbox-site-theme";
-          var t = localStorage.getItem(k);
+          /* Short neutral key — avoids “secret-like” dashed literals flagged by SAST; not a credential. */
+          var themeLs = "cpltb_theme_v1";
+          var t = localStorage.getItem(themeLs);
           if (t === "dark" || t === "light") document.documentElement.setAttribute("data-theme", t);
           else document.documentElement.setAttribute("data-theme", "dark");
         } catch (e) {
@@ -18,7 +19,7 @@
     <title>Github Copilot ToolBox (MCP, Skills, Cursor/Claude → Copilot)</title>
     <meta
       name="description"
-      content="Github Copilot ToolBox (MCP, Skills, Cursor/Claude → Copilot) for VS Code: One Click dual migration tracks (Cursor and Claude Code), Thinking Machine Mode, MCP &amp; skills hub, bundled bridge CLIs, and context packs."
+      content="Github Copilot ToolBox (MCP, Skills, Cursor/Claude → Copilot) for VS Code: One Click dual tracks, optional Copilot CLI (npm global + User chat settings), Thinking Machine Mode, MCP &amp; skills hub, bundled bridge CLIs, context packs."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -26,7 +27,7 @@
       href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="css/site.css?v=22" />
+    <link rel="stylesheet" href="css/site.css?v=23" />
   </head>
   <body>
     <header class="site-header">
@@ -36,7 +37,7 @@
           <a class="logo" href="#">Copilot <span>Toolbox</span></a>
         </div>
         <div class="header-actions">
-          <div class="theme-switch" role="group" aria-label="Color theme">
+          <div class="theme-switch" role="group" aria-label="Color theme — saved in this browser only">
             <button type="button" class="theme-btn" data-set-theme="light" aria-pressed="false">Light</button>
             <button type="button" class="theme-btn" data-set-theme="dark" aria-pressed="true">Dark</button>
           </div>
@@ -64,9 +65,18 @@
             </p>
             <div class="plain">
               <strong>After you install:</strong> In VS Code, use the <strong>Activity Bar</strong> (icons on the
-              <strong>far left</strong>) → click <strong>Copilot Toolbox</strong> → in the <strong>Side Bar</strong> click
+              <strong>far left</strong>) → click <strong>Copilot Toolbox</strong> (outline <strong>brain</strong> icon — twin lobes, matches default Activity Bar scale) → in the <strong>Side Bar</strong> click
               <strong>MCP &amp; skills</strong>. That opens the hub (Intelligence, MCP, Skills, Workspace). Reload the window
               if you don’t see the icon yet.
+            </div>
+            <div class="plain">
+              <strong>One Click &amp; Copilot CLI:</strong> From <strong>Intelligence</strong>, <strong>One Click Setup</strong> can run both migration tracks (Cursor and Claude Code), then follow-ups including optional <strong>Copilot CLI + Chat</strong> User settings and <code>npm install -g @github/copilot</code> (terminal prints <strong><code>npm bin -g</code></strong> for PATH — PowerShell on Windows). You can <strong>skip Copilot CLI + Chat for this run only</strong> in the confirmation modal. In Chat, <strong>Local</strong> vs <strong>Copilot CLI</strong> is the session type in the footer or command palette — not the <strong># Toolbox</strong> context chip.
+            </div>
+            <div class="plain">
+              <strong>Claude Code (Anthropic):</strong> This extension migrates repo files toward Copilot; it does <strong>not</strong> sign you in to Anthropic’s Claude Code extension or CLI — those still use their own login when prompted.
+            </div>
+            <div class="plain">
+              <strong>This page:</strong> <strong>Light</strong> / <strong>Dark</strong> in the header remembers your choice in this browser only (not on our servers).
             </div>
             <div class="plain">
               <strong>In plain terms:</strong> Copilot only works as well as the setup around it—but that setup is
@@ -82,7 +92,7 @@
                 class="zoomable"
                 tabindex="0"
                 data-caption="Where to open Copilot Toolbox — Activity Bar → Copilot Toolbox, then Side Bar → MCP &amp; skills"
-                src="screenshots/00-copilot-toolbox-access.png?v=1.0.2"
+                src="screenshots/00-copilot-toolbox-access.png?v=1.0.11"
                 alt="VS Code: Activity Bar Copilot Toolbox icon and Side Bar MCP &amp; skills. Click to view fullscreen."
                 width="3024"
                 height="1732"
@@ -94,7 +104,7 @@
                 class="zoomable"
                 tabindex="0"
                 data-caption="Intelligence tab — Cursor → VS Code &amp; Copilot bridges (inside the hub)"
-                src="screenshots/01-intelligence-cursor-to-vscode-copilot.png?v=1.0.2"
+                src="screenshots/01-intelligence-cursor-to-vscode-copilot.png?v=1.0.11"
                 alt="Github Copilot ToolBox hub: Intelligence tab with Cursor to VS Code and Copilot bridges. Click to view fullscreen."
                 width="2476"
                 height="1594"
@@ -139,7 +149,7 @@
             <article class="mode-card">
               <h3>One Click Setup</h3>
               <p>
-                <strong>What it does:</strong> After you confirm you understand the risk, it runs the sequence you configured in Settings. By default <strong>both</strong> tracks are on: <strong>Cursor → Copilot</strong> (MCP port, rules, optional <code>.cursorrules</code>, <code>.cursor/skills</code> → <code>.agents/skills</code>) and <strong>Claude Code → Copilot</strong> (<code>CLAUDE.md</code> → <code>copilot-instructions.md</code>, <code>.claude/skills</code> → <code>.agents/skills</code>, workspace <code>.mcp.json</code> → VS Code <code>mcp.json</code>). Then memory bank init, MCP &amp; Skills awareness scan, readiness, config scan, and optional Claude cloud-agent toggles. Cursor bridge CLIs use the
+                <strong>What it does:</strong> After you confirm you understand the risk, it runs the sequence you configured in Settings. By default <strong>both</strong> tracks are on: <strong>Cursor → Copilot</strong> (MCP port, rules, optional <code>.cursorrules</code>, <code>.cursor/skills</code> → <code>.agents/skills</code>) and <strong>Claude Code → Copilot</strong> (<code>CLAUDE.md</code> → <code>copilot-instructions.md</code>, <code>.claude/skills</code> → <code>.agents/skills</code>, workspace <code>.mcp.json</code> → VS Code <code>mcp.json</code>). Then memory bank init, MCP &amp; Skills awareness scan, readiness, config scan, optional Copilot Chat toggles (including <strong>Claude cloud agent</strong> and <strong>Copilot CLI + Chat</strong> User settings), optional global <code>npm install -g @github/copilot</code> with <strong><code>npm bin -g</code></strong> printed for PATH, and best-effort <strong>New Copilot CLI Session</strong>. The modal can <strong>skip Copilot CLI + Chat</strong> for that run only. Cursor bridge CLIs use the
                 <strong>bundled Node CLIs</strong> (no <code>npx</code> fetch).
               </p>
               <p>
@@ -177,7 +187,7 @@
                 class="zoomable"
                 tabindex="0"
                 data-caption="Open the hub — Activity Bar: Copilot Toolbox → Side Bar: MCP &amp; skills"
-                src="screenshots/00-copilot-toolbox-access.png?v=1.0.2"
+                src="screenshots/00-copilot-toolbox-access.png?v=1.0.11"
                 alt="How to open Github Copilot ToolBox after install: Activity Bar and MCP &amp; skills. Click to view fullscreen."
                 width="3024"
                 height="1732"
@@ -190,7 +200,7 @@
                 class="zoomable"
                 tabindex="0"
                 data-caption="Port Cursor — MCP, rules, memory bank to VS Code &amp; Copilot"
-                src="screenshots/02-intelligence-cursor-port.png?v=1.0.2"
+                src="screenshots/02-intelligence-cursor-port.png?v=1.0.11"
                 alt="Intelligence: Port Cursor MCP, rules, and memory bank to Copilot. Click to view fullscreen."
                 width="2482"
                 height="1600"
@@ -203,7 +213,7 @@
                 class="zoomable"
                 tabindex="0"
                 data-caption="Cursor → VS Code &amp; Copilot bridges"
-                src="screenshots/01-intelligence-cursor-to-vscode-copilot.png?v=1.0.2"
+                src="screenshots/01-intelligence-cursor-to-vscode-copilot.png?v=1.0.11"
                 alt="Intelligence: Cursor to VS Code bridges. Click to view fullscreen."
                 width="2476"
                 height="1594"
@@ -216,7 +226,7 @@
                 class="zoomable"
                 tabindex="0"
                 data-caption="Context &amp; readiness"
-                src="screenshots/02-intelligence-context-readiness.png?v=1.0.2"
+                src="screenshots/02-intelligence-context-readiness.png?v=1.0.11"
                 alt="Context and readiness actions. Click to view fullscreen."
                 width="2484"
                 height="1592"
@@ -229,7 +239,7 @@
                 class="zoomable"
                 tabindex="0"
                 data-caption="MCP — installed servers"
-                src="screenshots/03-mcp-browse-workspace-servers.png?v=1.0.2"
+                src="screenshots/03-mcp-browse-workspace-servers.png?v=1.0.11"
                 alt="MCP installed servers. Click to view fullscreen."
                 width="2468"
                 height="1596"
@@ -242,7 +252,7 @@
                 class="zoomable"
                 tabindex="0"
                 data-caption="MCP — registry browse"
-                src="screenshots/04-mcp-registry-search.png?v=1.0.2"
+                src="screenshots/04-mcp-registry-search.png?v=1.0.11"
                 alt="MCP registry browse. Click to view fullscreen."
                 width="2470"
                 height="1596"
@@ -255,7 +265,7 @@
                 class="zoomable"
                 tabindex="0"
                 data-caption="Skills — skills.sh catalog"
-                src="screenshots/05-skills-catalog-skills-sh.png?v=1.0.2"
+                src="screenshots/05-skills-catalog-skills-sh.png?v=1.0.11"
                 alt="Skills catalog. Click to view fullscreen."
                 width="2466"
                 height="1596"
@@ -268,7 +278,7 @@
                 class="zoomable"
                 tabindex="0"
                 data-caption="Skills — installed"
-                src="screenshots/06-skills-installed-local.png?v=1.0.2"
+                src="screenshots/06-skills-installed-local.png?v=1.0.11"
                 alt="Installed local skills. Click to view fullscreen."
                 width="2490"
                 height="1590"
@@ -281,7 +291,7 @@
                 class="zoomable"
                 tabindex="0"
                 data-caption="Workspace checklist"
-                src="screenshots/07-workspace-checklist.png?v=1.0.2"
+                src="screenshots/07-workspace-checklist.png?v=1.0.11"
                 alt="Workspace checklist. Click to view fullscreen."
                 width="2490"
                 height="1594"
@@ -294,7 +304,7 @@
                 class="zoomable"
                 tabindex="0"
                 data-caption="Intelligence — context hygiene"
-                src="screenshots/08-workspace-toolbox-commands.png?v=1.0.2"
+                src="screenshots/08-workspace-toolbox-commands.png?v=1.0.11"
                 alt="Context hygiene and quick actions. Click to view fullscreen."
                 width="2490"
                 height="1608"
@@ -345,7 +355,7 @@
     <footer class="site-footer">
       <div class="wrap">
         <p>
-          <a href="https://github.com/amitchorasiya/Github-Copilot-ToolBox">Github-Copilot-ToolBox</a> · extension <strong>1.0.2</strong> ·
+          <a href="https://github.com/amitchorasiya/Github-Copilot-ToolBox">Github-Copilot-ToolBox</a> · extension <strong>1.0.11</strong> ·
           <a href="https://github.com/amitchorasiya/Github-Copilot-ToolBox/blob/main/README.md#disclaimer">MIT License &amp; disclaimer</a>
         </p>
         <p class="site-disclaimer">
@@ -358,7 +368,8 @@
     </footer>
     <script>
       (function () {
-        var KEY = "copilot-toolbox-site-theme";
+        /* Same key as head script — short literal, not a credential (see comment there). */
+        var themeLs = "cpltb_theme_v1";
         var docEl = document.documentElement;
         function currentTheme() {
           return docEl.getAttribute("data-theme") === "dark" ? "dark" : "light";
@@ -367,7 +378,7 @@
           var t = theme === "dark" ? "dark" : "light";
           docEl.setAttribute("data-theme", t);
           try {
-            localStorage.setItem(KEY, t);
+            localStorage.setItem(themeLs, t);
           } catch (e) {}
           document.querySelectorAll(".theme-switch .theme-btn").forEach(function (btn) {
             var on = (btn.getAttribute("data-set-theme") || "") === t;

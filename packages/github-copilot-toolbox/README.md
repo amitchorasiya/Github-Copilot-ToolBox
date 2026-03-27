@@ -5,12 +5,12 @@
 **Not a standalone app**—only inside **Visual Studio Code**.
 
 1. Install **Github Copilot ToolBox (MCP, Skills, Cursor/Claude → Copilot)**, then **reload the window** if prompted.
-2. **Activity Bar** (icons on the **far left**) → click **Copilot Toolbox**.
+2. **Activity Bar** (icons on the **far left**) → click **Copilot Toolbox** (outline **brain** — twin lobes; **`currentColor`**; tight `viewBox` so it matches default bar icon scale).
 3. **Side Bar** → click **MCP & skills** to open the **hub** (tabs: **Intelligence**, **MCP**, **Skills**, **Workspace**).
 
 **Missing the icon?** **Command Palette** (**Ctrl+Shift+P** / **⌘⇧P**) → type **GitHub Copilot Toolbox** → run a command, or **Developer: Reload Window**, then repeat steps 2–3.
 
-![Activity Bar → Copilot Toolbox; Side Bar → MCP & skills hub](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/00-copilot-toolbox-access.png?v=1.0.2)
+![Activity Bar → Copilot Toolbox; Side Bar → MCP & skills hub](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/00-copilot-toolbox-access.png?v=1.0.11)
 
 ## One place for Copilot-related setup
 
@@ -29,7 +29,7 @@
 
 **Packaging:** `npm run package` in this folder stages the [monorepo root README](../../README.md) (with GitHub URLs for screenshots) into this `README.md` for the `.vsix`, then restores this extension reference. Use `npm run package:extension-readme-only` only if you must package the file below as-is.
 
-**License:** [MIT](LICENSE) · **Marketplace ID:** `amitchorasiya.github-copilot-toolbox` · **npm package name:** `github-copilot-toolbox` · **Version:** 1.0.2 · **Site:** [copilottoolbox.layai.co](https://copilottoolbox.layai.co)
+**License:** [MIT](LICENSE) · **Marketplace ID:** `amitchorasiya.github-copilot-toolbox` · **npm package name:** `github-copilot-toolbox` · **Version:** 1.0.11 · **Site:** [copilottoolbox.layai.co](https://copilottoolbox.layai.co) — static **GitHub Pages** site in monorepo [`docs/`](https://github.com/amitchorasiya/Github-Copilot-ToolBox/tree/main/docs); **Light/Dark** preference is saved in the browser (`localStorage` key **`cpltb_theme_v1`**).
 
 Install: `code --install-extension amitchorasiya.github-copilot-toolbox` (when published) or install from a built `.vsix`.
 
@@ -73,33 +73,33 @@ VS Code resolves README images relative to this package folder. Screenshots live
 
 **Intelligence** (hub): **Cursor → Copilot** and **Claude Code → Copilot** bridge rows (MCP, rules, memory bank, `CLAUDE.md`, `.mcp.json`, skills), then context pack, readiness, MCP & Skills scan.
 
-![Intelligence: Port Cursor MCP, rules, and memory bank to VS Code & Copilot](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/02-intelligence-cursor-port.png?v=1.0.2)
+![Intelligence: Port Cursor MCP, rules, and memory bank to VS Code & Copilot](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/02-intelligence-cursor-port.png?v=1.0.11)
 
-![Intelligence tab: Cursor and Claude Code bridges to VS Code and Copilot](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/01-intelligence-cursor-to-vscode-copilot.png?v=1.0.2)
+![Intelligence tab: Cursor and Claude Code bridges to VS Code and Copilot](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/01-intelligence-cursor-to-vscode-copilot.png?v=1.0.11)
 
-![Intelligence: context pack and readiness actions](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/02-intelligence-context-readiness.png?v=1.0.2)
+![Intelligence: context pack and readiness actions](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/02-intelligence-context-readiness.png?v=1.0.11)
 
 **MCP**: installed workspace/user servers and registry browse.
 
-![MCP: installed workspace servers (Browse / Installed)](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/03-mcp-browse-workspace-servers.png?v=1.0.2)
+![MCP: installed workspace servers (Browse / Installed)](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/03-mcp-browse-workspace-servers.png?v=1.0.11)
 
-![MCP: registry browse & search](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/04-mcp-registry-search.png?v=1.0.2)
+![MCP: registry browse & search](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/04-mcp-registry-search.png?v=1.0.11)
 
 **Skills**: catalog (skills.sh) and local installed `SKILL.md` trees.
 
-![Skills: catalog (skills.sh)](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/05-skills-catalog-skills-sh.png?v=1.0.2)
+![Skills: catalog (skills.sh)](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/05-skills-catalog-skills-sh.png?v=1.0.11)
 
-![Skills: installed local skill folders](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/06-skills-installed-local.png?v=1.0.2)
+![Skills: installed local skill folders](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/06-skills-installed-local.png?v=1.0.11)
 
 **Workspace** checklist and **Intelligence** hub (context hygiene).
 
-![Workspace kit checklist](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/07-workspace-checklist.png?v=1.0.2)
+![Workspace kit checklist](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/07-workspace-checklist.png?v=1.0.11)
 
-![Intelligence: context hygiene, snapshot, and quick actions](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/08-workspace-toolbox-commands.png?v=1.0.2)
+![Intelligence: context hygiene, snapshot, and quick actions](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/08-workspace-toolbox-commands.png?v=1.0.11)
 
 **Reference diagram** (Mermaid export; not a live UI capture).
 
-![Cursor vs Copilot capability map (diagram)](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/mermaid-copilot-map.png?v=1.0.2)
+![Cursor vs Copilot capability map (diagram)](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/mermaid-copilot-map.png?v=1.0.11)
 
 ---
 
@@ -128,7 +128,7 @@ Open **MCP & skills** from the **Side Bar** after selecting **Copilot Toolbox** 
 | Control | What it does |
 |---------|----------------|
 | **⚙** | Opens **Settings** filtered to `copilot-toolbox.oneClickSetup` (migration tracks, per-step enums, workspace vs user scope for auto-scan, etc.). |
-| **One Click Setup** | Modal: you accept responsibility for all changes. Then runs the configured flow: **Cursor track** (optional `.cursor/skills` migrate, rules CLI, `.cursorrules`, Cursor MCP port) and/or **Claude Code track** (`CLAUDE.md` merge, `.claude/skills` migrate, workspace `.mcp.json` port), then shared **memory bank** init (`--cursor-rules` only if Cursor track is on), optional auto-scan, awareness, readiness, config scan, optional Copilot Chat **cloud Claude** flag, optional test task. Uses **bundled** bridge CLIs (no `npx`). |
+| **One Click Setup** | Modal: you accept responsibility for all changes. Buttons: **I understand — run setup** (default path) or **Skip Copilot CLI + Chat (this run only)** to omit CLI Chat settings + global npm for that invocation without changing saved settings. Then runs the configured flow: **Cursor track** (optional `.cursor/skills` migrate, rules CLI, `.cursorrules`, Cursor MCP port) and/or **Claude Code track** (`CLAUDE.md` merge, `.claude/skills` migrate, workspace `.mcp.json` port), then shared **memory bank** init (`--cursor-rules` only if Cursor track is on), optional auto-scan, awareness, readiness, config scan, optional Copilot Chat **cloud Claude** flag, optional **Copilot CLI + Chat** User settings (and optional global `npm install -g @github/copilot` in a terminal — prints **`npm bin -g`** for PATH, **PowerShell** on Windows), best-effort **New Copilot CLI Session**, optional test task. **Local** vs **Copilot CLI** in Chat is the footer/palette session type, not **# Toolbox**. Uses **bundled** bridge CLIs (no `npx`). |
 | **Cursor → Copilot** / **Claude Code → Copilot** checkboxes | Toggle `runCursorToCopilotTrack` and `runClaudeCodeToCopilotTrack` (both default **on**). |
 
 ### Thinking Machine Mode row (Intelligence only)
@@ -263,6 +263,8 @@ All commands are prefixed with **GitHub Copilot Toolbox:** in the palette. Examp
 - `Intelligence — port workspace .mcp.json to VS Code` · `Intelligence — migrate skills .claude → .agents` · `Merge CLAUDE.md into Copilot instructions`
 - `Memory bank setup (open docs — no npx)` · `Cursor rules → Copilot (manual — no npx)` · `reveal .cursor/.agents skill folders`
 - `Open workspace mcp.json` / `Open user mcp.json`
+- `Install Copilot CLI & configure Chat` — runs `npm install -g @github/copilot`; the terminal prints **`npm bin -g`** (global executables folder — correct on Windows and Unix; **PowerShell** on Windows). Sets User **`github.copilot.chat.backgroundAgent.enabled`** and related **`github.copilot.chat.*`** keys, then best-effort **New Copilot CLI Session** (VS Code **GitHub Copilot Chat** — not Cursor chat). **Local vs Copilot CLI** in Chat is the **footer / palette** session type, not the **# Toolbox** chip. Requires Node 22+; see GitHub docs.
+- `Open Copilot CLI session in Chat` — focuses GitHub Copilot Chat, then **New Copilot CLI Session**; if the footer still shows **Local** (vs **Copilot CLI**), the toast explains that the **# GitHub Copilot Toolbox** chip is only context — use the footer menu or palette **New Copilot CLI Session**.
 
 Search `GitHub Copilot Toolbox` or `GitHubCopilotToolBox` in Keyboard Shortcuts to rebind.
 
@@ -277,7 +279,7 @@ Search `GitHub Copilot Toolbox` or `GitHubCopilotToolBox` in Keyboard Shortcuts 
 | `copilot-toolbox.intelligence.includeGitByDefault` / `includeDiagnosticsByDefault` | Pre-select context pack options |
 | `copilot-toolbox.intelligence.appendNotepadAfterPack` / `openChatAfterPack` | Pre-select follow-ups after pack |
 | `copilot-toolbox.intelligence.autoScanMcpSkillsOnWorkspaceOpen` | After workspace opens (debounced): auto-open awareness, refresh hub, merge MCP/skills into `.github/copilot-instructions.md`; same merge when you run the scan with this enabled |
-| `copilot-toolbox.oneClickSetup.*` | **One Click Setup** (sections: **General**, **Memory Bank**, **Rules**, **Skills**, **Claude Code**, **MCP**, **Follow-ups**): **`runCursorToCopilotTrack`** / **`runClaudeCodeToCopilotTrack`** (both default **on** — hub checkboxes mirror these); `settingsScope`; **`initMemoryBankMode`** + **`initMemoryBankCursorRules`** (only when Cursor track is on) + **`initMemoryBankIncludeClaudeMd`** (reserved for future CLI); **`syncCursorRulesMode`** + **`appendCursorrules`**; **`migrateSkillsTarget`** + `migrateSkillsMode`; **Claude Code:** **`mergeClaudeMdMode`** (default **apply**), **`mergeClaudeLocalMd`** (default **off**), **`migrateClaudeSkillsTarget`** (default **workspace**) + **`migrateClaudeSkillsMode`**, **`portClaudeCodeMcp`** (default **user** — merges workspace **`.mcp.json`** `mcpServers`/`servers` into VS Code `mcp.json`); **`portCursorMcp`**; **`instructionMergeAfterOneClick`**; `runAwarenessScan`, `runReadiness`, `runConfigScan`, `runFirstTestTask`; **`enableClaudeCopilotChatAgent`** (Copilot Chat cloud Claude — not Claude Code migration). |
+| `copilot-toolbox.oneClickSetup.*` | **One Click Setup** (sections: **General**, **Memory Bank**, **Rules**, **Skills**, **Claude Code**, **MCP**, **Follow-ups**): **`runCursorToCopilotTrack`** / **`runClaudeCodeToCopilotTrack`** (both default **on** — hub checkboxes mirror these); `settingsScope`; **`initMemoryBankMode`** + **`initMemoryBankCursorRules`** (only when Cursor track is on) + **`initMemoryBankIncludeClaudeMd`** (reserved for future CLI); **`syncCursorRulesMode`** + **`appendCursorrules`**; **`migrateSkillsTarget`** + `migrateSkillsMode`; **Claude Code:** **`mergeClaudeMdMode`** (default **apply**), **`mergeClaudeLocalMd`** (default **off**), **`migrateClaudeSkillsTarget`** (default **workspace**) + **`migrateClaudeSkillsMode`**, **`portClaudeCodeMcp`** (default **user** — merges workspace **`.mcp.json`** `mcpServers`/`servers` into VS Code `mcp.json`); **`portCursorMcp`**; **`instructionMergeAfterOneClick`**; `runAwarenessScan`, `runReadiness`, `runConfigScan`, `runFirstTestTask`; **`enableClaudeCopilotChatAgent`** (Copilot Chat cloud Claude — not Claude Code migration); **`enableCopilotCliChatSettings`** (default **on** — Background Agent + `terminalChatLocation` + CLI branch/session flags; runs **New Copilot CLI Session** when Copilot provides it); **`installCopilotCliGlobalDuringOneClick`** (default **on** — `npm install -g @github/copilot`; terminal prints npm global **bin** path for PATH). |
 | `copilot-toolbox.translateWrapMultilineInFence` | Wrap multiline translation in a code fence |
 
 **Open filtered settings:** Command **Intelligence — open related settings** → `copilot-toolbox.intelligence`. Command **Intelligence — open One Click Setup settings** → `copilot-toolbox.oneClickSetup`.
@@ -330,6 +332,9 @@ npm test
 | Copilot “ignores” skills | Expected — use awareness report + attach files or maintain `.github/copilot-instructions.md`. |
 | Insiders vs stable user MCP | Toggle `copilot-toolbox.useInsidersPaths` and reopen hub. |
 | Auto-scan every startup | Disable `autoScanMcpSkillsOnWorkspaceOpen` in settings or uncheck the Intelligence hub checkbox. |
+| **`copilot` not found** after global npm | Run **`npm bin -g`** and add that folder to **User** `PATH` (Windows: often under `%AppData%\npm`; the install terminal prints it). |
+| Chat stays on **Local** after Toolbox automation | Normal — use Chat **footer** → **Copilot CLI** or palette **New Copilot CLI Session**; org policy or **`backgroundAgent.enabled`** can hide CLI. |
+| **Claude Code** extension asks to log in | Expected. **Anthropic** sign-in is separate from this extension and from **GitHub Copilot**; having **`claude` CLI** installed does not guarantee the VS Code Claude extension skips login. |
 
 ---
 

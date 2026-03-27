@@ -1,8 +1,8 @@
 # Github Copilot ToolBox (MCP, Skills, Cursor/Claude → Copilot)
 
-**VS Code extension + monorepo:** [`Github-Copilot-ToolBox`](https://github.com/amitchorasiya/Github-Copilot-ToolBox) on GitHub · **License:** [MIT](LICENSE) · **Marketplace:** `amitchorasiya.github-copilot-toolbox` · **Extension version:** `1.0.2`
+**VS Code extension + monorepo:** [`Github-Copilot-ToolBox`](https://github.com/amitchorasiya/Github-Copilot-ToolBox) on GitHub · **License:** [MIT](LICENSE) · **Marketplace:** `amitchorasiya.github-copilot-toolbox` · **Extension version:** `1.0.11`
 
-**Project site (GitHub Pages):** [copilottoolbox.layai.co](https://copilottoolbox.layai.co) — static pages in [`docs/`](docs/); copy aligned with this README for **1.0.2**.
+**Project site (GitHub Pages):** [copilottoolbox.layai.co](https://copilottoolbox.layai.co) — static pages in [`docs/`](docs/); copy aligned with this README for **1.0.11**.
 
 ## After install: open Copilot Toolbox
 
@@ -10,7 +10,7 @@
 
 1. **Install** *Github Copilot ToolBox (MCP, Skills, Cursor/Claude → Copilot)* from the Marketplace (or a `.vsix`). If VS Code prompts you, **reload the window** (**Developer: Reload Window**).
 2. Find the **Activity Bar**: the **narrow column of icons on the far left** of the VS Code window (Explorer, Search, Source Control, …).
-3. Click the **Copilot Toolbox** icon added by this extension. The **Side Bar** opens next to it.
+3. Click the **Copilot Toolbox** icon — outline **brain** (twin lobes, sulcus/gyri), **`currentColor`**; **SVG** uses a tight `viewBox` so it reads at a similar size to built-in Activity Bar icons. The **Side Bar** opens next to it.
 4. In the Side Bar, click **MCP & skills**. That opens the **hub** (webview) with tabs **Intelligence**, **MCP**, **Skills**, and **Workspace**—that is the main surface for MCP, skills, and setup flows.
 
 **Don’t see the icon?** Press **Ctrl+Shift+P** (Windows/Linux) or **⌘⇧P** (macOS), type **GitHub Copilot Toolbox**, run any listed command (that wakes the extension UI), or run **Developer: Reload Window**, then repeat steps 2–4.
@@ -36,7 +36,7 @@ These are the two **highlighted cards** at the top of the hub’s **Intelligence
 
 ### One Click Setup
 
-**What it does:** After you accept the responsibility warning, it runs the automated sequence you configured under **Settings → Copilot Toolbox → One Click Setup**. By default **both** migration tracks are on: **Cursor → Copilot** (Cursor MCP port, rules, `.cursorrules`, `.cursor/skills` → `.agents/skills`) and **Claude Code → Copilot** (`CLAUDE.md` → `copilot-instructions.md`, `.claude/skills` → `.agents/skills`, workspace **`.mcp.json`** → VS Code `mcp.json`). Then **GitHub Copilot memory bank** init (Cursor `--cursor-rules` only when the Cursor track is on), **MCP & Skills awareness** scan, **readiness**, **config scan**, optional **Copilot Chat Claude cloud agent** flag, and optional **auto-scan**. Cursor bridge CLIs run via **bundled `node …/cli.mjs`** (no `npx` network fetch).
+**What it does:** After you accept the responsibility warning, it runs the automated sequence you configured under **Settings → Copilot Toolbox → One Click Setup**. By default **both** migration tracks are on: **Cursor → Copilot** (Cursor MCP port, rules, `.cursorrules`, `.cursor/skills` → `.agents/skills`) and **Claude Code → Copilot** (`CLAUDE.md` → `copilot-instructions.md`, `.claude/skills` → `.agents/skills`, workspace **`.mcp.json`** → VS Code `mcp.json`). Then **GitHub Copilot memory bank** init (Cursor `--cursor-rules` only when the Cursor track is on), **MCP & Skills awareness** scan, **readiness**, **config scan**, optional **Copilot Chat** toggles (**Claude cloud agent**, **Copilot CLI + Chat** User settings), optional **`npm install -g @github/copilot`** (default **on**; terminal prints **`npm bin -g`** for PATH — **PowerShell** on Windows), a best-effort **New Copilot CLI Session** command, and optional **auto-scan**. The confirmation modal can **skip Copilot CLI + Chat** for that run only. **GitHub Copilot Chat** session type **Local vs Copilot CLI** is chosen in Chat’s footer or palette — not by the **# Toolbox** context chip. Cursor bridge CLIs run via **bundled `node …/cli.mjs`** (no `npx` network fetch).
 
 **Why it matters:** “Make this repo Copilot-ready” shouldn’t depend on who read which doc. One Click encodes your team’s playbook once; anyone can run the same steps and review the same terminals and file changes.
 
@@ -78,6 +78,7 @@ These are the two **highlighted cards** at the top of the hub’s **Intelligence
 | **[Github Copilot ToolBox (MCP, Skills, Cursor/Claude → Copilot)](packages/github-copilot-toolbox/)** | VS Code extension: **MCP & skills** hub, **workspace kit**, **Intelligence** (Cursor + Claude Code bridge rows, context packs, readiness, MCP/Skills awareness under `.github`, auto-scan, **One Click** dual tracks with **bundled** bridge CLIs and extension-side Claude merges) |
 | **[memory-bank/](memory-bank/)** | Optional project memory files for you and Copilot (not required to build the extension) |
 | **[packages/cursor-mcp-to-github-copilot-port/](packages/cursor-mcp-to-github-copilot-port/)** | Placeholder README for the MCP port CLI layout; the CLI is published separately on npm |
+| **[docs/](docs/)** | **GitHub Pages** marketing site ([copilottoolbox.layai.co](https://copilottoolbox.layai.co)): screenshots and copy aligned with this README. **Light/Dark** in the header stores the choice in the browser’s **`localStorage`** (key **`cpltb_theme_v1`** — site UX only, not a credential). |
 
 The extension does **not** replace GitHub Copilot or Cursor; it helps you **align configs** and **see** what’s configured (MCP servers, local `SKILL.md` trees, instructions files). Deeper settings, keybindings, and troubleshooting: **[packages/github-copilot-toolbox/README.md](packages/github-copilot-toolbox/README.md)**.
 
@@ -316,7 +317,9 @@ npm test
   `code --install-extension amitchorasiya.github-copilot-toolbox`
 - **From VSIX:** build with `npm run package` inside `packages/github-copilot-toolbox/`, then **Install from VSIX…** in VS Code.
 
-**Requirements:** VS Code **1.99+**, **GitHub Copilot**, **Node.js 18+** for `npx` bridges. **Git** on `PATH` for optional Intelligence “include git” (Windows: [Git for Windows](https://git-scm.com/download/win)).
+**Requirements:** VS Code **1.99+**, **GitHub Copilot**, **Node.js 18+** for `npx` bridges (**Node 22+** for official **GitHub Copilot CLI** npm install per GitHub docs). **Git** on `PATH` for optional Intelligence “include git” (Windows: [Git for Windows](https://git-scm.com/download/win)).
+
+**Claude Code (Anthropic):** This extension helps **migrate repo artifacts** (`CLAUDE.md`, `.claude/skills`, `.mcp.json`) toward Copilot — it does **not** sign you in to **Anthropic’s Claude Code** extension or CLI. Installing the **Claude Code** VS Code extension or the **`claude`** CLI still requires **that product’s** login when prompted; CLI auth and extension auth are not automatically the same.
 
 ---
 
@@ -349,7 +352,7 @@ These work alongside the extension; the **Intelligence** hub links to their repo
 │   │   └── README.md
 │   └── cursor-mcp-to-github-copilot-port/   # Placeholder for optional vendored CLI
 ├── memory-bank/                     # Project docs for agents / Copilot
-├── docs/                            # Static sales site for GitHub Pages (`npm run serve:site`)
+├── docs/                            # GitHub Pages site — theme toggle uses localStorage key cpltb_theme_v1; `npm run serve:site`
 ├── screenshots/                     # README and docs: UI captures (incl. 00 access walkthrough) + reference diagram
 └── .github/workflows/               # extension-ci.yml → multi-OS build + tests
 ```
@@ -390,7 +393,7 @@ npm run package          # stages monorepo README (+ screenshot URLs) for Market
 
 The `.vsix` **README** is the **monorepo root** [`README.md`](README.md) (same content as on GitHub), with image paths rewritten to `raw.githubusercontent.com` so the Marketplace page shows screenshots. [`packages/github-copilot-toolbox/README.md`](packages/github-copilot-toolbox/README.md) is restored after each package run for repo browsing and holds packaging notes, troubleshooting, and migration details.
 
-From monorepo root: `npm run package:extension` (after `npm install` in the package directory).
+From monorepo root (after `npm install` in `packages/github-copilot-toolbox/`): **`npm run package`** or **`npm run vsce:package`** or **`npm run package:extension`** — all run the same packaging script. **Do not** run `npx @vscode/vsce package` in the repo root: the root `package.json` is not the extension manifest and has no `engines.vscode`, so vsce errors out.
 
 The **`LICENSE`** file in `packages/github-copilot-toolbox/` is included in the VSIX for Marketplace compliance.
 
@@ -417,6 +420,7 @@ Open filtered settings: Command Palette → **Intelligence: open related setting
 - **MCP configs** may contain paths, env vars, or secrets. Treat `mcp.json` as sensitive; do not commit secrets.
 - The extension **starts terminals** for `npx` bridges and may **spawn `git`** for optional Intelligence sections—only run servers and commands you trust.
 - **skills.sh** / registry features call **public HTTP APIs**; review network use in corporate environments.
+- **Dev dependencies:** The extension package lists **npm `overrides`** in `packages/github-copilot-toolbox/package.json` to pin patched transitive versions where safe (e.g. `picomatch`, `brace-expansion` under `glob`). **`@vscode/vsce`** must keep **`minimatch@3`** — **`minimatch@10`** breaks **`vsce package`**. See **`CHANGELOG.md`** for CVE-related notes.
 
 ---
 

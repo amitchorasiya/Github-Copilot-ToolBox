@@ -22,8 +22,17 @@ import { enableClaudeCopilotChatAgent } from "./claudeCopilotAgentSettings";
 import { mergeClaudeMdIntoCopilotInstructions } from "./mergeClaudeMdIntoCopilotInstructions";
 import type { PortProjectMcpJsonMode } from "./portClaudeProjectMcpJson";
 import { portClaudeProjectMcpJson } from "./portClaudeProjectMcpJson";
+import {
+  applyCopilotCliChatSettings,
+  openCopilotCliNewSessionBestEffort,
+  startCopilotCliGlobalInstallTerminal,
+} from "./enableCopilotCli";
 
 const CFG = TOOLBOX_SETTINGS_PREFIX;
+
+const ONE_CLICK_BTN_RUN = "I understand — run setup";
+/** Per-run opt-out: skips Copilot CLI Chat User settings + global npm for this invocation only. */
+const ONE_CLICK_BTN_SKIP_CLI_CHAT = "Skip Copilot CLI + Chat (this run only)";
 
 function cfgScope(): vscode.ConfigurationTarget {
   const s = vscode.workspace
@@ -87,13 +96,21 @@ export async function runOneClickSetup(
         "By default, **both** migration tracks run: **Cursor → GitHub Copilot** and **Claude Code → GitHub Copilot** (toggle under Settings → One Click Setup — General).\n\n" +
         "Adjust sub-steps under One Click Setup (Memory Bank, Rules, Skills, Claude Code, MCP, Follow-ups).\n\n" +
         "Copilot Chat **Claude cloud agent** (optional): if enabled, sets User setting github.copilot.chat.claudeAgent.enabled. " +
-        "That is separate from Claude Code repo migration and still requires plan/org/GitHub prerequisites.",
+        "That is separate from Claude Code repo migration and still requires plan/org/GitHub prerequisites.\n\n" +
+        "**Copilot CLI + Chat** is **included** when you choose **" +
+        ONE_CLICK_BTN_RUN +
+        "** (default in Settings → Follow-ups: User Copilot Chat keys for Background Agent + CLI; **npm install -g @github/copilot** runs unless you turned that off; also opens **New Copilot CLI Session** when Copilot supports it). " +
+        "Choose **" +
+        ONE_CLICK_BTN_SKIP_CLI_CHAT +
+        "** to omit those steps **for this run only** — your saved settings are unchanged.",
     },
-    "I understand — run setup"
+    ONE_CLICK_BTN_SKIP_CLI_CHAT,
+    ONE_CLICK_BTN_RUN
   );
-  if (confirm !== "I understand — run setup") {
+  if (confirm !== ONE_CLICK_BTN_RUN && confirm !== ONE_CLICK_BTN_SKIP_CLI_CHAT) {
     return;
   }
+  const skipCopilotCliChatThisRun = confirm === ONE_CLICK_BTN_SKIP_CLI_CHAT;
 
   const ws = vscode.workspace.getConfiguration();
   const notes: string[] = [];
@@ -159,6 +176,18 @@ export async function runOneClickSetup(
     `${CFG}.oneClickSetup.enableClaudeCopilotChatAgent`,
     true
   );
+  let enableCopilotCliChat = ws.get<boolean>(
+    `${CFG}.oneClickSetup.enableCopilotCliChatSettings`,
+    true
+  );
+  let installCopilotCliGlobal = ws.get<boolean>(
+    `${CFG}.oneClickSetup.installCopilotCliGlobalDuringOneClick`,
+    false
+  );
+  if (skipCopilotCliChatThisRun) {
+    enableCopilotCliChat = false;
+    installCopilotCliGlobal = false;
+  }
 
   try {
     if (migrateCursor) {
@@ -264,6 +293,25 @@ export async function runOneClickSetup(
       if (!claude.ok) {
         notes.push(claude.note);
       }
+    }
+
+    if (enableCopilotCliChat) {
+      const cli = await applyCopilotCliChatSettings();
+      if (!cli.writesOk) {
+        notes.push(`Copilot CLI Chat settings: ${cli.notes.join("; ")}`);
+      } else if (cli.notes.length > 0) {
+        notes.push(`Copilot CLI Chat (check User settings): ${cli.notes.join("; ")}`);
+      }
+    }
+    if (installCopilotCliGlobal) {
+      startCopilotCliGlobalInstallTerminal();
+      notes.push("Copilot CLI: npm install -g @github/copilot started in terminal “Install Copilot CLI”.");
+    }
+    if (!skipCopilotCliChatThisRun && enableCopilotCliChat) {
+      await openCopilotCliNewSessionBestEffort();
+      notes.push(
+        "Copilot Chat: VS Code may keep **Local** after **New Copilot CLI Session** (no error). Footer → **Copilot CLI**, or palette. If **Copilot CLI** is missing: **backgroundAgent.enabled** (User) + org policy. # Toolbox chip ≠ session type."
+      );
     }
 
     if (runAwareness) {

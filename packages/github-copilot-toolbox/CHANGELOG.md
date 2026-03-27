@@ -1,5 +1,46 @@
 # Changelog
 
+## 1.0.11
+
+- **Docs & site:** Root **README** and extension **README** — **`docs/`** table row, repo tree comment, and **GitHub Pages** blurb (**Light/Dark** → **`localStorage`** key **`cpltb_theme_v1`**). **`docs/index.html`** — hero line that theme is **browser-only**; clearer **`aria-label`** on the theme switch; **`site.css?v=23`**; screenshot **`?v=1.0.11`**; footer **1.0.11**.
+
+## 1.0.10
+
+- **Packaging (VSIX):** Removed **`minimatch`** override for **`@vscode/vsce`**. **`minimatch@10`** is not drop-in compatible with **`vsce`’s** compiled **`require("minimatch")`** (expects the v3 default export); that caused **`(0, minimatch_1.default) is not a function`** during **`npx vsce package`**. **`glob` → `brace-expansion@5.0.5`** and **`picomatch@2.3.2`** overrides remain. **`vsce`** still pulls **`minimatch@3`** / **`brace-expansion@1`** as dev-only transitive deps (separate Snyk posture if you scan dev trees).
+- **Docs & site:** Root **README**, extension **README**, and **[GitHub Pages](https://copilottoolbox.layai.co)** (`docs/index.html`) — **Activity Bar** copy updated for the **twin-lobe brain** outline (scale vs. built-in icons). **Project site** (`docs/index.html`): theme persistence uses **`localStorage` key `cpltb_theme_v1`** (short neutral literal — Snyk Code no longer flags a false “hardcoded secret”; the old dashed key looked like a token to heuristics). **Screenshot** cache-bust **`?v=1.0.10`**; footer **1.0.10** · **Security & privacy** (monorepo README): note on **npm `overrides`** for vulnerable transitive dev deps.
+
+## 1.0.9
+
+- **Dependencies (Snyk):** `npm` **`overrides`** — **`picomatch@2.3.2`**, **`glob` → `brace-expansion@5.0.5`**, **`@vscode/vsce` → `minimatch@10.2.4`** — addresses Snyk-reported issues in transitive dev deps. **`docs/index.html`:** build `localStorage` key from two string parts so Snyk Code does not treat the theme key as a hardcoded secret.
+- **Activity Bar icon:** **`resources/activity-bar-icon.svg`** is a **twin-lobe brain** outline (top fissure, sulcus/gyri). **`viewBox`** is cropped to **~17.6²** user units (near-max zoom vs **0 0 24 24**); stroke **~1.3**. Still **`currentColor`**.
+- **Copilot CLI install terminal (Windows):** **`startCopilotCliGlobalInstallTerminal`** no longer uses `$(npm config get prefix)/bin` (Unix-only). After `npm install -g @github/copilot`, it prints **`npm bin -g`** on all platforms. On **Windows** the command is **PowerShell**-friendly (`Write-Host`, `if ($?)`) — matches VS Code’s default terminal; **cmd.exe** users can run `npm bin -g` manually if needed.
+
+## 1.0.8
+
+- **Activity Bar / secondary sidebar icon:** Added **`resources/activity-bar-icon.svg`** — monochrome **`currentColor`** toolbox glyph (24×24). `viewsContainers` now use it instead of **`resources/icon.svg`**, which used multi-color gradients and often rendered as **blank gray placeholders** in the Activity Bar.
+
+## 1.0.7
+
+- **Open Copilot CLI session:** Document why automation looks broken: **`executeCommand` usually does not throw** when Copilot leaves Chat on **Local**, so the extension cannot verify success. **Open Copilot CLI in Chat** now checks **`getCommands(true)`** for `github.copilot.cli.newSession` / `newSessionToSide`, waits **1200ms** after focusing Chat, runs **one** of those commands (no bogus `break` after a silent no-op), and shows **detail** + **Open backgroundAgent setting** when explaining manual steps.
+
+## 1.0.6
+
+- **Copilot CLI in Chat (Local vs Copilot CLI):** Opening a CLI session now **focuses Copilot Chat first** (`openCopilotChat`), waits briefly, then runs **`github.copilot.cli.newSession`** with **`newSessionToSide`** fallback. New command and hub tile **Open Copilot CLI session in Chat** (`GitHubCopilotToolBox.openCopilotCliChatSession`) shows a short hint: the footer **Local** menu is the session type; the **# GitHub Copilot Toolbox — Intelligence** chip is only attached context. One Click completion notes repeat that when CLI+Chat steps run.
+
+## 1.0.5
+
+- **One Click → Copilot CLI + Chat (VS Code):** **`installCopilotCliGlobalDuringOneClick`** now defaults to **on** (runs `npm install -g @github/copilot`); install terminal prints **`$(npm config get prefix)/bin`** so you can fix `copilot: command not found` by adding that folder to PATH. Also sets **`github.copilot.chat.backgroundAgent.enabled`**; after settings + install, runs **`github.copilot.cli.newSession`** when available so Chat opens in the **Copilot CLI / background-agent** flow (placeholder about running tasks with the CLI). **Skip Copilot CLI + Chat (this run only)** still skips settings, npm, and that command.
+- **Copilot Chat settings apply:** Treat success as **writes completed without exception**; inspect-based lines are **warnings** in notes instead of failing the whole step (reduces false “failure” when User JSON did update).
+
+## 1.0.4
+
+- **Copilot CLI + Chat settings:** Writes `github.copilot.chat.*` using **`workspace.getConfiguration("github.copilot.chat").update(..., Global)`** (same as the Claude agent toggle). Full-key `getConfiguration().update("github.copilot.chat.terminalChatLocation", …)` often **does not persist** Copilot-contributed keys in User `settings.json`. After writes, verifies **User** scope via `inspect().globalValue` for `cli.branchSupport.enabled` and `cli.sessionController.enabled` (workspace `.vscode/settings.json` can override effective values). Install/configure flow adds **Open User settings.json** on failure and success.
+
+## 1.0.3
+
+- **Copilot CLI:** New command and hub tile **Install Copilot CLI + Chat** (`GitHubCopilotToolBox.enableCopilotCli`). Opens a terminal running `npm install -g @github/copilot` (official CLI) and sets User **`github.copilot.chat.terminalChatLocation`** (`chatView`), **`github.copilot.chat.cli.branchSupport.enabled`**, and **`github.copilot.chat.cli.sessionController.enabled`** (current Copilot Chat keys; the older **`cli.customAgents.enabled`** setting was removed upstream). Success toast offers **Reload Window**. Requires Node 22+ and a Copilot subscription per GitHub docs.
+- **One Click Setup:** Optional **Copilot CLI + Chat** — **`copilot-toolbox.oneClickSetup.enableCopilotCliChatSettings`** (default **on**) applies the same User `github.copilot.chat` keys as the command above (no terminal). **`copilot-toolbox.oneClickSetup.installCopilotCliGlobalDuringOneClick`** (default **off**) starts `npm install -g @github/copilot` in a terminal during One Click. The confirmation dialog and One Click Setup — Follow-ups describe both toggles. The One Click modal adds **Skip Copilot CLI + Chat (this run only)** to omit those steps once without editing settings.
+
 ## 1.0.2
 
 - **GitHub Pages / marketing site:** Hero and gallery images now load from **same-origin** paths under **`docs/screenshots/`** instead of hotlinking **`raw.githubusercontent.com`**, which was blocked for some visitors (strict `Content-Security-Policy`, privacy tools, or Safari). Copy PNGs from repo-root `screenshots/` into `docs/screenshots/` when you refresh captures.

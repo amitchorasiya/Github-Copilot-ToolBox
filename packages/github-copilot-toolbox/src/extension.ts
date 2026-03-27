@@ -43,6 +43,7 @@ import {
   enableClaudeCopilotChatAgent,
   showClaudeCopilotAgentPrerequisites,
 } from "./commands/claudeCopilotAgentSettings";
+import { enableCopilotCli, openCopilotCliChatSessionCommand } from "./commands/enableCopilotCli";
 import { workspaceSetupWizard } from "./commands/workspaceSetupWizard";
 import { runBuildContextPackFlow } from "./intelligence/contextPackCommand";
 import { showMcpSkillsAwareness } from "./intelligence/mcpSkillsAwarenessCommand";
@@ -240,6 +241,12 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     vscode.commands.registerCommand(
       "GitHubCopilotToolBox.showClaudeCopilotAgentPrerequisites",
       showClaudeCopilotAgentPrerequisites
+    )
+  );
+  sub(vscode.commands.registerCommand("GitHubCopilotToolBox.enableCopilotCli", () => void enableCopilotCli()));
+  sub(
+    vscode.commands.registerCommand("GitHubCopilotToolBox.openCopilotCliChatSession", () =>
+      void openCopilotCliChatSessionCommand()
     )
   );
   sub(
