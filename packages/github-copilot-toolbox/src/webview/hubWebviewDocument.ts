@@ -35,32 +35,113 @@ export function getHubWebviewHtml(csp: string): string {
       box-sizing: border-box;
     }
     .hub-header { flex-shrink: 0; margin-bottom: 4px; }
+    .hub-tabs-hint {
+      margin: 0 0 6px;
+      font-size: 10px;
+      line-height: 1.35;
+      color: var(--muted);
+      font-weight: 500;
+    }
     .pages {
       display: flex;
-      gap: 2px;
-      padding: 3px;
+      gap: 4px;
+      padding: 4px;
       border-radius: var(--r-lg);
-      background: color-mix(in srgb, var(--vscode-input-background) 85%, transparent);
+      background: color-mix(in srgb, var(--vscode-sideBar-background) 88%, var(--vscode-widget-border));
       border: 1px solid var(--border);
-      margin-bottom: 4px;
+      box-shadow: inset 0 1px 2px color-mix(in srgb, var(--vscode-widget-shadow) 22%, transparent);
+      margin-bottom: 6px;
     }
     .page-btn {
       flex: 1;
-      border: none;
+      min-width: 0;
+      border: 1px solid color-mix(in srgb, var(--vscode-widget-border) 75%, var(--vscode-sideBar-background));
       border-radius: var(--r-sm);
-      padding: 7px 6px;
+      padding: 8px 6px;
       font-size: 11px;
-      font-weight: 500;
+      font-weight: 600;
+      letter-spacing: 0.01em;
       cursor: pointer;
-      background: transparent;
+      background: color-mix(in srgb, var(--vscode-editor-background) 50%, var(--vscode-sideBar-background));
       color: var(--vscode-foreground);
-      opacity: 0.82;
+      box-shadow: 0 1px 0 color-mix(in srgb, var(--vscode-widget-shadow) 18%, transparent);
+      transition: background 0.12s ease, border-color 0.12s ease, box-shadow 0.12s ease, color 0.12s ease;
     }
-    .page-btn:hover { opacity: 1; background: color-mix(in srgb, var(--vscode-toolbar-hoverBackground) 60%, transparent); }
+    .page-btn:hover {
+      background: color-mix(in srgb, var(--vscode-toolbar-hoverBackground) 65%, var(--vscode-sideBar-background));
+      border-color: color-mix(in srgb, var(--vscode-focusBorder) 40%, var(--border));
+    }
+    .page-btn:focus-visible {
+      outline: 2px solid var(--vscode-focusBorder);
+      outline-offset: 1px;
+      z-index: 1;
+    }
+    /* Per-tab tint (inactive + hover); emojis in label — aria-label = plain name for screen readers */
+    .page-btn[data-page="intel"]:not(.active) {
+      border-color: color-mix(in srgb, var(--vscode-charts-blue, #3b82f6) 50%, var(--border));
+      background: color-mix(in srgb, var(--vscode-charts-blue, #3b82f6) 16%, var(--vscode-sideBar-background));
+    }
+    .page-btn[data-page="intel"]:hover:not(.active) {
+      background: color-mix(in srgb, var(--vscode-charts-blue, #3b82f6) 28%, var(--vscode-sideBar-background));
+      border-color: color-mix(in srgb, var(--vscode-charts-blue, #3b82f6) 62%, var(--border));
+    }
+    .page-btn[data-page="mcp"]:not(.active) {
+      border-color: color-mix(in srgb, var(--vscode-charts-purple, #a855f7) 48%, var(--border));
+      background: color-mix(in srgb, var(--vscode-charts-purple, #a855f7) 14%, var(--vscode-sideBar-background));
+    }
+    .page-btn[data-page="mcp"]:hover:not(.active) {
+      background: color-mix(in srgb, var(--vscode-charts-purple, #a855f7) 26%, var(--vscode-sideBar-background));
+      border-color: color-mix(in srgb, var(--vscode-charts-purple, #a855f7) 58%, var(--border));
+    }
+    .page-btn[data-page="skills"]:not(.active) {
+      border-color: color-mix(in srgb, var(--vscode-charts-green, #22c55e) 48%, var(--border));
+      background: color-mix(in srgb, var(--vscode-charts-green, #22c55e) 14%, var(--vscode-sideBar-background));
+    }
+    .page-btn[data-page="skills"]:hover:not(.active) {
+      background: color-mix(in srgb, var(--vscode-charts-green, #22c55e) 26%, var(--vscode-sideBar-background));
+      border-color: color-mix(in srgb, var(--vscode-charts-green, #22c55e) 58%, var(--border));
+    }
+    .page-btn[data-page="workspace"]:not(.active) {
+      border-color: color-mix(in srgb, var(--vscode-charts-yellow, #eab308) 45%, var(--border));
+      background: color-mix(in srgb, var(--vscode-charts-yellow, #eab308) 14%, var(--vscode-sideBar-background));
+    }
+    .page-btn[data-page="workspace"]:hover:not(.active) {
+      background: color-mix(in srgb, var(--vscode-charts-yellow, #eab308) 26%, var(--vscode-sideBar-background));
+      border-color: color-mix(in srgb, var(--vscode-charts-yellow, #eab308) 55%, var(--border));
+    }
+    .page-btn[data-page="awesome"]:not(.active) {
+      border-color: color-mix(in srgb, var(--vscode-charts-orange, #f97316) 46%, var(--border));
+      background: color-mix(in srgb, var(--vscode-charts-orange, #f97316) 12%, var(--vscode-sideBar-background));
+    }
+    .page-btn[data-page="awesome"]:hover:not(.active) {
+      background: color-mix(in srgb, var(--vscode-charts-orange, #f97316) 24%, var(--vscode-sideBar-background));
+      border-color: color-mix(in srgb, var(--vscode-charts-orange, #f97316) 52%, var(--border));
+    }
     .page-btn.active {
-      opacity: 1;
-      background: var(--vscode-button-background);
       color: var(--vscode-button-foreground);
+      box-shadow:
+        0 1px 2px color-mix(in srgb, var(--vscode-widget-shadow) 35%, transparent),
+        inset 0 1px 0 color-mix(in srgb, var(--vscode-button-foreground) 12%, transparent);
+    }
+    .page-btn[data-page="intel"].active {
+      background: color-mix(in srgb, var(--vscode-charts-blue, #3b82f6) 72%, var(--vscode-button-background));
+      border-color: color-mix(in srgb, var(--vscode-charts-blue, #3b82f6) 55%, var(--border));
+    }
+    .page-btn[data-page="mcp"].active {
+      background: color-mix(in srgb, var(--vscode-charts-purple, #a855f7) 68%, var(--vscode-button-background));
+      border-color: color-mix(in srgb, var(--vscode-charts-purple, #a855f7) 52%, var(--border));
+    }
+    .page-btn[data-page="skills"].active {
+      background: color-mix(in srgb, var(--vscode-charts-green, #22c55e) 65%, var(--vscode-button-background));
+      border-color: color-mix(in srgb, var(--vscode-charts-green, #22c55e) 50%, var(--border));
+    }
+    .page-btn[data-page="workspace"].active {
+      background: color-mix(in srgb, var(--vscode-charts-yellow, #eab308) 58%, var(--vscode-button-background));
+      border-color: color-mix(in srgb, var(--vscode-charts-yellow, #eab308) 48%, var(--border));
+    }
+    .page-btn[data-page="awesome"].active {
+      background: color-mix(in srgb, var(--vscode-charts-orange, #f97316) 55%, var(--vscode-button-background));
+      border-color: color-mix(in srgb, var(--vscode-charts-orange, #f97316) 44%, var(--border));
     }
     .subpages {
       display: flex;
@@ -68,17 +149,29 @@ export function getHubWebviewHtml(csp: string): string {
       margin-bottom: 8px;
     }
     .sub-btn {
-      padding: 5px 12px;
+      padding: 6px 14px;
       border-radius: 999px;
-      border: 1px solid var(--border);
-      background: var(--card);
+      border: 1px solid color-mix(in srgb, var(--vscode-widget-border) 75%, transparent);
+      background: color-mix(in srgb, var(--vscode-editor-background) 45%, var(--vscode-sideBar-background));
       color: inherit;
       font-size: 11px;
+      font-weight: 600;
       cursor: pointer;
+      box-shadow: 0 1px 0 color-mix(in srgb, var(--vscode-widget-shadow) 14%, transparent);
+      transition: background 0.12s ease, border-color 0.12s ease;
+    }
+    .sub-btn:hover {
+      border-color: color-mix(in srgb, var(--vscode-focusBorder) 38%, var(--border));
+      background: color-mix(in srgb, var(--vscode-toolbar-hoverBackground) 55%, var(--vscode-sideBar-background));
+    }
+    .sub-btn:focus-visible {
+      outline: 2px solid var(--vscode-focusBorder);
+      outline-offset: 1px;
     }
     .sub-btn.active {
       border-color: var(--accent);
-      background: color-mix(in srgb, var(--accent) 18%, var(--card));
+      background: color-mix(in srgb, var(--accent) 22%, var(--card));
+      box-shadow: 0 1px 2px color-mix(in srgb, var(--vscode-widget-shadow) 22%, transparent);
     }
     .search-wrap { margin-bottom: 8px; }
     .search {
@@ -547,15 +640,17 @@ export function getHubWebviewHtml(csp: string): string {
 </head>
 <body>
   <div class="hub-header">
+    <p class="hub-tabs-hint" id="hub-tabs-hint">Click a tab to switch sections — each has different tools.</p>
     <nav class="pages" id="pages" aria-label="Hub sections">
-      <button type="button" class="page-btn active" data-page="intel">Intelligence</button>
-      <button type="button" class="page-btn" data-page="mcp">MCP</button>
-      <button type="button" class="page-btn" data-page="skills">Skills</button>
-      <button type="button" class="page-btn" data-page="workspace">Workspace</button>
+      <button type="button" class="page-btn active" data-page="intel" aria-label="Intelligence" title="Bridges, One Click, Thinking Machine, readiness, scans">🧠 Intelligence</button>
+      <button type="button" class="page-btn" data-page="mcp" aria-label="MCP" title="Registry search and MCP servers (workspace + user)">🔌 MCP</button>
+      <button type="button" class="page-btn" data-page="skills" aria-label="Skills" title="skills.sh catalog and local SKILL.md folders">📚 Skills</button>
+      <button type="button" class="page-btn" data-page="workspace" aria-label="Workspace" title="Workspace checklist and all toolbox commands">📋 Workspace</button>
+      <button type="button" class="page-btn" data-page="awesome" aria-label="Awesomeness" title="Awesome Copilot catalog: Copilot Chat prompt, CLI marketplace, links">⭐ Awesomeness</button>
     </nav>
     <nav class="subpages" id="subpages" aria-label="Browse or installed">
-      <button type="button" class="sub-btn active" data-sub="browse">Browse</button>
-      <button type="button" class="sub-btn" data-sub="installed">Installed</button>
+      <button type="button" class="sub-btn active" data-sub="browse" title="Search remote catalogs (registry or skills.sh)">Browse</button>
+      <button type="button" class="sub-btn" data-sub="installed" title="What is already on this machine / in this workspace">Installed</button>
     </nav>
     <div id="intel-auto-scan" class="intel-auto-scan" aria-label="Intelligence quick actions">
       <div class="one-click-row" aria-label="One Click Setup">
@@ -718,6 +813,8 @@ export function getHubWebviewHtml(csp: string): string {
       inp.setAttribute("placeholder", "Search skills.sh…");
     } else if (page === "workspace") {
       inp.setAttribute("placeholder", "Filter toolbox commands…");
+    } else if (page === "awesome") {
+      inp.setAttribute("placeholder", "Filter Awesomeness actions…");
     } else {
       inp.setAttribute("placeholder", "Filter installed items…");
     }
@@ -964,6 +1061,10 @@ export function getHubWebviewHtml(csp: string): string {
         filterWorkspaceTools();
         return;
       }
+      if (page === "awesome") {
+        filterAwesomeCopilotTiles();
+        return;
+      }
       if (page === "mcp" && sub === "browse") {
         scheduleRegistry(false);
         return;
@@ -1009,6 +1110,12 @@ export function getHubWebviewHtml(csp: string): string {
   }
 
   document.body.addEventListener("click", function (e) {
+    var ext = e.target.closest("button[data-open-url]");
+    if (ext) {
+      var url = ext.getAttribute("data-open-url");
+      if (url) vscode.postMessage({ type: "openExternal", url: url });
+      return;
+    }
     var btn = e.target.closest("button[data-cmd]");
     if (!btn) return;
     var cmd = btn.getAttribute("data-cmd");
@@ -1129,6 +1236,21 @@ export function getHubWebviewHtml(csp: string): string {
     document.querySelectorAll("details.tool-block").forEach(function (d) {
       var any = false;
       d.querySelectorAll(".tile").forEach(function (t) {
+        if (t.style.display !== "none") any = true;
+      });
+      d.style.display = any ? "" : "none";
+    });
+  }
+
+  function filterAwesomeCopilotTiles() {
+    var q = norm(qTrim());
+    document.querySelectorAll(".awesome-tile").forEach(function (tile) {
+      var hay = norm(tile.getAttribute("data-filter") || "");
+      tile.style.display = !q || hay.indexOf(q) !== -1 ? "flex" : "none";
+    });
+    document.querySelectorAll("details.awesome-block").forEach(function (d) {
+      var any = false;
+      d.querySelectorAll(".awesome-tile").forEach(function (t) {
         if (t.style.display !== "none") any = true;
       });
       d.style.display = any ? "" : "none";
@@ -1482,6 +1604,121 @@ export function getHubWebviewHtml(csp: string): string {
     $("#root").appendChild(el("div", "empty", "Tip: run Thinking Machine Mode actions from the Command Palette anytime — they live here for quick access."));
   }
 
+  function renderAwesomeCopilot() {
+    var intro = el("div", "callout");
+    intro.appendChild(el("h4", null, "Awesome Copilot"));
+    intro.appendChild(
+      el(
+        "p",
+        null,
+        "Community agents, plugins, and skills from github/awesome-copilot. Use Copilot Chat with the copied prompt, or the Copilot CLI — the searchable catalog stays on the website; this tab does not mirror it."
+      )
+    );
+    $("#root").appendChild(intro);
+
+    var groups = [
+      {
+        title: "Use Copilot Chat (AI)",
+        items: [
+          {
+            ic: "\\uD83D\\uDCAC",
+            t: "Copy prompt for Chat",
+            d: "Clipboard starter — edit bracketed lines, then paste in GitHub Copilot Chat",
+            c: "GitHubCopilotToolBox.copyAwesomeCopilotChatPrompt"
+          },
+          {
+            ic: "\\uD83D\\uDCE6",
+            t: "Build context pack",
+            d: "Optional workspace signals for Chat before you paste the prompt",
+            c: "GitHubCopilotToolBox.buildContextPack"
+          },
+          {
+            ic: "\\uD83D\\uDCAC",
+            t: "Open Copilot Chat",
+            d: "Focus GitHub Copilot Chat",
+            c: "GitHubCopilotToolBox.openCopilotChat"
+          }
+        ]
+      },
+      {
+        title: "Copilot CLI",
+        items: [
+          {
+            ic: "\\u2328\\uFE0F",
+            t: "Install Copilot CLI",
+            d: "npm i -g @github/copilot + Copilot Chat settings",
+            c: "GitHubCopilotToolBox.enableCopilotCli"
+          },
+          {
+            ic: "\\u2B50",
+            t: "Register marketplace",
+            d: "copilot plugin marketplace add github/awesome-copilot",
+            c: "GitHubCopilotToolBox.registerAwesomeCopilotMarketplace"
+          },
+          {
+            ic: "\\uD83D\\uDD0C",
+            t: "Open Copilot CLI in Chat",
+            d: "New CLI session in Chat (footer \\u2192 Copilot CLI)",
+            c: "GitHubCopilotToolBox.openCopilotCliChatSession"
+          }
+        ]
+      },
+      {
+        title: "Browse the catalog",
+        items: [
+          {
+            ic: "\\uD83C\\uDF10",
+            t: "Catalog website",
+            d: "Search, filters, Learning Hub (awesome-copilot.github.com)",
+            u: "https://awesome-copilot.github.com"
+          },
+          {
+            ic: "\\uD83D\\uDD17",
+            t: "GitHub repo",
+            d: "agents, skills, plugins, instructions\\u2026",
+            u: "https://github.com/github/awesome-copilot"
+          }
+        ]
+      }
+    ];
+
+    groups.forEach(function (g) {
+      var det = document.createElement("details");
+      det.className = "tool-block awesome-block";
+      det.open = true;
+      var sum = document.createElement("summary");
+      sum.textContent = g.title;
+      det.appendChild(sum);
+      var grid = el("div", "tile-grid");
+      g.items.forEach(function (it) {
+        var tile = document.createElement("button");
+        tile.type = "button";
+        tile.className = "tile awesome-tile";
+        tile.setAttribute("data-filter", norm(it.t + " " + it.d + " " + g.title));
+        if (it.c) tile.setAttribute("data-cmd", it.c);
+        if (it.u) tile.setAttribute("data-open-url", it.u);
+        var icSpan = el("span", "ic", it.ic);
+        var body = el("div", "body");
+        body.appendChild(el("div", "t", it.t));
+        body.appendChild(el("div", "d", it.d));
+        tile.appendChild(icSpan);
+        tile.appendChild(body);
+        grid.appendChild(tile);
+      });
+      det.appendChild(grid);
+      $("#root").appendChild(det);
+    });
+
+    $("#root").appendChild(
+      el(
+        "div",
+        "empty",
+        "Tip: copilot plugin list only shows Copilot CLI plugins. A .vsix is a VS Code extension \\u2014 install it under Extensions, not copilot plugin install."
+      )
+    );
+    filterAwesomeCopilotTiles();
+  }
+
   function renderWorkspace() {
     $("#root").appendChild(el("div", "section-title", "Workspace checklist"));
     var kit = (state && state.kit) || [];
@@ -1553,6 +1790,10 @@ export function getHubWebviewHtml(csp: string): string {
 
     if (page === "intel") {
       renderIntel();
+      return;
+    }
+    if (page === "awesome") {
+      renderAwesomeCopilot();
       return;
     }
     if (page === "workspace") {

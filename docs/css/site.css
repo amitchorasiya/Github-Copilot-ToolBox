@@ -373,6 +373,15 @@ html[data-theme="light"] .btn-primary:hover {
   margin: 0 0 1rem;
 }
 
+.hero-product-line {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--muted);
+  margin: -0.35rem 0 1rem;
+  max-width: 52ch;
+  line-height: 1.45;
+}
+
 html[data-theme="dark"] .hero h1 {
   color: var(--accent);
   text-shadow: 0 0 48px rgba(88, 166, 255, 0.2);

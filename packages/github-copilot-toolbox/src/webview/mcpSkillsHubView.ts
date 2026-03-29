@@ -220,6 +220,15 @@ export class McpSkillsHubViewProvider implements vscode.WebviewViewProvider {
         case "refresh":
           this._postState();
           break;
+        case "openExternal":
+          if (typeof msg.url === "string") {
+            try {
+              await vscode.env.openExternal(vscode.Uri.parse(msg.url));
+            } catch {
+              vscode.window.showErrorMessage(`Could not open: ${msg.url}`);
+            }
+          }
+          break;
         case "runCommand":
           if (typeof msg.command === "string") {
             try {

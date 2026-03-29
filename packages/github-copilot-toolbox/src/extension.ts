@@ -44,6 +44,8 @@ import {
   showClaudeCopilotAgentPrerequisites,
 } from "./commands/claudeCopilotAgentSettings";
 import { enableCopilotCli, openCopilotCliChatSessionCommand } from "./commands/enableCopilotCli";
+import { registerAwesomeCopilotMarketplace } from "./commands/registerAwesomeCopilotMarketplace";
+import { copyAwesomeCopilotChatPrompt } from "./commands/awesomeCopilotPrompt";
 import { workspaceSetupWizard } from "./commands/workspaceSetupWizard";
 import { runBuildContextPackFlow } from "./intelligence/contextPackCommand";
 import { showMcpSkillsAwareness } from "./intelligence/mcpSkillsAwarenessCommand";
@@ -244,6 +246,17 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     )
   );
   sub(vscode.commands.registerCommand("GitHubCopilotToolBox.enableCopilotCli", () => void enableCopilotCli()));
+  sub(
+    vscode.commands.registerCommand(
+      "GitHubCopilotToolBox.registerAwesomeCopilotMarketplace",
+      () => void registerAwesomeCopilotMarketplace()
+    )
+  );
+  sub(
+    vscode.commands.registerCommand("GitHubCopilotToolBox.copyAwesomeCopilotChatPrompt", () =>
+      void copyAwesomeCopilotChatPrompt()
+    )
+  );
   sub(
     vscode.commands.registerCommand("GitHubCopilotToolBox.openCopilotCliChatSession", () =>
       void openCopilotCliChatSessionCommand()

@@ -1,5 +1,22 @@
 # Changelog
 
+## 1.0.15
+
+- **Docs & site:** Refreshed hub screenshots; **`?v=1.0.15`** cache-bust on **GitHub Pages** (`docs/index.html`), **monorepo README**, and **extension README** image URLs. **`docs/screenshots/`** synced from repo-root **`screenshots/`** for same-origin Pages assets. **`site.css?v=26`**.
+
+## 1.0.14
+
+- **Hub:** New main tab **⭐ Awesomeness** — [Awesome Copilot](https://github.com/github/awesome-copilot) without duplicating the catalog: **Copy prompt for Chat** (clipboard starter for GitHub Copilot Chat), **Build context pack** / **Open Chat**, **Copilot CLI** row (install, register marketplace, open CLI session), **Browse** (catalog site + GitHub). Search box filters these actions. Command **Copy Awesome Copilot prompt for Copilot Chat** (`GitHubCopilotToolBox.copyAwesomeCopilotChatPrompt`). Webview **openExternal** for catalog links.
+
+## 1.0.13
+
+- **Awesome Copilot (Copilot CLI):** New command and Intelligence hub tile **Register Awesome Copilot marketplace** — runs `copilot plugin marketplace add github/awesome-copilot` in a terminal (per [github/awesome-copilot](https://github.com/github/awesome-copilot)); does **not** mirror agents/skills. Toast links [awesome-copilot.github.com](https://awesome-copilot.github.com) and the repo. Modal offers **Install Copilot CLI first** when the `copilot` command is missing.
+
+## 1.0.12
+
+- **Hub (MCP & skills webview):** Main tabs (**Intelligence** / **MCP** / **Skills** / **Workspace**) use **segmented-button** styling — visible **borders**, **shadow**, **font-weight 600**, **focus-visible** rings, **`title`** tooltips, and a one-line **hint** above the row (“Click a tab…”). **Browse** / **Installed** sub-tabs match with stronger pills and tooltips. Tabs show **emoji** in the label plus a **distinct tint per section** (VS Code chart colors on active/hover); **`aria-label`** stays the plain section name.
+- **Secondary sidebar:** **`viewsContainers.secondarySidebar`** title shortened to **Copilot Toolbox** (matches Activity Bar; avoids the long Marketplace-style string in that chrome). README and **GitHub Pages** (`docs/`) updated to describe the hub UI and sidebar label.
+
 ## 1.0.11
 
 - **Docs & site:** Root **README** and extension **README** — **`docs/`** table row, repo tree comment, and **GitHub Pages** blurb (**Light/Dark** → **`localStorage`** key **`cpltb_theme_v1`**). **`docs/index.html`** — hero line that theme is **browser-only**; clearer **`aria-label`** on the theme switch; **`site.css?v=23`**; screenshot **`?v=1.0.11`**; footer **1.0.11**.

@@ -2,7 +2,7 @@
   "name": "github-copilot-toolbox",
   "displayName": "Github Copilot ToolBox (MCP, Skills, Cursor/Claude → Copilot)",
   "description": "Github Copilot ToolBox (MCP, Skills, Cursor/Claude → Copilot): MCP hub, workspace helpers, Thinking Machine Mode (context packs & priming), readiness, One Click dual migration (Cursor + Claude Code → Copilot), and bundled bridges. Not affiliated with Microsoft or GitHub. See README Disclaimer. Workflow ideas credited in NOTICE (everything-claude-code, MIT).",
-  "version": "1.0.11",
+  "version": "1.0.15",
   "publisher": "amitchorasiya",
   "author": "amitchorasiya",
   "license": "MIT",
@@ -443,7 +443,7 @@
       "secondarySidebar": [
         {
           "id": "GitHubCopilotToolBoxSecondary",
-          "title": "Github Copilot ToolBox (MCP, Skills, Cursor/Claude → Copilot)",
+          "title": "Copilot Toolbox",
           "icon": "resources/activity-bar-icon.svg"
         }
       ]
@@ -678,6 +678,14 @@
       {
         "command": "GitHubCopilotToolBox.enableCopilotCli",
         "title": "GitHub Copilot Toolbox: Install Copilot CLI & configure Chat"
+      },
+      {
+        "command": "GitHubCopilotToolBox.registerAwesomeCopilotMarketplace",
+        "title": "GitHub Copilot Toolbox: Register Awesome Copilot plugin marketplace (Copilot CLI)"
+      },
+      {
+        "command": "GitHubCopilotToolBox.copyAwesomeCopilotChatPrompt",
+        "title": "GitHub Copilot Toolbox: Copy Awesome Copilot prompt for Copilot Chat"
       },
       {
         "command": "GitHubCopilotToolBox.openCopilotCliChatSession",

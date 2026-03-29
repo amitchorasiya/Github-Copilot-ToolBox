@@ -1,8 +1,8 @@
 # Github Copilot ToolBox (MCP, Skills, Cursor/Claude → Copilot)
 
-**VS Code extension + monorepo:** [`Github-Copilot-ToolBox`](https://github.com/amitchorasiya/Github-Copilot-ToolBox) on GitHub · **License:** [MIT](LICENSE) · **Marketplace:** `amitchorasiya.github-copilot-toolbox` · **Extension version:** `1.0.11`
+**VS Code extension + monorepo:** [`Github-Copilot-ToolBox`](https://github.com/amitchorasiya/Github-Copilot-ToolBox) on GitHub · **License:** [MIT](LICENSE) · **Marketplace:** `amitchorasiya.github-copilot-toolbox` · **Extension version:** `1.0.15`
 
-**Project site (GitHub Pages):** [copilottoolbox.layai.co](https://copilottoolbox.layai.co) — static pages in [`docs/`](docs/); copy aligned with this README for **1.0.11**.
+**Project site (GitHub Pages):** [copilottoolbox.layai.co](https://copilottoolbox.layai.co) — static pages in [`docs/`](docs/); copy aligned with this README for **1.0.15**.
 
 ## After install: open Copilot Toolbox
 
@@ -11,11 +11,11 @@
 1. **Install** *Github Copilot ToolBox (MCP, Skills, Cursor/Claude → Copilot)* from the Marketplace (or a `.vsix`). If VS Code prompts you, **reload the window** (**Developer: Reload Window**).
 2. Find the **Activity Bar**: the **narrow column of icons on the far left** of the VS Code window (Explorer, Search, Source Control, …).
 3. Click the **Copilot Toolbox** icon — outline **brain** (twin lobes, sulcus/gyri), **`currentColor`**; **SVG** uses a tight `viewBox` so it reads at a similar size to built-in Activity Bar icons. The **Side Bar** opens next to it.
-4. In the Side Bar, click **MCP & skills**. That opens the **hub** (webview) with tabs **Intelligence**, **MCP**, **Skills**, and **Workspace**—that is the main surface for MCP, skills, and setup flows.
+4. In the Side Bar, click **MCP & skills**. That opens the **hub** (webview) with tabs **Intelligence**, **MCP**, **Skills**, **Workspace**, and **Awesomeness** ([Awesome Copilot](https://github.com/github/awesome-copilot): Chat prompt + CLI shortcuts)—that is the main surface for MCP, skills, and setup flows. The tab row uses **emoji labels** and a **distinct tint per section** (chart colors); **`aria-label`** on each tab is the plain name for screen readers. If you dock the hub in the **secondary sidebar** (beside Copilot Chat), the container title is **Copilot Toolbox**—the same short label as the Activity Bar entry.
 
 **Don’t see the icon?** Press **Ctrl+Shift+P** (Windows/Linux) or **⌘⇧P** (macOS), type **GitHub Copilot Toolbox**, run any listed command (that wakes the extension UI), or run **Developer: Reload Window**, then repeat steps 2–4.
 
-![Activity Bar → Copilot Toolbox; Side Bar → MCP & skills hub](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/00-copilot-toolbox-access.png)
+![Activity Bar → Copilot Toolbox; Side Bar → MCP & skills hub](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/00-copilot-toolbox-access.png?v=1.0.15)
 
 ## One place for Copilot-related setup
 
@@ -90,41 +90,43 @@ These are **actual VS Code UI captures** from the extension—what users see on 
 
 **Intelligence** (hub): **Cursor → Copilot** and **Claude Code → Copilot** bridge rows (MCP, rules, memory bank, `CLAUDE.md`, `.mcp.json`, skills), then context pack, readiness, MCP & Skills scan.
 
-![Intelligence: Port Cursor MCP, rules, and memory bank to VS Code & Copilot](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/02-intelligence-cursor-port.png)
+![Intelligence: Port Cursor MCP, rules, and memory bank to VS Code & Copilot](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/02-intelligence-cursor-port.png?v=1.0.15)
 
-![Intelligence tab: Cursor and Claude Code bridges to VS Code and Copilot](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/01-intelligence-cursor-to-vscode-copilot.png)
+![Intelligence tab: Cursor and Claude Code bridges to VS Code and Copilot](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/01-intelligence-cursor-to-vscode-copilot.png?v=1.0.15)
 
-![Intelligence: context pack and readiness actions](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/02-intelligence-context-readiness.png)
+![Intelligence: context pack and readiness actions](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/02-intelligence-context-readiness.png?v=1.0.15)
 
 **MCP**: installed workspace/user servers and registry browse.
 
-![MCP: installed workspace servers (Browse / Installed)](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/03-mcp-browse-workspace-servers.png)
+![MCP: installed workspace servers (Browse / Installed)](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/03-mcp-browse-workspace-servers.png?v=1.0.15)
 
-![MCP: registry browse & search](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/04-mcp-registry-search.png)
+![MCP: registry browse & search](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/04-mcp-registry-search.png?v=1.0.15)
 
 **Skills**: catalog (skills.sh) and local installed `SKILL.md` trees.
 
-![Skills: catalog (skills.sh)](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/05-skills-catalog-skills-sh.png)
+![Skills: catalog (skills.sh)](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/05-skills-catalog-skills-sh.png?v=1.0.15)
 
-![Skills: installed local skill folders](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/06-skills-installed-local.png)
+![Skills: installed local skill folders](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/06-skills-installed-local.png?v=1.0.15)
 
 **Workspace** checklist and **Intelligence** hub (context hygiene).
 
-![Workspace kit checklist](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/07-workspace-checklist.png)
+![Workspace kit checklist](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/07-workspace-checklist.png?v=1.0.15)
 
-![Intelligence: context hygiene, snapshot, and quick actions](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/08-workspace-toolbox-commands.png)
+![Intelligence: context hygiene, snapshot, and quick actions](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/08-workspace-toolbox-commands.png?v=1.0.15)
 
 **Reference diagram** (exported map of Cursor vs Copilot surfaces; not a live UI capture).
 
-![Cursor vs Copilot capability map (diagram)](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/mermaid-copilot-map.png)
+![Cursor vs Copilot capability map (diagram)](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/mermaid-copilot-map.png?v=1.0.15)
 
 ---
 
 ## MCP & skills hub: every tab, toggle, and button
 
-Open the **MCP & skills** hub from the **Side Bar** after you click **Copilot Toolbox** in the **Activity Bar** (see [After install: open Copilot Toolbox](#after-install-open-copilot-toolbox) at the top of this README). The hub is organized into **tabs**, a **Browse / Installed** switch (where applicable), a **search** field, optional **MCP chips**, and a **footer** legend.
+Open the **MCP & skills** hub from the **Side Bar** after you click **Copilot Toolbox** in the **Activity Bar** (see [After install: open Copilot Toolbox](#after-install-open-copilot-toolbox) at the top of this README). The same hub can be opened from the **secondary sidebar** when that view is enabled; its **views container** title is **Copilot Toolbox** (not the long Marketplace name). The hub is organized into **tabs**, a **Browse / Installed** switch (where applicable), a **search** field, optional **MCP chips**, and a **footer** legend.
 
 ### Main tabs (top)
+
+In the webview, each tab shows an emoji and a **section color** (tinted active/hover states); **`aria-label`** uses the plain tab name. The table uses plain names only (five tabs: Intelligence, MCP, Skills, Workspace, Awesomeness).
 
 | Tab | Purpose |
 |-----|---------|
@@ -132,6 +134,7 @@ Open the **MCP & skills** hub from the **Side Bar** after you click **Copilot To
 | **MCP** | **Browse** official registry search or **Installed** workspace + user servers from `mcp.json`. |
 | **Skills** | **Browse** [skills.sh](https://skills.sh) catalog or **Installed** local folders that contain `SKILL.md` under standard roots. |
 | **Workspace** | **Workspace checklist** (One Click Setup, rules, memory bank, instructions, `mcp.json`) and **All toolbox commands** (searchable tiles). |
+| **Awesomeness** | **[Awesome Copilot](https://github.com/github/awesome-copilot)** — copy a **Chat prompt** for Copilot to help pick CLI plugins, **Copilot CLI** shortcuts (install, register marketplace, CLI session), and links to the **catalog** / repo (search stays on the website). |
 
 ### Browse vs Installed (MCP and Skills only)
 
