@@ -13,6 +13,10 @@
     "vsce:package": "npm run package --prefix packages/github-copilot-toolbox",
     "vsce": "cd packages/github-copilot-toolbox && npx @vscode/vsce",
     "package:extension": "npm run package",
-    "serve:site": "npx --yes serve docs -l 5173"
+    "serve:site": "npx --yes serve docs -l 5173",
+    "export:hub-for-intellij": "npm run export:hub-for-intellij --prefix packages/github-copilot-toolbox",
+    "intellij:export-hub": "npm run export:hub-for-intellij",
+    "intellij:build": "npm run export:hub-for-intellij && cd packages/github-copilot-toolbox-intellij && ./gradlew buildPlugin",
+    "package:intellij": "npm run intellij:build"
   }
 }

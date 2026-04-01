@@ -1,5 +1,6 @@
 import * as fs from "node:fs/promises";
 import * as path from "node:path";
+import { mergeMissingFilesRecursive, removeFilesByRelPaths } from "./mergeMissingSkillFiles";
 
 export const CURSOR_SKILLS_SEGMENTS = [".cursor", "skills"] as const;
 export const CLAUDE_SKILLS_SEGMENTS = [".claude", "skills"] as const;
@@ -46,7 +47,8 @@ export type MigrateOneResult = "migrated" | "skipped" | "error";
 
 /**
  * Copy or move one skill folder into `.agents/skills/<name>`.
- * Skips if destination folder already exists.
+ * If the destination folder already exists, **merge missing files only** (never overwrite).
+ * Move mode: after a merge, only removes source files that were copied into gaps in the destination.
  */
 export async function migrateOneSkillFolder(
   srcFolderAbs: string,
@@ -55,14 +57,25 @@ export async function migrateOneSkillFolder(
   mode: MigrateSkillMode
 ): Promise<MigrateOneResult> {
   const dest = path.join(agentsSkillsParent, name);
+  let destExisted = false;
   try {
     await fs.access(dest);
-    return "skipped";
+    destExisted = true;
   } catch {
-    /* ok — dest does not exist */
+    /* dest does not exist — full copy */
   }
   try {
     await fs.mkdir(agentsSkillsParent, { recursive: true });
+    if (destExisted) {
+      const { count, copiedRelFiles } = await mergeMissingFilesRecursive(srcFolderAbs, dest);
+      if (count === 0) {
+        return "skipped";
+      }
+      if (mode === "move") {
+        await removeFilesByRelPaths(srcFolderAbs, copiedRelFiles);
+      }
+      return "migrated";
+    }
     await fs.cp(srcFolderAbs, dest, { recursive: true });
     if (mode === "move") {
       await fs.rm(srcFolderAbs, { recursive: true, force: true });

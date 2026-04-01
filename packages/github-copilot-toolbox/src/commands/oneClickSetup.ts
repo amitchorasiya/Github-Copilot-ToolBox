@@ -49,7 +49,7 @@ function getPortMode(): PortCursorMcpMode | "skip" {
     return v === "dry" ? "dry" : "skip";
   }
   if (v === "workspaceOverwrite") {
-    return "force";
+    return "merge";
   }
   if (v === "user") {
     return "user";
@@ -61,13 +61,10 @@ function getClaudeProjectMcpMode(): PortProjectMcpJsonMode {
   const v = vscode.workspace
     .getConfiguration()
     .get<string>(`${CFG}.oneClickSetup.portClaudeCodeMcp`, "user");
-  if (
-    v === "user" ||
-    v === "workspaceMerge" ||
-    v === "workspaceOverwrite" ||
-    v === "dry" ||
-    v === "skip"
-  ) {
+  if (v === "workspaceOverwrite") {
+    return "workspaceMerge";
+  }
+  if (v === "user" || v === "workspaceMerge" || v === "dry" || v === "skip") {
     return v;
   }
   return "user";
@@ -131,7 +128,6 @@ export async function runOneClickSetup(
   const initMemoryBankMode = ws.get<string>(`${CFG}.oneClickSetup.initMemoryBankMode`, "apply");
   const initMb = initMemoryBankMode !== "off";
   const initMbDry = initMemoryBankMode === "dryRun";
-  const initMbForce = initMemoryBankMode === "applyForce";
   const initMbCursor = ws.get<boolean>(`${CFG}.oneClickSetup.initMemoryBankCursorRules`, true);
 
   const syncCursorRulesMode = ws.get<string>(`${CFG}.oneClickSetup.syncCursorRulesMode`, "apply");
@@ -275,7 +271,6 @@ export async function runOneClickSetup(
         {
           dryRun: initMbDry,
           cursorRules: initMbCursor && runCursorTrack,
-          force: initMbForce,
         },
         qm
       );

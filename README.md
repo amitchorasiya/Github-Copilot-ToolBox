@@ -1,25 +1,25 @@
 # Github Copilot ToolBox (MCP, Skills, Cursor/Claude → Copilot)
 
-**VS Code extension + monorepo:** [`Github-Copilot-ToolBox`](https://github.com/amitchorasiya/Github-Copilot-ToolBox) on GitHub · **License:** [MIT](LICENSE) · **Marketplace:** `amitchorasiya.github-copilot-toolbox` · **Extension version:** `1.0.15`
+**VS Code extension + monorepo:** [`Github-Copilot-ToolBox`](https://github.com/amitchorasiya/Github-Copilot-ToolBox) on GitHub · **License:** [MIT](LICENSE) · **VS Code Marketplace:** [`amitchorasiya.github-copilot-toolbox`](https://marketplace.visualstudio.com/items?itemName=amitchorasiya.github-copilot-toolbox) · **Extension version:** `1.0.17` · **JetBrains plugin:** [`com.amitchorasiya.github.copilot.toolbox`](https://plugins.jetbrains.com/search?search=Github+Copilot+ToolBox) (see also [JetBrains plugin README](packages/github-copilot-toolbox-intellij/README.md)) · **Plugin version:** `0.1.3`
 
-**Project site (GitHub Pages):** [copilottoolbox.layai.co](https://copilottoolbox.layai.co) — static pages in [`docs/`](docs/); copy aligned with this README for **1.0.15**.
+**Project site (GitHub Pages):** [copilottoolbox.layai.co](https://copilottoolbox.layai.co) — static pages in [`docs/`](docs/); install CTAs for **VS Code** and **JetBrains IDEs**, aligned with this README for **1.0.17** / **0.1.3**.
 
 ## After install: open Copilot Toolbox
 
-**There is no separate application**—the extension runs **inside Visual Studio Code** only.
+**There is no separate application**—you run it **inside an editor**: [**VS Code Marketplace**](https://marketplace.visualstudio.com/items?itemName=amitchorasiya.github-copilot-toolbox) or [**JetBrains Marketplace**](https://plugins.jetbrains.com/search?search=Github+Copilot+ToolBox) (plugin id `com.amitchorasiya.github.copilot.toolbox`). The steps below are for **VS Code**; on **IntelliJ IDEA** and compatible IDEs, open **View → Tool Windows → Github Copilot ToolBox** after install ([plugin README](packages/github-copilot-toolbox-intellij/README.md)).
 
-1. **Install** *Github Copilot ToolBox (MCP, Skills, Cursor/Claude → Copilot)* from the Marketplace (or a `.vsix`). If VS Code prompts you, **reload the window** (**Developer: Reload Window**).
+1. **Install** *Github Copilot ToolBox (MCP, Skills, Cursor/Claude → Copilot)* from the VS Code Marketplace (or a `.vsix`). If VS Code prompts you, **reload the window** (**Developer: Reload Window**).
 2. Find the **Activity Bar**: the **narrow column of icons on the far left** of the VS Code window (Explorer, Search, Source Control, …).
 3. Click the **Copilot Toolbox** icon — outline **brain** (twin lobes, sulcus/gyri), **`currentColor`**; **SVG** uses a tight `viewBox` so it reads at a similar size to built-in Activity Bar icons. The **Side Bar** opens next to it.
 4. In the Side Bar, click **MCP & skills**. That opens the **hub** (webview) with tabs **Intelligence**, **MCP**, **Skills**, **Workspace**, and **Awesomeness** ([Awesome Copilot](https://github.com/github/awesome-copilot): Chat prompt + CLI shortcuts)—that is the main surface for MCP, skills, and setup flows. The tab row uses **emoji labels** and a **distinct tint per section** (chart colors); **`aria-label`** on each tab is the plain name for screen readers. If you dock the hub in the **secondary sidebar** (beside Copilot Chat), the container title is **Copilot Toolbox**—the same short label as the Activity Bar entry.
 
 **Don’t see the icon?** Press **Ctrl+Shift+P** (Windows/Linux) or **⌘⇧P** (macOS), type **GitHub Copilot Toolbox**, run any listed command (that wakes the extension UI), or run **Developer: Reload Window**, then repeat steps 2–4.
 
-![Activity Bar → Copilot Toolbox; Side Bar → MCP & skills hub](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/00-copilot-toolbox-access.png?v=1.0.15)
+![Activity Bar → Copilot Toolbox; Side Bar → MCP & skills hub](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/00-copilot-toolbox-access.png?v=1.0.17)
 
 ## One place for Copilot-related setup
 
-**In plain terms:** Copilot only works as well as the setup around it—but that setup is usually scattered across files, machines, and habits. **Github Copilot ToolBox (MCP, Skills, Cursor/Claude → Copilot)** is **one dedicated Copilot Toolbox in VS Code**: you can **see** what’s configured, **standardize** how teams move to Copilot (including from Cursor), and **give Chat better context** while each developer still **chooses** what to share.
+**In plain terms:** Copilot only works as well as the setup around it—but that setup is usually scattered across files, machines, and habits. **Github Copilot ToolBox (MCP, Skills, Cursor/Claude → Copilot)** is **one dedicated Copilot Toolbox** in **VS Code** or **JetBrains IDEs** (same hub): you can **see** what’s configured, **standardize** how teams move to Copilot (including from Cursor), and **give Chat better context** while each developer still **chooses** what to share.
 
 **For engineering teams, that means:**
 
@@ -63,6 +63,7 @@ These are the two **highlighted cards** at the top of the hub’s **Intelligence
 - [Repository layout](#repository-layout)
 - [Development](#development)
 - [CI](#ci)
+- [IntelliJ plugin (ZIP)](#intellij-plugin-zip)
 - [Publishing (VSIX / Marketplace)](#publishing-vsix--marketplace)
 - [Configuration & commands](#configuration--commands)
 - [Security & privacy](#security--privacy)
@@ -76,9 +77,11 @@ These are the two **highlighted cards** at the top of the hub’s **Intelligence
 | Deliverable | Purpose |
 |-------------|---------|
 | **[Github Copilot ToolBox (MCP, Skills, Cursor/Claude → Copilot)](packages/github-copilot-toolbox/)** | VS Code extension: **MCP & skills** hub, **workspace kit**, **Intelligence** (Cursor + Claude Code bridge rows, context packs, readiness, MCP/Skills awareness under `.github`, auto-scan, **One Click** dual tracks with **bundled** bridge CLIs and extension-side Claude merges) |
+| **[github-copilot-toolbox-intellij](packages/github-copilot-toolbox-intellij/)** | **IntelliJ IDEA** plugin (preview): same hub HTML as VS Code in **JCEF** (`hub-body.html` exported from `hubWebviewDocument.ts`). Export injects **`--vscode-*` theme fallbacks** into `:root` before derived tokens (JCEF has no VS Code theme bridge), prepends an **`acquireVsCodeApi`** shim wired to **`copilotBridgePost`**, and adds JetBrains-only layout CSS. Build: **`npm run package:intellij`** from repo root; after editing the hub TS, run **`npm run export:hub-for-intellij`**. Details: [INTEGRATION.md](packages/github-copilot-toolbox-intellij/INTEGRATION.md) |
+| **[copilot-toolbox-kit](packages/copilot-toolbox-kit/)** | Optional **TypeScript** library package (private `npm` package) for shared helpers — scaffold only; wire into the extension with `file:` or npm workspaces if you use it |
 | **[memory-bank/](memory-bank/)** | Optional project memory files for you and Copilot (not required to build the extension) |
 | **[packages/cursor-mcp-to-github-copilot-port/](packages/cursor-mcp-to-github-copilot-port/)** | Placeholder README for the MCP port CLI layout; the CLI is published separately on npm |
-| **[docs/](docs/)** | **GitHub Pages** marketing site ([copilottoolbox.layai.co](https://copilottoolbox.layai.co)): screenshots and copy aligned with this README. **Light/Dark** in the header stores the choice in the browser’s **`localStorage`** (key **`cpltb_theme_v1`** — site UX only, not a credential). |
+| **[docs/](docs/)** | **GitHub Pages** marketing site ([copilottoolbox.layai.co](https://copilottoolbox.layai.co)): screenshots and copy aligned with this README; install CTAs for **VS Code Marketplace** and **JetBrains Marketplace** (search [Github Copilot ToolBox](https://plugins.jetbrains.com/search?search=Github+Copilot+ToolBox)). **Light/Dark** in the header stores the choice in the browser’s **`localStorage`** (key **`cpltb_theme_v1`** — site UX only, not a credential). |
 
 The extension does **not** replace GitHub Copilot or Cursor; it helps you **align configs** and **see** what’s configured (MCP servers, local `SKILL.md` trees, instructions files). Deeper settings, keybindings, and troubleshooting: **[packages/github-copilot-toolbox/README.md](packages/github-copilot-toolbox/README.md)**.
 
@@ -90,33 +93,33 @@ These are **actual VS Code UI captures** from the extension—what users see on 
 
 **Intelligence** (hub): **Cursor → Copilot** and **Claude Code → Copilot** bridge rows (MCP, rules, memory bank, `CLAUDE.md`, `.mcp.json`, skills), then context pack, readiness, MCP & Skills scan.
 
-![Intelligence: Port Cursor MCP, rules, and memory bank to VS Code & Copilot](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/02-intelligence-cursor-port.png?v=1.0.15)
+![Intelligence: Port Cursor MCP, rules, and memory bank to VS Code & Copilot](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/02-intelligence-cursor-port.png?v=1.0.17)
 
-![Intelligence tab: Cursor and Claude Code bridges to VS Code and Copilot](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/01-intelligence-cursor-to-vscode-copilot.png?v=1.0.15)
+![Intelligence tab: Cursor and Claude Code bridges to VS Code and Copilot](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/01-intelligence-cursor-to-vscode-copilot.png?v=1.0.17)
 
-![Intelligence: context pack and readiness actions](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/02-intelligence-context-readiness.png?v=1.0.15)
+![Intelligence: context pack and readiness actions](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/02-intelligence-context-readiness.png?v=1.0.17)
 
 **MCP**: installed workspace/user servers and registry browse.
 
-![MCP: installed workspace servers (Browse / Installed)](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/03-mcp-browse-workspace-servers.png?v=1.0.15)
+![MCP: installed workspace servers (Browse / Installed)](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/03-mcp-browse-workspace-servers.png?v=1.0.17)
 
-![MCP: registry browse & search](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/04-mcp-registry-search.png?v=1.0.15)
+![MCP: registry browse & search](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/04-mcp-registry-search.png?v=1.0.17)
 
 **Skills**: catalog (skills.sh) and local installed `SKILL.md` trees.
 
-![Skills: catalog (skills.sh)](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/05-skills-catalog-skills-sh.png?v=1.0.15)
+![Skills: catalog (skills.sh)](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/05-skills-catalog-skills-sh.png?v=1.0.17)
 
-![Skills: installed local skill folders](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/06-skills-installed-local.png?v=1.0.15)
+![Skills: installed local skill folders](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/06-skills-installed-local.png?v=1.0.17)
 
 **Workspace** checklist and **Intelligence** hub (context hygiene).
 
-![Workspace kit checklist](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/07-workspace-checklist.png?v=1.0.15)
+![Workspace kit checklist](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/07-workspace-checklist.png?v=1.0.17)
 
-![Intelligence: context hygiene, snapshot, and quick actions](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/08-workspace-toolbox-commands.png?v=1.0.15)
+![Intelligence: context hygiene, snapshot, and quick actions](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/08-workspace-toolbox-commands.png?v=1.0.17)
 
 **Reference diagram** (exported map of Cursor vs Copilot surfaces; not a live UI capture).
 
-![Cursor vs Copilot capability map (diagram)](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/mermaid-copilot-map.png?v=1.0.15)
+![Cursor vs Copilot capability map (diagram)](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/mermaid-copilot-map.png?v=1.0.17)
 
 ---
 
@@ -318,9 +321,15 @@ npm test
 
 ## Install the extension
 
-- **Marketplace:** search for **Github Copilot ToolBox (MCP, Skills, Cursor/Claude → Copilot)** or install by id:  
-  `code --install-extension amitchorasiya.github-copilot-toolbox`
+**VS Code**
+
+- **Marketplace:** [Github Copilot ToolBox](https://marketplace.visualstudio.com/items?itemName=amitchorasiya.github-copilot-toolbox) — or install by id: `code --install-extension amitchorasiya.github-copilot-toolbox`
 - **From VSIX:** build with `npm run package` inside `packages/github-copilot-toolbox/`, then **Install from VSIX…** in VS Code.
+
+**JetBrains (IntelliJ IDEA, etc.)**
+
+- **Marketplace:** search [Github Copilot ToolBox](https://plugins.jetbrains.com/search?search=Github+Copilot+ToolBox) (**plugin id** `com.amitchorasiya.github.copilot.toolbox`), then install from the IDE **Plugins** UI.
+- **From ZIP:** build with `npm run package:intellij` from the repo root; see [IntelliJ plugin (ZIP)](#intellij-plugin-zip).
 
 **Requirements:** VS Code **1.99+**, **GitHub Copilot**, **Node.js 18+** for `npx` bridges (**Node 22+** for official **GitHub Copilot CLI** npm install per GitHub docs). **Git** on `PATH` for optional Intelligence “include git” (Windows: [Git for Windows](https://git-scm.com/download/win)).
 
@@ -348,18 +357,21 @@ These work alongside the extension; the **Intelligence** hub links to their repo
 .
 ├── LICENSE                          # MIT (applies to repo contents; see package LICENSEs)
 ├── README.md                        # This file
-├── package.json                     # Private monorepo helper scripts (compile / test / package:extension)
+├── package.json                     # Monorepo scripts: compile, test, package:extension, export:hub-for-intellij, package:intellij
 ├── packages/
 │   ├── github-copilot-toolbox/      # VS Code extension — publish VSIX / Marketplace from HERE
 │   │   ├── LICENSE                  # MIT (bundled in .vsix)
 │   │   ├── package.json
+│   │   ├── scripts/export-hub-for-intellij.mjs
 │   │   ├── src/
 │   │   └── README.md
+│   ├── github-copilot-toolbox-intellij/   # JetBrains plugin (JCEF hub + Kotlin parity)
+│   ├── copilot-toolbox-kit/               # Optional shared TS package (private npm)
 │   └── cursor-mcp-to-github-copilot-port/   # Placeholder for optional vendored CLI
 ├── memory-bank/                     # Project docs for agents / Copilot
 ├── docs/                            # GitHub Pages site — theme toggle uses localStorage key cpltb_theme_v1; `npm run serve:site`
 ├── screenshots/                     # README and docs: UI captures (incl. 00 access walkthrough) + reference diagram
-└── .github/workflows/               # extension-ci.yml → multi-OS build + tests
+└── .github/workflows/               # extension-ci.yml (VS Code), intellij-ci.yml (Gradle plugin)
 ```
 
 ---
@@ -373,14 +385,28 @@ These work alongside the extension; the **Intelligence** hub links to their repo
 
 **Tech stack (extension):** TypeScript, VS Code API `^1.99`, Vitest. See [packages/github-copilot-toolbox/README.md](packages/github-copilot-toolbox/README.md) for settings, keybindings, and caveats (`#file:` vs Add context, etc.).
 
+**IntelliJ plugin:** JDK 21, Gradle IntelliJ Platform — see [packages/github-copilot-toolbox-intellij/README.md](packages/github-copilot-toolbox-intellij/README.md). When you change `hubWebviewDocument.ts`, run **`npm run export:hub-for-intellij`** (or **`npm run package:intellij`** from the repo root to export + build the plugin).
+
 ---
 
 ## CI
 
-Workflow: [`.github/workflows/extension-ci.yml`](.github/workflows/extension-ci.yml)
+| Workflow | Purpose |
+|----------|---------|
+| [`.github/workflows/extension-ci.yml`](.github/workflows/extension-ci.yml) | **VS Code:** Ubuntu, Windows, macOS — `npm install`, `npm run compile`, `npm test` |
+| [`.github/workflows/intellij-ci.yml`](.github/workflows/intellij-ci.yml) | **IntelliJ:** Ubuntu — `npm ci` + `export:hub-for-intellij` in `packages/github-copilot-toolbox`, then `./gradlew buildPlugin` |
 
-- Triggers on changes under `packages/github-copilot-toolbox/**`, root `package.json`, or the workflow file.
-- **Matrix:** Ubuntu, Windows, macOS — `npm install`, `npm run compile`, `npm test`, verifies `out/extension.js` exists.
+---
+
+## IntelliJ plugin (ZIP)
+
+From the **monorepo root**:
+
+```bash
+npm run package:intellij
+```
+
+This runs **`export:hub-for-intellij`** (compile + write `hub-body.html`) and **`./gradlew buildPlugin`** in `packages/github-copilot-toolbox-intellij/`. The plugin ZIP is under **`packages/github-copilot-toolbox-intellij/build/distributions/`**. Install with **Settings → Plugins → ⚙ → Install Plugin from Disk…**. See [packages/github-copilot-toolbox-intellij/README.md](packages/github-copilot-toolbox-intellij/README.md).
 
 ---
 
@@ -423,6 +449,7 @@ Open filtered settings: Command Palette → **Intelligence: open related setting
 ## Security & privacy
 
 - **MCP configs** may contain paths, env vars, or secrets. Treat `mcp.json` as sensitive; do not commit secrets.
+- **Hub webview `postMessage`:** The MCP & skills hub only handles messages whose **`event.origin`** is the VS Code webview host (`vscode-webview://…`) or the IntelliJ JCEF synthetic origin (`http://github.copilot.toolbox`), so arbitrary `postMessage` from other frames is ignored.
 - The extension **starts terminals** for `npx` bridges and may **spawn `git`** for optional Intelligence sections—only run servers and commands you trust.
 - **skills.sh** / registry features call **public HTTP APIs**; review network use in corporate environments.
 - **Dev dependencies:** The extension package lists **npm `overrides`** in `packages/github-copilot-toolbox/package.json` to pin patched transitive versions where safe (e.g. `picomatch`, `brace-expansion` under `glob`). **`@vscode/vsce`** must keep **`minimatch@3`** — **`minimatch@10`** breaks **`vsce package`**. See **`CHANGELOG.md`** for CVE-related notes.

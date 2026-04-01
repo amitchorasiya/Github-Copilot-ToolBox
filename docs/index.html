@@ -16,10 +16,10 @@
     </script>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Copilot Toolbox · VS Code extension</title>
+    <title>Copilot Toolbox · VS Code &amp; JetBrains (IntelliJ IDEA)</title>
     <meta
       name="description"
-      content="Github Copilot ToolBox (MCP, Skills, Cursor/Claude → Copilot) for VS Code: One Click dual tracks, optional Copilot CLI (npm global + User chat settings), Thinking Machine Mode, MCP &amp; skills hub (Intelligence, MCP, Skills, Workspace, Awesomeness for Awesome Copilot), bundled bridge CLIs, context packs."
+      content="Github Copilot ToolBox (MCP, Skills, Cursor/Claude → Copilot) for VS Code and JetBrains IDEs: One Click dual tracks, Thinking Machine Mode, MCP &amp; skills hub, bundled bridge CLIs, context packs. Install from the VS Code Marketplace or JetBrains Marketplace; open-source monorepo."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -27,7 +27,7 @@
       href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="css/site.css?v=26" />
+    <link rel="stylesheet" href="css/site.css?v=29" />
   </head>
   <body>
     <header class="site-header">
@@ -46,9 +46,21 @@
               class="btn btn-primary"
               href="vscode:extension/amitchorasiya.github-copilot-toolbox"
               title="Opens Visual Studio Code to this extension if it is installed"
-              >Install in VS Code</a
+              >VS Code — Install</a
+            >
+            <a
+              class="btn btn-primary"
+              href="https://plugins.jetbrains.com/search?search=Github+Copilot+ToolBox"
+              title="JetBrains Marketplace — search Github Copilot ToolBox (plugin id com.amitchorasiya.github.copilot.toolbox)"
+              >JetBrains — Marketplace</a
             >
             <a class="btn btn-ghost" href="https://github.com/amitchorasiya/Github-Copilot-ToolBox">Source on GitHub</a>
+            <a
+              class="btn btn-ghost"
+              href="https://github.com/amitchorasiya/Github-Copilot-ToolBox/tree/main/packages/github-copilot-toolbox-intellij"
+              title="Plugin README — build ZIP from source"
+              >IntelliJ plugin README</a
+            >
           </nav>
         </div>
       </div>
@@ -61,8 +73,8 @@
             <h1>Copilot Toolbox</h1>
             <p class="hero-product-line">Github Copilot ToolBox (MCP, Skills, Cursor/Claude → Copilot)</p>
             <p class="lead">
-              Stop losing time to scattered rules, MCP config, and “skills” folders. Give your team a single, honest view
-              inside VS Code.
+              Stop losing time to scattered rules, MCP config, and “skills” folders. Give your team a single, honest hub
+              in <strong>VS Code</strong> or <strong>JetBrains IDEs</strong> (same MCP &amp; skills UI).
             </p>
             <div class="plain">
               <strong>After you install:</strong> In VS Code, use the <strong>Activity Bar</strong> (icons on the
@@ -75,6 +87,13 @@
             </div>
             <div class="plain">
               <strong>Claude Code (Anthropic):</strong> This extension migrates repo files toward Copilot; it does <strong>not</strong> sign you in to Anthropic’s Claude Code extension or CLI — those still use their own login when prompted.
+            </div>
+            <div class="plain">
+              <strong>JetBrains (IntelliJ IDEA, etc.):</strong> Install <strong>Github Copilot ToolBox</strong> from the
+              <a href="https://plugins.jetbrains.com/search?search=Github+Copilot+ToolBox">JetBrains Marketplace</a>
+              (<strong>plugin id</strong> <code>com.amitchorasiya.github.copilot.toolbox</code>) or build from the
+              <a href="https://github.com/amitchorasiya/Github-Copilot-ToolBox">monorepo</a> with <code>npm run package:intellij</code> and <strong>Install Plugin from Disk…</strong>. The plugin embeds the <strong>same hub</strong> (MCP &amp; skills) in a tool window via JCEF. Details:
+              <a href="https://github.com/amitchorasiya/Github-Copilot-ToolBox/blob/main/packages/github-copilot-toolbox-intellij/README.md">github-copilot-toolbox-intellij/README.md</a>.
             </div>
             <div class="plain">
               <strong>This page:</strong> <strong>Light</strong> / <strong>Dark</strong> in the header remembers your choice in this browser only (not on our servers).
@@ -93,7 +112,7 @@
                 class="zoomable"
                 tabindex="0"
                 data-caption="Where to open Copilot Toolbox — Activity Bar → Copilot Toolbox, then Side Bar → MCP &amp; skills"
-                src="screenshots/00-copilot-toolbox-access.png?v=1.0.15"
+                src="screenshots/00-copilot-toolbox-access.png?v=1.0.17"
                 alt="VS Code: Activity Bar Copilot Toolbox icon and Side Bar MCP &amp; skills. Click to view fullscreen."
                 width="3024"
                 height="1732"
@@ -105,7 +124,7 @@
                 class="zoomable"
                 tabindex="0"
                 data-caption="Intelligence tab — Cursor → VS Code &amp; Copilot bridges (inside the hub)"
-                src="screenshots/01-intelligence-cursor-to-vscode-copilot.png?v=1.0.15"
+                src="screenshots/01-intelligence-cursor-to-vscode-copilot.png?v=1.0.17"
                 alt="Github Copilot ToolBox hub: Intelligence tab with Cursor to VS Code and Copilot bridges. Click to view fullscreen."
                 width="2476"
                 height="1594"
@@ -178,7 +197,7 @@
         <div class="wrap">
           <h2 id="gallery-heading">What you get in VS Code</h2>
           <p class="sub">
-            <strong>First:</strong> after install, open <strong>Copilot Toolbox</strong> in the <strong>Activity Bar</strong>
+            <strong>JetBrains:</strong> the same hub ships in the plugin’s tool window. <strong>First (VS Code):</strong> after install, open <strong>Copilot Toolbox</strong> in the <strong>Activity Bar</strong>
             (left edge), then <strong>MCP &amp; skills</strong> in the <strong>Side Bar</strong>—that is the hub. Below:
             access walkthrough, then high-resolution hub captures. <strong>Click any image</strong> for fullscreen.
           </p>
@@ -188,7 +207,7 @@
                 class="zoomable"
                 tabindex="0"
                 data-caption="Open the hub — Activity Bar: Copilot Toolbox → Side Bar: MCP &amp; skills"
-                src="screenshots/00-copilot-toolbox-access.png?v=1.0.15"
+                src="screenshots/00-copilot-toolbox-access.png?v=1.0.17"
                 alt="How to open Github Copilot ToolBox after install: Activity Bar and MCP &amp; skills. Click to view fullscreen."
                 width="3024"
                 height="1732"
@@ -201,7 +220,7 @@
                 class="zoomable"
                 tabindex="0"
                 data-caption="Port Cursor — MCP, rules, memory bank to VS Code &amp; Copilot"
-                src="screenshots/02-intelligence-cursor-port.png?v=1.0.15"
+                src="screenshots/02-intelligence-cursor-port.png?v=1.0.17"
                 alt="Intelligence: Port Cursor MCP, rules, and memory bank to Copilot. Click to view fullscreen."
                 width="2482"
                 height="1600"
@@ -214,7 +233,7 @@
                 class="zoomable"
                 tabindex="0"
                 data-caption="Cursor → VS Code &amp; Copilot bridges"
-                src="screenshots/01-intelligence-cursor-to-vscode-copilot.png?v=1.0.15"
+                src="screenshots/01-intelligence-cursor-to-vscode-copilot.png?v=1.0.17"
                 alt="Intelligence: Cursor to VS Code bridges. Click to view fullscreen."
                 width="2476"
                 height="1594"
@@ -227,7 +246,7 @@
                 class="zoomable"
                 tabindex="0"
                 data-caption="Context &amp; readiness"
-                src="screenshots/02-intelligence-context-readiness.png?v=1.0.15"
+                src="screenshots/02-intelligence-context-readiness.png?v=1.0.17"
                 alt="Context and readiness actions. Click to view fullscreen."
                 width="2484"
                 height="1592"
@@ -240,7 +259,7 @@
                 class="zoomable"
                 tabindex="0"
                 data-caption="MCP — installed servers"
-                src="screenshots/03-mcp-browse-workspace-servers.png?v=1.0.15"
+                src="screenshots/03-mcp-browse-workspace-servers.png?v=1.0.17"
                 alt="MCP installed servers. Click to view fullscreen."
                 width="2468"
                 height="1596"
@@ -253,7 +272,7 @@
                 class="zoomable"
                 tabindex="0"
                 data-caption="MCP — registry browse"
-                src="screenshots/04-mcp-registry-search.png?v=1.0.15"
+                src="screenshots/04-mcp-registry-search.png?v=1.0.17"
                 alt="MCP registry browse. Click to view fullscreen."
                 width="2470"
                 height="1596"
@@ -266,7 +285,7 @@
                 class="zoomable"
                 tabindex="0"
                 data-caption="Skills — skills.sh catalog"
-                src="screenshots/05-skills-catalog-skills-sh.png?v=1.0.15"
+                src="screenshots/05-skills-catalog-skills-sh.png?v=1.0.17"
                 alt="Skills catalog. Click to view fullscreen."
                 width="2466"
                 height="1596"
@@ -279,7 +298,7 @@
                 class="zoomable"
                 tabindex="0"
                 data-caption="Skills — installed"
-                src="screenshots/06-skills-installed-local.png?v=1.0.15"
+                src="screenshots/06-skills-installed-local.png?v=1.0.17"
                 alt="Installed local skills. Click to view fullscreen."
                 width="2490"
                 height="1590"
@@ -292,7 +311,7 @@
                 class="zoomable"
                 tabindex="0"
                 data-caption="Workspace checklist"
-                src="screenshots/07-workspace-checklist.png?v=1.0.15"
+                src="screenshots/07-workspace-checklist.png?v=1.0.17"
                 alt="Workspace checklist. Click to view fullscreen."
                 width="2490"
                 height="1594"
@@ -305,7 +324,7 @@
                 class="zoomable"
                 tabindex="0"
                 data-caption="Intelligence — context hygiene"
-                src="screenshots/08-workspace-toolbox-commands.png?v=1.0.15"
+                src="screenshots/08-workspace-toolbox-commands.png?v=1.0.17"
                 alt="Context hygiene and quick actions. Click to view fullscreen."
                 width="2490"
                 height="1608"
@@ -319,18 +338,31 @@
 
       <section class="cta-band" aria-labelledby="cta-heading">
         <div class="wrap">
-          <h2 id="cta-heading">Ready in the Marketplace</h2>
-          <p>Install the extension, open <strong>Copilot Toolbox</strong> in the activity bar, then <strong>MCP &amp; skills</strong>.</p>
-          <a
-            class="btn btn-primary"
-            href="vscode:extension/amitchorasiya.github-copilot-toolbox"
-            title="Opens Visual Studio Code to this extension if it is installed"
-            >Install Github Copilot ToolBox (MCP, Skills, Cursor/Claude → Copilot)</a
-          >
+          <h2 id="cta-heading">Ready in the Marketplaces</h2>
+          <p class="cta-intro">
+            <strong>VS Code:</strong> install the extension, then open <strong>Copilot Toolbox</strong> in the activity bar →
+            <strong>MCP &amp; skills</strong>.
+            <strong>JetBrains:</strong> install from the Marketplace, then <strong>View → Tool Windows → Github Copilot ToolBox</strong>.
+          </p>
+          <p class="cta-row">
+            <a
+              class="btn btn-primary"
+              href="vscode:extension/amitchorasiya.github-copilot-toolbox"
+              title="Opens Visual Studio Code to this extension if it is installed"
+              >VS Code — Github Copilot ToolBox</a
+            >
+            <a
+              class="btn btn-primary"
+              href="https://plugins.jetbrains.com/search?search=Github+Copilot+ToolBox"
+              title="JetBrains Plugin Repository"
+              >JetBrains — Github Copilot ToolBox</a
+            >
+          </p>
           <p class="cta-fallback">
             VS Code did not open?
-            <a href="https://marketplace.visualstudio.com/items?itemName=amitchorasiya.github-copilot-toolbox">Open the Marketplace in your browser</a>
-            instead.
+            <a href="https://marketplace.visualstudio.com/items?itemName=amitchorasiya.github-copilot-toolbox">Open the VS Code Marketplace in your browser</a>.
+            JetBrains:
+            <a href="https://plugins.jetbrains.com/search?search=Github+Copilot+ToolBox">open Marketplace search</a>.
           </p>
           <p class="mono-hint">code --install-extension amitchorasiya.github-copilot-toolbox</p>
         </div>
@@ -356,7 +388,7 @@
     <footer class="site-footer">
       <div class="wrap">
         <p>
-          <a href="https://github.com/amitchorasiya/Github-Copilot-ToolBox">Github-Copilot-ToolBox</a> · extension <strong>1.0.15</strong> ·
+          <a href="https://github.com/amitchorasiya/Github-Copilot-ToolBox">Github-Copilot-ToolBox</a> · VS Code <strong>1.0.17</strong> · JetBrains plugin <strong>0.1.3</strong> ·
           <a href="https://github.com/amitchorasiya/Github-Copilot-ToolBox/blob/main/README.md#disclaimer">MIT License &amp; disclaimer</a>
         </p>
         <p class="site-disclaimer">

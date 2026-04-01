@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.17
+
+- **Docs & site:** Root **README**, extension **README**, and **GitHub Pages** (`docs/index.html`) — prominent **VS Code Marketplace** and **JetBrains Marketplace** links (plugin id `com.amitchorasiya.github.copilot.toolbox`); screenshot and **`site.css`** cache-bust **`?v=1.0.17`**. **IntelliJ** plugin bumped to **0.1.3** (Gradle + `plugin.xml`) in sync with this release.
+
 ## 1.0.15
 
 - **Docs & site:** Refreshed hub screenshots; **`?v=1.0.15`** cache-bust on **GitHub Pages** (`docs/index.html`), **monorepo README**, and **extension README** image URLs. **`docs/screenshots/`** synced from repo-root **`screenshots/`** for same-origin Pages assets. **`site.css?v=26`**.

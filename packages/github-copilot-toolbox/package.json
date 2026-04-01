@@ -2,7 +2,7 @@
   "name": "github-copilot-toolbox",
   "displayName": "Github Copilot ToolBox (MCP, Skills, Cursor/Claude → Copilot)",
   "description": "Github Copilot ToolBox (MCP, Skills, Cursor/Claude → Copilot): MCP hub, workspace helpers, Thinking Machine Mode (context packs & priming), readiness, One Click dual migration (Cursor + Claude Code → Copilot), and bundled bridges. Not affiliated with Microsoft or GitHub. See README Disclaimer. Workflow ideas credited in NOTICE (everything-claude-code, MIT).",
-  "version": "1.0.15",
+  "version": "1.0.17",
   "publisher": "amitchorasiya",
   "author": "amitchorasiya",
   "license": "MIT",
@@ -107,13 +107,12 @@
         "properties": {
           "copilot-toolbox.oneClickSetup.initMemoryBankMode": {
             "type": "string",
-            "enum": ["apply", "dryRun", "applyForce", "off"],
+            "enum": ["apply", "dryRun", "off"],
             "default": "apply",
-            "description": "Memory bank init (github-copilot-memory-bank): one mode per run. **Default: apply** (init without --force; keeps existing SKILL templates unless you choose applyForce).",
+            "description": "Memory bank init (github-copilot-memory-bank): one mode per run. **Never overwrites** existing templates (no --force).",
             "enumDescriptions": [
-              "Default — run init without --force (same as interactive “No” when templates already exist).",
+              "Run init — adds missing files only; existing files are left unchanged.",
               "Run with --dry-run only (preview).",
-              "Run init with --force (overwrite templates).",
               "Skip memory bank init."
             ]
           },
@@ -223,13 +222,12 @@
           },
           "copilot-toolbox.oneClickSetup.portClaudeCodeMcp": {
             "type": "string",
-            "enum": ["user", "workspaceMerge", "workspaceOverwrite", "dry", "skip"],
+            "enum": ["user", "workspaceMerge", "dry", "skip"],
             "default": "user",
-            "description": "Port **workspace `.mcp.json`** (`mcpServers` or `servers`) into VS Code **mcp.json**. No-op if the file is missing or invalid. **Dry** logs to Output → GitHub Copilot Toolbox.",
+            "description": "Port **workspace `.mcp.json`** (`mcpServers` or `servers`) into VS Code **mcp.json**. Merges only: same server id fills **missing** keys; never replaces the whole `servers` object. No-op if the file is missing or invalid. **Dry** logs to Output → GitHub Copilot Toolbox.",
             "enumDescriptions": [
               "Merge into user mcp.json (default).",
               "Merge into workspace .vscode/mcp.json.",
-              "Replace workspace .vscode/mcp.json `servers` with entries from .mcp.json only.",
               "Log planned merge only (Output channel).",
               "Skip Claude MCP port."
             ]
@@ -242,13 +240,12 @@
         "properties": {
           "copilot-toolbox.oneClickSetup.portCursorMcp": {
             "type": "string",
-            "enum": ["user", "workspaceMerge", "workspaceOverwrite", "dry", "skip"],
+            "enum": ["user", "workspaceMerge", "dry", "skip"],
             "default": "user",
-            "description": "Port Cursor MCP → Copilot: pick one target (One Click and default for Settings). Single-select in Settings.",
+            "description": "Port Cursor MCP → Copilot: pick one target (One Click and default for Settings). Workspace mode **always merges** into `.vscode/mcp.json` (bundled CLI `--merge`); nothing overwrites the whole file.",
             "enumDescriptions": [
               "Write user mcp.json (all workspaces).",
               "Merge into workspace .vscode/mcp.json.",
-              "Overwrite workspace .vscode/mcp.json.",
               "Print JSON only (dry).",
               "Skip MCP port."
             ]
@@ -719,7 +716,8 @@
     "package": "node scripts/package-extension.mjs",
     "package:extension-readme-only": "vsce package",
     "test": "vitest run",
-    "serve:site": "npx --yes serve ../../docs -l 5173"
+    "serve:site": "npx --yes serve ../../docs -l 5173",
+    "export:hub-for-intellij": "npm run compile && node scripts/export-hub-for-intellij.mjs"
   },
   "devDependencies": {
     "@types/node": "^20.19.0",

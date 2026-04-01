@@ -2,6 +2,7 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import * as vscode from "vscode";
 import * as mcpPaths from "../mcpPaths";
+import { mergeMcpServerMaps } from "../mcpMergeUtils";
 
 type RecipeFile = {
   recipes: Array<{
@@ -109,18 +110,16 @@ export async function applyBundledMcpRecipe(context: vscode.ExtensionContext): P
     vscode.window.showErrorMessage("Invalid recipe serverKey.");
     return;
   }
-  if (root.servers![key]) {
-    const ok = await vscode.window.showWarningMessage(
-      `Server "${key}" already exists in mcp.json. Overwrite?`,
-      { modal: true },
-      "Overwrite",
-      "Cancel"
+  const servers = root.servers!;
+  if (servers[key] && typeof servers[key] === "object" && !Array.isArray(servers[key])) {
+    const combined = mergeMcpServerMaps(
+      { [key]: servers[key] as Record<string, unknown> },
+      { [key]: mergedConfig }
     );
-    if (ok !== "Overwrite") {
-      return;
-    }
+    servers[key] = combined[key]!;
+  } else if (!servers[key]) {
+    servers[key] = mergedConfig;
   }
-  root.servers![key] = mergedConfig;
 
   const out = JSON.stringify(root, null, 2) + "\n";
   const preview = await vscode.workspace.openTextDocument({

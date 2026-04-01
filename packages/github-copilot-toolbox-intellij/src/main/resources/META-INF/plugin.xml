@@ -1,0 +1,49 @@
+<idea-plugin url="https://github.com/amitchorasiya/Github-Copilot-ToolBox">
+    <id>com.amitchorasiya.github.copilot.toolbox</id>
+    <name>Github Copilot ToolBox</name>
+    <vendor url="https://github.com/amitchorasiya/Github-Copilot-ToolBox">amitchorasiya</vendor>
+
+    <description><![CDATA[
+GitHub Copilot toolbox — JetBrains preview (same hub UI as VS Code via JCEF).
+<br/><br/>
+<b>What you get</b>
+<ul>
+<li><b>JCEF hub</b>: MCP &amp; skills, Intelligence bridges (Cursor + Claude Code → Copilot), One Click Setup, Thinking Machine helpers.</li>
+<li><b>Bundled Node CLIs</b>: cursor-mcp-to-github-copilot-port, cursor-rules-to-github-copilot, github-copilot-memory-bank (from sibling <code>packages/github-copilot-toolbox/node_modules</code> — run <code>npm install</code> there before Gradle).</li>
+<li><b>Project settings</b>: <code>.github/copilot-toolbox-settings.json</code> (mirrors VS Code <code>copilot-toolbox.*</code> used by the hub).</li>
+<li><b>Tools → Github Copilot ToolBox</b> for JSON + Node path.</li>
+</ul>
+<b>Resources</b>
+<ul>
+<li><a href="https://github.com/amitchorasiya/Github-Copilot-ToolBox">Source</a></li>
+<li><a href="https://github.com/amitchorasiya/Github-Copilot-ToolBox/issues">Issues</a></li>
+</ul>
+    ]]></description>
+
+    <change-notes><![CDATA[
+<ul>
+<li>0.1.3: Docs alignment — README and project site highlight VS Code Marketplace and JetBrains Marketplace installs (extension 1.0.17).</li>
+<li>0.1.2: Replace deprecated <code>Messages.showChooseDialog</code> in the Port Claude MCP flow (Marketplace verifier compatibility).</li>
+<li>0.1.1: Merge-only MCP/skills/memory-bank behavior (parity with VS Code 1.0.16); hub + Kotlin parity updates.</li>
+<li>0.1.0: Initial JetBrains port from Cloude Code ToolBox IntelliJ baseline — Copilot commands, .github paths, bundled Copilot bridge CLIs.</li>
+</ul>
+    ]]></change-notes>
+
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <notificationGroup id="GitHubCopilotToolBox" displayType="BALLOON" displayName="Github Copilot ToolBox"/>
+        <projectActivity implementation="com.amitchorasiya.github.copilot.toolbox.intellij.GithubCopilotToolboxRegisterActivity"/>
+        <projectService serviceImplementation="com.amitchorasiya.github.copilot.toolbox.intellij.hub.GithubCopilotHubBridge"/>
+        <projectConfigurable
+            parentId="tools"
+            instance="com.amitchorasiya.github.copilot.toolbox.intellij.settings.ToolboxSettingsConfigurable"
+            id="com.amitchorasiya.github.copilot.toolbox.settings"
+            displayName="Github Copilot ToolBox"/>
+        <toolWindow
+            id="GitHubCopilotToolBox"
+            anchor="right"
+            secondary="true"
+            factoryClass="com.amitchorasiya.github.copilot.toolbox.intellij.GithubCopilotToolWindowFactory"/>
+    </extensions>
+</idea-plugin>

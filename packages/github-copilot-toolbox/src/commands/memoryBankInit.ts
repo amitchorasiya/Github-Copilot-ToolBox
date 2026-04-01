@@ -5,10 +5,9 @@ import { runNpxInTerminal } from "../terminal/runNpx";
 export type InitMemoryBankNpxOptions = {
   dryRun: boolean;
   cursorRules: boolean;
-  force: boolean;
 };
 
-/** Init memory bank via npx without quick picks (One Click Setup). */
+/** Init memory bank via npx without quick picks (One Click Setup). Never passes --force (merge / skip existing only). */
 export function runInitMemoryBankWithOptions(
   folder: vscode.WorkspaceFolder,
   tag: string,
@@ -20,9 +19,6 @@ export function runInitMemoryBankWithOptions(
   }
   if (opts.cursorRules) {
     flags.push("--cursor-rules");
-  }
-  if (opts.force) {
-    flags.push("--force");
   }
   const args = ["init", "--cwd", folder.uri.fsPath, ...flags];
   runNpxInTerminal(
@@ -84,23 +80,8 @@ export async function initMemoryBank(): Promise<void> {
     flags.push("--cursor-rules");
   }
 
-  const forcePick = await vscode.window.showQuickPick(
-    [
-      { label: "No", description: "Skip if templates already exist", alwaysShow: true, value: false as const },
-      { label: "Yes", description: "Overwrite memory-bank templates (--force)", alwaysShow: true, value: true as const },
-    ],
-    { title: "Overwrite existing memory-bank templates?", placeHolder: "Pick one" }
-  );
-  if (forcePick === undefined) {
-    return;
-  }
-  if (forcePick.value) {
-    flags.push("--force");
-  }
-
   runInitMemoryBankWithOptions(folder, tag, {
     dryRun: dryPick.value,
     cursorRules: cursorRulesPick.value,
-    force: forcePick.value,
   });
 }

@@ -25,20 +25,22 @@ export function getHubWebviewHtml(csp: string): string {
       display: flex;
       flex-direction: column;
       font-family: var(--vscode-font-family);
-      font-size: 12px;
+      font-size: 12.5px;
       color: var(--vscode-foreground);
       background: var(--vscode-sideBar-background);
       padding: var(--pad);
       padding-bottom: 0;
+      width: 100%;
+      /* Full width of tool window / webview — do not max-width center (looks pillarboxed on wide panels). */
       /* Sidebar webviews sometimes give the iframe no explicit height; 100% collapses and flex:1 scroll area goes to 0px. */
       min-height: 100vh;
       box-sizing: border-box;
     }
-    .hub-header { flex-shrink: 0; margin-bottom: 4px; }
+    .hub-header { flex-shrink: 0; margin-bottom: 6px; }
     .hub-tabs-hint {
-      margin: 0 0 6px;
-      font-size: 10px;
-      line-height: 1.35;
+      margin: 0 0 8px;
+      font-size: 11px;
+      line-height: 1.4;
       color: var(--muted);
       font-weight: 500;
     }
@@ -1177,7 +1179,16 @@ export function getHubWebviewHtml(csp: string): string {
     }
   })();
 
+  /** Only accept host updates from the VS Code webview parent or the IntelliJ JCEF hub (see HubJcefPanel). */
+  function isHubMessageOrigin(origin) {
+    if (origin == null || typeof origin !== "string") return false;
+    if (origin === "http://github.copilot.toolbox") return true;
+    if (origin.indexOf("vscode-webview://") === 0) return true;
+    return false;
+  }
+
   window.addEventListener("message", function (e) {
+    if (!isHubMessageOrigin(e.origin)) return;
     if (!e.data) return;
     if (e.data.type === "state") {
       state = e.data.payload;

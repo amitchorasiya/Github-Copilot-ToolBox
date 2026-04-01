@@ -1,7 +1,8 @@
 import * as vscode from "vscode";
 import * as mcpPaths from "../mcpPaths";
+import { mergeMcpServerMaps } from "../mcpMergeUtils";
 
-export type PortProjectMcpJsonMode = "user" | "workspaceMerge" | "workspaceOverwrite" | "dry" | "skip";
+export type PortProjectMcpJsonMode = "user" | "workspaceMerge" | "dry" | "skip";
 
 const CH_LOG = "GitHub Copilot Toolbox";
 
@@ -106,7 +107,8 @@ export async function portClaudeProjectMcpJson(
       existing.servers && typeof existing.servers === "object" && !Array.isArray(existing.servers)
         ? { ...(existing.servers as Record<string, unknown>) }
         : {};
-    const merged: McpJsonShape = { ...existing, servers: { ...destServers, ...incoming } };
+    const nextServers = mergeMcpServerMaps(destServers, incoming);
+    const merged: McpJsonShape = { ...existing, servers: nextServers };
     await vscode.workspace.fs.writeFile(userUri, stringifyMcpJson(merged));
     return { ok: true, note: `Claude MCP port: merged .mcp.json → user mcp.json (${Object.keys(incoming).length} id(s)).` };
   }
@@ -125,12 +127,7 @@ export async function portClaudeProjectMcpJson(
       ? { ...(existing.servers as Record<string, unknown>) }
       : {};
 
-  let nextServers: Record<string, unknown>;
-  if (mode === "workspaceOverwrite") {
-    nextServers = { ...incoming };
-  } else {
-    nextServers = { ...destServers, ...incoming };
-  }
+  const nextServers = mergeMcpServerMaps(destServers, incoming);
 
   const merged: McpJsonShape = { ...existing, servers: nextServers };
   await vscode.workspace.fs.writeFile(wsUri, stringifyMcpJson(merged));

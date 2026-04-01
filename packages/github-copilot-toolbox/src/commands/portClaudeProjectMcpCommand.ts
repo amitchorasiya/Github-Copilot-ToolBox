@@ -28,14 +28,8 @@ export async function portClaudeProjectMcpCommand(): Promise<void> {
       },
       {
         label: "Workspace .vscode/mcp.json (merge)",
-        description: "Merge with existing workspace servers",
+        description: "Merge with existing workspace servers (same id: fill missing keys only)",
         value: "workspaceMerge",
-        alwaysShow: true,
-      },
-      {
-        label: "Workspace .vscode/mcp.json (overwrite servers)",
-        description: "Replace workspace servers with .mcp.json only",
-        value: "workspaceOverwrite",
         alwaysShow: true,
       },
       {

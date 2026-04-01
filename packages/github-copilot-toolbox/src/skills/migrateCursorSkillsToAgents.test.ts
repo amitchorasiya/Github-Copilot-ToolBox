@@ -27,6 +27,11 @@ describe("migrateCursorSkillsToAgents", () => {
 
     const r2 = await migrateOneSkillFolder(listed[0].abs, ag, listed[0].name, "copy");
     expect(r2).toBe("skipped");
+
+    await fs.writeFile(path.join(cur, "my-skill", "extra.md"), "extra\n", "utf8");
+    const r3 = await migrateOneSkillFolder(listed[0].abs, ag, listed[0].name, "copy");
+    expect(r3).toBe("migrated");
+    await fs.access(path.join(ag, "my-skill", "extra.md"));
   });
 
   it("move removes source", async () => {

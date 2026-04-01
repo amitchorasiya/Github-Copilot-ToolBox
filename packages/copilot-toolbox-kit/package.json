@@ -1,0 +1,26 @@
+{
+  "name": "copilot-toolbox-kit",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Shared helpers for Github Copilot ToolBox (optional; extend or rename this package).",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p ./",
+    "clean": "rm -rf dist"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.0"
+  }
+}

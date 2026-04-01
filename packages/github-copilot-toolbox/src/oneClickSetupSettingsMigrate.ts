@@ -16,6 +16,28 @@ export async function migrateOneClickSetupToNewKeys(): Promise<void> {
   const cfg = vscode.workspace.getConfiguration();
   await migrateForTarget(cfg, vscode.ConfigurationTarget.Global, "globalValue");
   await migrateForTarget(cfg, vscode.ConfigurationTarget.Workspace, "workspaceValue");
+  await migrateMergeOnlyModes(cfg, vscode.ConfigurationTarget.Global);
+  await migrateMergeOnlyModes(cfg, vscode.ConfigurationTarget.Workspace);
+}
+
+/** Maps removed overwrite / force settings to merge-safe values. */
+async function migrateMergeOnlyModes(
+  cfg: vscode.WorkspaceConfiguration,
+  target: vscode.ConfigurationTarget
+): Promise<void> {
+  const ik: InspectKey = target === vscode.ConfigurationTarget.Global ? "globalValue" : "workspaceValue";
+  const curMb = slice(cfg, "initMemoryBankMode", ik);
+  if (curMb === "applyForce") {
+    await cfg.update(`${P}.initMemoryBankMode`, "apply", target);
+  }
+  const curPc = slice(cfg, "portCursorMcp", ik);
+  if (curPc === "workspaceOverwrite") {
+    await cfg.update(`${P}.portCursorMcp`, "workspaceMerge", target);
+  }
+  const curPm = slice(cfg, "portClaudeCodeMcp", ik);
+  if (curPm === "workspaceOverwrite") {
+    await cfg.update(`${P}.portClaudeCodeMcp`, "workspaceMerge", target);
+  }
 }
 
 async function migrateForTarget(
@@ -36,8 +58,6 @@ async function migrateForTarget(
         mode = "off";
       } else if (dry === true) {
         mode = "dryRun";
-      } else if (force === true) {
-        mode = "applyForce";
       } else {
         mode = "apply";
       }
