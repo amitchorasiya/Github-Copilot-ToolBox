@@ -19,7 +19,13 @@ const RAW_MAIN =
 
 function transformRootReadmeForMarketplace(text, screenshotCacheVersion) {
   let s = text;
+  // Monorepo root relative (legacy)
   s = s.replaceAll("](screenshots/", `](${RAW_MAIN}/screenshots/`);
+  // Canonical GitHub "raw" links → raw.githubusercontent.com for VSIX / Marketplace rendering
+  s = s.replaceAll(
+    `](${GITHUB_REPO}/raw/main/screenshots/`,
+    `](${RAW_MAIN}/screenshots/`,
+  );
   if (screenshotCacheVersion) {
     const escapedRaw = RAW_MAIN.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     const re = new RegExp(

@@ -15,7 +15,7 @@
 
 **Don’t see the icon?** Press **Ctrl+Shift+P** (Windows/Linux) or **⌘⇧P** (macOS), type **GitHub Copilot Toolbox**, run any listed command (that wakes the extension UI), or run **Developer: Reload Window**, then repeat steps 2–4.
 
-![Activity Bar → Copilot Toolbox; Side Bar → MCP & skills hub](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/00-copilot-toolbox-access.png?v=1.0.17)
+![Activity Bar → Copilot Toolbox; Side Bar → MCP & skills hub](https://github.com/amitchorasiya/Github-Copilot-ToolBox/raw/main/screenshots/00-copilot-toolbox-access.png)
 
 ## One place for Copilot-related setup
 
@@ -87,39 +87,39 @@ The extension does **not** replace GitHub Copilot or Cursor; it helps you **alig
 
 ### See the real UI (screenshots)
 
-**Images** below use absolute **`raw.githubusercontent.com`** URLs (not repo-relative paths) so they render reliably on **GitHub** and when the README is repackaged for the Marketplace.
+**Images** below use absolute **`https://github.com/…/raw/main/screenshots/…`** URLs so they render on **GitHub**, in the **VS Code Marketplace**, and in other markdown viewers. When you run **`npm run package`**, the packaging script rewrites them to **`raw.githubusercontent.com`** (with a version query for cache busting) inside the VSIX README.
 
 These are **actual VS Code UI captures** from the extension—what users see on screen. **How to open the hub** (Activity Bar → Copilot Toolbox → **MCP & skills**) is at the top: [After install: open Copilot Toolbox](#after-install-open-copilot-toolbox). Most hub shots below are **high-resolution** (~2.5k width) so labels stay readable in README and on the [project site](https://copilottoolbox.layai.co).
 
 **Intelligence** (hub): **Cursor → Copilot** and **Claude Code → Copilot** bridge rows (MCP, rules, memory bank, `CLAUDE.md`, `.mcp.json`, skills), then context pack, readiness, MCP & Skills scan.
 
-![Intelligence: Port Cursor MCP, rules, and memory bank to VS Code & Copilot](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/02-intelligence-cursor-port.png?v=1.0.17)
+![Intelligence: Port Cursor MCP, rules, and memory bank to VS Code & Copilot](https://github.com/amitchorasiya/Github-Copilot-ToolBox/raw/main/screenshots/02-intelligence-cursor-port.png)
 
-![Intelligence tab: Cursor and Claude Code bridges to VS Code and Copilot](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/01-intelligence-cursor-to-vscode-copilot.png?v=1.0.17)
+![Intelligence tab: Cursor and Claude Code bridges to VS Code and Copilot](https://github.com/amitchorasiya/Github-Copilot-ToolBox/raw/main/screenshots/01-intelligence-cursor-to-vscode-copilot.png)
 
-![Intelligence: context pack and readiness actions](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/02-intelligence-context-readiness.png?v=1.0.17)
+![Intelligence: context pack and readiness actions](https://github.com/amitchorasiya/Github-Copilot-ToolBox/raw/main/screenshots/02-intelligence-context-readiness.png)
 
 **MCP**: installed workspace/user servers and registry browse.
 
-![MCP: installed workspace servers (Browse / Installed)](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/03-mcp-browse-workspace-servers.png?v=1.0.17)
+![MCP: installed workspace servers (Browse / Installed)](https://github.com/amitchorasiya/Github-Copilot-ToolBox/raw/main/screenshots/03-mcp-browse-workspace-servers.png)
 
-![MCP: registry browse & search](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/04-mcp-registry-search.png?v=1.0.17)
+![MCP: registry browse & search](https://github.com/amitchorasiya/Github-Copilot-ToolBox/raw/main/screenshots/04-mcp-registry-search.png)
 
 **Skills**: catalog (skills.sh) and local installed `SKILL.md` trees.
 
-![Skills: catalog (skills.sh)](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/05-skills-catalog-skills-sh.png?v=1.0.17)
+![Skills: catalog (skills.sh)](https://github.com/amitchorasiya/Github-Copilot-ToolBox/raw/main/screenshots/05-skills-catalog-skills-sh.png)
 
-![Skills: installed local skill folders](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/06-skills-installed-local.png?v=1.0.17)
+![Skills: installed local skill folders](https://github.com/amitchorasiya/Github-Copilot-ToolBox/raw/main/screenshots/06-skills-installed-local.png)
 
 **Workspace** checklist and **Intelligence** hub (context hygiene).
 
-![Workspace kit checklist](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/07-workspace-checklist.png?v=1.0.17)
+![Workspace kit checklist](https://github.com/amitchorasiya/Github-Copilot-ToolBox/raw/main/screenshots/07-workspace-checklist.png)
 
-![Intelligence: context hygiene, snapshot, and quick actions](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/08-workspace-toolbox-commands.png?v=1.0.17)
+![Intelligence: context hygiene, snapshot, and quick actions](https://github.com/amitchorasiya/Github-Copilot-ToolBox/raw/main/screenshots/08-workspace-toolbox-commands.png)
 
 **Reference diagram** (exported map of Cursor vs Copilot surfaces; not a live UI capture).
 
-![Cursor vs Copilot capability map (diagram)](https://raw.githubusercontent.com/amitchorasiya/Github-Copilot-ToolBox/main/screenshots/mermaid-copilot-map.png?v=1.0.17)
+![Cursor vs Copilot capability map (diagram)](https://github.com/amitchorasiya/Github-Copilot-ToolBox/raw/main/screenshots/mermaid-copilot-map.png)
 
 ---
 
@@ -422,7 +422,7 @@ npm run package          # stages monorepo README (+ screenshot URLs) for Market
 # npx vsce publish       # when you are logged in to the publisher (from this directory)
 ```
 
-The `.vsix` **README** is the **monorepo root** [`README.md`](README.md) (same content as on GitHub), with image paths rewritten to `raw.githubusercontent.com` so the Marketplace page shows screenshots. [`packages/github-copilot-toolbox/README.md`](packages/github-copilot-toolbox/README.md) is restored after each package run for repo browsing and holds packaging notes, troubleshooting, and migration details.
+The `.vsix` **README** is the **monorepo root** [`README.md`](README.md) (same content as on GitHub), with GitHub **`raw`** screenshot URLs rewritten to **`raw.githubusercontent.com`** for the Marketplace `.vsix` README. [`packages/github-copilot-toolbox/README.md`](packages/github-copilot-toolbox/README.md) is restored after each package run for repo browsing and holds packaging notes, troubleshooting, and migration details.
 
 From monorepo root (after `npm install` in `packages/github-copilot-toolbox/`): **`npm run package`** or **`npm run vsce:package`** or **`npm run package:extension`** — all run the same packaging script. **Do not** run `npx @vscode/vsce package` in the repo root: the root `package.json` is not the extension manifest and has no `engines.vscode`, so vsce errors out.
 

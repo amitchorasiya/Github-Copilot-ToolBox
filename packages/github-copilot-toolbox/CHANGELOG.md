@@ -3,6 +3,7 @@
 ## 1.0.17
 
 - **Docs & site:** Root **README**, extension **README**, and **GitHub Pages** (`docs/index.html`) — prominent **VS Code Marketplace** and **JetBrains Marketplace** links (plugin id `com.amitchorasiya.github.copilot.toolbox`); screenshot and **`site.css`** cache-bust **`?v=1.0.17`**. **IntelliJ** plugin bumped to **0.1.3** (Gradle + `plugin.xml`) in sync with this release.
+- **README images:** Absolute **`https://github.com/…/raw/main/screenshots/…`** URLs in READMEs (GitHub + Marketplace–friendly). **`npm run package`** rewrites them to **`raw.githubusercontent.com`** with a **`?v=`** cache-bust for the `.vsix` README.
 
 ## 1.0.15
 
